@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pong.src.ressources;
+using System;
 using System.IO;
 using static SDL2.SDL;
 using static SDL2.SDL.SDL_RendererFlags;
@@ -8,6 +9,7 @@ namespace SDL_test.src
     public class GameContext
     {
         static private GameContext singleton = null;
+
         private bool done = false; // Boolean for the main game loop
         private IntPtr window = IntPtr.Zero;
         private IntPtr render = IntPtr.Zero;
@@ -86,25 +88,29 @@ namespace SDL_test.src
             const double MS_PER_UPDATE = 16; //Milliseconds between each game Update
 
             //Load Sprites and create textures of them
-            IntPtr sprite = IntPtr.Zero;
-            sprite = SDL_LoadBMP("images/ball.bmp");
-            if (sprite == IntPtr.Zero)
-            {
-                Console.Write("Unable to load image: ball.bmp! SDL Error:" + SDL_GetError() + " \n");
-                Console.Write(Directory.GetCurrentDirectory() + " \n");
-            }
-            IntPtr ball = SDL_CreateTextureFromSurface(render, sprite);
-            SDL_FreeSurface(sprite);
-            if (ball == IntPtr.Zero)
-            {
-                Console.Write("Unable to create texture! SDL Error:" + SDL_GetError() + " \n");
-            }
-            SDL_Rect ballPosition;
-            ballPosition.x = 0;
-            ballPosition.y = 0;
-            ballPosition.w = 40;
-            ballPosition.h = 40;
+            SpriteEntity ball = new SpriteEntity(render, "images/ball.bmp");
 
+            ball.pos.x = 0;
+            ball.pos.y = 0;
+            ball.pos.w = 40;
+            ball.pos.h = 40;
+
+            ball.subRect.x = 0;
+            ball.subRect.y = 0;
+            ball.subRect.w = 132;
+            ball.subRect.h = 132;
+
+            SpriteEntity ball2 = new SpriteEntity(ball.texture);
+
+            ball2.pos.x = 100;
+            ball2.pos.y = 120;
+            ball2.pos.w = 40;
+            ball2.pos.h = 40;
+
+            ball2.subRect.x = 0;
+            ball2.subRect.y = 0;
+            ball2.subRect.w = 132;
+            ball2.subRect.h = 132;
 
             // END Innitialize all
 
@@ -127,10 +133,15 @@ namespace SDL_test.src
                 while (lag >= MS_PER_UPDATE)
                 {
                     // GAMEUPDATE
-                    if (ballPosition.x < 200)
+                    if (ball.pos.x < 200)
                     {
-                        ballPosition.x += 1;
-                        ballPosition.y += 1;
+                        ball.pos.x += 1;
+                        ball.pos.y += 1;
+                    }
+                    if (ball2.pos.x > 0 && ball2.pos.y > 0)
+                    {
+                        ball2.pos.x -= 1;
+                        ball2.pos.y -= 1;
                     }
                     //END GameUpdate
                     lag -= MS_PER_UPDATE;
@@ -140,8 +151,9 @@ namespace SDL_test.src
                 //Fill the surface black
                 SDL_RenderClear(render);
 
-                //Apply the image
-                SDL_RenderCopy(render, ball, IntPtr.Zero, ref ballPosition);
+                //Apply the images
+                SDL_RenderCopy(render, ball.texture, ref ball.subRect, ref ball.pos);
+                SDL_RenderCopy(render, ball2.texture, ref ball2.subRect, ref ball2.pos);
 
                 //Render everything
                 SDL_RenderPresent(render);
@@ -152,7 +164,8 @@ namespace SDL_test.src
 
 
             // QuitingProgram Gracefully
-            SDL_DestroyTexture(ball);
+            SDL_DestroyTexture(ball.texture);
+            SDL_DestroyTexture(ball2.texture);
             SDL_DestroyRenderer(render);
             SDL_DestroyWindow(window);
             SDL_Quit();
