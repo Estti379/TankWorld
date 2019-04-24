@@ -2,7 +2,7 @@
 using static SDL2.SDL.SDL_EventType;
 using static SDL2.SDL.SDL_Keycode;
 
-namespace SDL_test.src
+namespace Pong.src
 {
     static class ProcessInput
     {

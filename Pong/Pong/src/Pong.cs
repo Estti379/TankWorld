@@ -1,6 +1,6 @@
-﻿using SDL_test.src;
+﻿using Pong.src;
 
-namespace SDL_test
+namespace Pong
 {
     class Pong
     {

@@ -4,7 +4,7 @@ using System.IO;
 using static SDL2.SDL;
 using static SDL2.SDL.SDL_RendererFlags;
 
-namespace SDL_test.src
+namespace Pong.src
 {
     public class GameContext
     {
