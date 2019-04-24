@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SDL_test.src
+namespace Pong.src
 {
     static class Update
     {
