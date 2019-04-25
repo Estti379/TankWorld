@@ -19,15 +19,15 @@ namespace Pong.src
         private GameContext()
         {
             // initialize then start the game
-            if ( initialize() )
+            if ( Initialize() )
             {
-                start();
+                Start();
             }
             
         }
 
         // used to allow the creation of only one Instance of this class
-        public static GameContext instance
+        public static GameContext Instance
         {
             get
             {
@@ -43,7 +43,7 @@ namespace Pong.src
          * 
          * returns: True if the initialization was sucessfull, False otherwise.
          */
-        private bool initialize()
+        private bool Initialize()
         {
             if (SDL_Init(SDL_INIT_VIDEO) < 0)
             {
@@ -53,7 +53,7 @@ namespace Pong.src
 
             //Initialize window
             window = IntPtr.Zero;
-            window = SDL_CreateWindow(".NET Core SDL2-CS Tutorial",
+            window = SDL_CreateWindow("Pong!",
                 SDL_WINDOWPOS_CENTERED,
                 SDL_WINDOWPOS_CENTERED,
                 1280,
@@ -74,43 +74,41 @@ namespace Pong.src
                 Console.Write("SDL could not create render! SDL_Error: %s\n", SDL_GetError());
                 return false;
             }
-            // Sets color to which render will change at each gamerender
-            SDL_SetRenderDrawColor(render, 0, 0, 0, 0);
             return true;
         }
 
 
 
 
-        private void start()
+        private void Start()
         {
             // Initialize All
             const double MS_PER_UPDATE = 16; //Milliseconds between each game Update
 
             //Load Sprites and create textures of them
-            SpriteEntity ball = new SpriteEntity(render, "images/ball.bmp");
+            SpriteEntity ball = new SpriteEntity(render, "images/ball.bmp", 255, 255, 255);
 
-            ball.pos.x = 0;
-            ball.pos.y = 0;
-            ball.pos.w = 40;
-            ball.pos.h = 40;
+            ball.Pos.x = 0;
+            ball.Pos.y = 0;
+            ball.Pos.w = 40;
+            ball.Pos.h = 40;
 
-            ball.subRect.x = 0;
-            ball.subRect.y = 0;
-            ball.subRect.w = 132;
-            ball.subRect.h = 132;
+            ball.SubRect.x = 0;
+            ball.SubRect.y = 0;
+            ball.SubRect.w = 132;
+            ball.SubRect.h = 132;
 
-            SpriteEntity ball2 = new SpriteEntity(ball.texture);
+            SpriteEntity ball2 = new SpriteEntity(ball.Texture);
 
-            ball2.pos.x = 100;
-            ball2.pos.y = 120;
-            ball2.pos.w = 40;
-            ball2.pos.h = 40;
+            ball2.Pos.x = 100;
+            ball2.Pos.y = 120;
+            ball2.Pos.w = 40;
+            ball2.Pos.h = 40;
 
-            ball2.subRect.x = 0;
-            ball2.subRect.y = 0;
-            ball2.subRect.w = 132;
-            ball2.subRect.h = 132;
+            ball2.SubRect.x = 0;
+            ball2.SubRect.y = 0;
+            ball2.SubRect.w = 132;
+            ball2.SubRect.h = 132;
 
             // END Innitialize all
 
@@ -126,22 +124,22 @@ namespace Pong.src
                 previous = current;
 
                 // ProcessInput
-                ProcessInput.processInput(ref done);
+                ProcessInput.ReadInput(ref done);
                 // END ProcessInput
 
                 lag += elapsed;
                 while (lag >= MS_PER_UPDATE)
                 {
                     // GAMEUPDATE
-                    if (ball.pos.x < 200)
+                    if (ball.Pos.x < 200)
                     {
-                        ball.pos.x += 1;
-                        ball.pos.y += 1;
+                        ball.Pos.x += 1;
+                        ball.Pos.y += 1;
                     }
-                    if (ball2.pos.x > 0 && ball2.pos.y > 0)
+                    if (ball2.Pos.x > 0 && ball2.Pos.y > 0)
                     {
-                        ball2.pos.x -= 1;
-                        ball2.pos.y -= 1;
+                        ball2.Pos.x -= 1;
+                        ball2.Pos.y -= 1;
                     }
                     //END GameUpdate
                     lag -= MS_PER_UPDATE;
@@ -149,11 +147,12 @@ namespace Pong.src
 
                 // RENDERING
                 //Fill the surface black
+                SDL_SetRenderDrawColor(render, 0, 0, 0, 0);
                 SDL_RenderClear(render);
 
                 //Apply the images
-                SDL_RenderCopy(render, ball.texture, ref ball.subRect, ref ball.pos);
-                SDL_RenderCopy(render, ball2.texture, ref ball2.subRect, ref ball2.pos);
+                SDL_RenderCopy(render, ball.Texture, ref ball.SubRect, ref ball.Pos);
+                SDL_RenderCopy(render, ball2.Texture, ref ball2.SubRect, ref ball2.Pos);
 
                 //Render everything
                 SDL_RenderPresent(render);
@@ -164,8 +163,8 @@ namespace Pong.src
 
 
             // QuitingProgram Gracefully
-            SDL_DestroyTexture(ball.texture);
-            SDL_DestroyTexture(ball2.texture);
+            SDL_DestroyTexture(ball.Texture);
+            SDL_DestroyTexture(ball2.Texture);
             SDL_DestroyRenderer(render);
             SDL_DestroyWindow(window);
             SDL_Quit();

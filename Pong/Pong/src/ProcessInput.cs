@@ -6,11 +6,10 @@ namespace Pong.src
 {
     static class ProcessInput
     {
-        static public void processInput(ref bool done)
+        static public void ReadInput(ref bool done)
         {
-            SDL_Event userEvent;
             //Handle events on queue
-            while ( SDL_PollEvent( out userEvent ) != 0 )
+            while ( SDL_PollEvent( out SDL_Event userEvent) != 0 )
             {
                 //User requests quit
                 switch (userEvent.type)
@@ -19,7 +18,7 @@ namespace Pong.src
                         done = true;
                         break;
                     case SDL_KEYDOWN:
-                        checkKeyDown(userEvent, ref done);
+                        CheckKeyDown(userEvent, ref done);
                         break;
                 }
                                                 
@@ -27,7 +26,7 @@ namespace Pong.src
         }
 
 
-        static private void checkKeyDown(SDL_Event userEvent, ref bool done)
+        static private void CheckKeyDown(SDL_Event userEvent, ref bool done)
         {
             switch (userEvent.key.keysym.sym)
             {
