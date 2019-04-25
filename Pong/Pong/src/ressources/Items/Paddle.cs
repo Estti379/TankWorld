@@ -7,9 +7,22 @@ namespace Pong.src.ressources.Items
     {
 
         //Constructors
-        public Paddle() : base()
+        public Paddle(string key, IntPtr render) : base()
         {
-            
+            SpriteEntity paddleSprite;
+            if (!SpriteEntity.TextureExists("paddle"))
+            {
+                paddleSprite = new SpriteEntity("paddle", render, "images/paddle.bmp", 0, 255, 0);
+            }
+            else
+            {
+                paddleSprite = new SpriteEntity("paddle");
+            }
+            paddleSprite.Pos.h = 10;
+            paddleSprite.Pos.w = 2;
+            paddleSprite.SubRect.h = 100;
+            paddleSprite.SubRect.w = 20;
+            AddSprite(key, paddleSprite);
         }
 
         //Accessors

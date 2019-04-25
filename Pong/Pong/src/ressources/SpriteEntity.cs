@@ -30,6 +30,11 @@ namespace Pong.src.ressources
             //TODO: handle duplicate keys or textures
         }
 
+        public SpriteEntity(string key)
+        {
+            name = key;
+        }
+
         //Accessors
         public IntPtr Texture
         {
@@ -108,6 +113,16 @@ namespace Pong.src.ressources
             }
 
             textureList.Clear();
+        }
+
+        static public IntPtr GetTextureFor(string key)
+        {
+            return textureList[key];
+        }
+
+        static public bool TextureExists(string key)
+        {
+            return textureList.ContainsKey(key);
         }
 
     }

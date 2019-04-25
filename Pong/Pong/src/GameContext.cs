@@ -1,4 +1,5 @@
 ﻿using Pong.src.ressources;
+using Pong.src.ressources.Items;
 using System;
 using System.IO;
 using static SDL2.SDL;
@@ -86,7 +87,7 @@ namespace Pong.src
             const double MS_PER_UPDATE = 16; //Milliseconds between each game Update
 
             //Load Sprites and create textures of them
-            SpriteEntity ball = new SpriteEntity("ball1", render, "images/ball.bmp", 0, 255, 0);
+            SpriteEntity ball = new SpriteEntity("ball", render, "images/ball.bmp", 0, 255, 0);
 
             ball.Pos.x = 0;
             ball.Pos.y = 0;
@@ -98,7 +99,7 @@ namespace Pong.src
             ball.SubRect.w = 100;
             ball.SubRect.h = 100;
 
-            SpriteEntity ball2 = new SpriteEntity("ball2", ball.Texture);
+            SpriteEntity ball2 = new SpriteEntity("ball");
 
             ball2.Pos.x = 100;
             ball2.Pos.y = 120;
@@ -111,6 +112,13 @@ namespace Pong.src
             ball2.SubRect.h = 100;
 
             // END Innitialize all
+
+            /////////////////////////////////////
+            ///Testing
+            Paddle player1 = new Paddle("player1", render);
+
+            /////////////////////////////////////
+            
 
             // START MainGameLoop
             double current = 0.0;
@@ -153,6 +161,7 @@ namespace Pong.src
                 //Apply the images
                 SDL_RenderCopy(render, ball.Texture, ref ball.SubRect, ref ball.Pos);
                 SDL_RenderCopy(render, ball2.Texture, ref ball2.SubRect, ref ball2.Pos);
+                player1.EntityRender(render);
 
                 //Render everything
                 SDL_RenderPresent(render);
