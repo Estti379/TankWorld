@@ -86,19 +86,19 @@ namespace Pong.src
             const double MS_PER_UPDATE = 16; //Milliseconds between each game Update
 
             //Load Sprites and create textures of them
-            SpriteEntity ball = new SpriteEntity(render, "images/ball.bmp", 255, 255, 255);
+            SpriteEntity ball = new SpriteEntity("ball1", render, "images/ball.bmp", 0, 255, 0);
 
             ball.Pos.x = 0;
             ball.Pos.y = 0;
-            ball.Pos.w = 40;
-            ball.Pos.h = 40;
+            ball.Pos.w = 100;
+            ball.Pos.h = 100;
 
             ball.SubRect.x = 0;
             ball.SubRect.y = 0;
-            ball.SubRect.w = 132;
-            ball.SubRect.h = 132;
+            ball.SubRect.w = 100;
+            ball.SubRect.h = 100;
 
-            SpriteEntity ball2 = new SpriteEntity(ball.Texture);
+            SpriteEntity ball2 = new SpriteEntity("ball2", ball.Texture);
 
             ball2.Pos.x = 100;
             ball2.Pos.y = 120;
@@ -107,8 +107,8 @@ namespace Pong.src
 
             ball2.SubRect.x = 0;
             ball2.SubRect.y = 0;
-            ball2.SubRect.w = 132;
-            ball2.SubRect.h = 132;
+            ball2.SubRect.w = 100;
+            ball2.SubRect.h = 100;
 
             // END Innitialize all
 
