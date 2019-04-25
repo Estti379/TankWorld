@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using static SDL2.SDL;
 using static SDL2.SDL.SDL_bool;
@@ -7,44 +8,37 @@ namespace Pong.src.ressources
 {
     public class SpriteEntity
     {
-        private IntPtr textureSprite;
+        private static Dictionary<string, IntPtr> textureList = new Dictionary<string, IntPtr>();
+
+        private string name;
         private SDL_Rect position;
         private SDL_Rect subDrawRect;
 
 
         //Constructors
-        public SpriteEntity(IntPtr render, string imagePath, byte r, byte g, byte b)
+        public SpriteEntity(string key, IntPtr render, string imagePath, byte r, byte g, byte b)
         {
-            textureSprite = ImageTotexture(render, imagePath, r, g, b);
-            position.x = 0;
-            position.y = 0;
-            position.w = 0;
-            position.h = 0;
+            IntPtr texture = ImageTotexture(render, imagePath, r, g, b);
 
-            subDrawRect.x = 0;
-            subDrawRect.y = 0;
-            subDrawRect.w = 0;
-            subDrawRect.h = 0;
+            SetupSpriteEntity(key, texture);
+            //TODO: handle duplicate keys
         }
 
-        public SpriteEntity(IntPtr texture)
+        public SpriteEntity(string key, IntPtr texture)
         {
-            textureSprite = texture;
-            position.x = 0;
-            position.y = 0;
-            position.w = 0;
-            position.h = 0;
+            SetupSpriteEntity(key, texture);
+            //TODO: handle duplicate keys or textures
+        }
 
-            subDrawRect.x = 0;
-            subDrawRect.y = 0;
-            subDrawRect.w = 0;
-            subDrawRect.h = 0;
+        public SpriteEntity(string key)
+        {
+            name = key;
         }
 
         //Accessors
         public IntPtr Texture
         {
-            get{ return textureSprite; }
+            get{ return textureList[name]; }
         }
 
         public ref SDL_Rect Pos
@@ -57,6 +51,22 @@ namespace Pong.src.ressources
         }
 
         //Methods
+        private void SetupSpriteEntity(string key, IntPtr texture)
+        {
+            textureList.Add(key, texture);
+            name = key;
+            position.x = 0;
+            position.y = 0;
+            position.w = 0;
+            position.h = 0;
+
+            subDrawRect.x = 0;
+            subDrawRect.y = 0;
+            subDrawRect.w = 0;
+            subDrawRect.h = 0;
+        }
+
+
         static public IntPtr ImageTotexture(IntPtr render, string imagePath, byte r, byte g, byte b)
         {
             IntPtr sprite = IntPtr.Zero;
@@ -81,6 +91,38 @@ namespace Pong.src.ressources
             }
 
             return myTexture;
+        }
+
+        static public void RemoveSingletexture(string key)
+        {
+            SDL_DestroyTexture(textureList[key]);
+            textureList.Remove(key);
+        }
+
+        public void RemoveMyTexture()
+        {
+            SDL_DestroyTexture(textureList[name]);
+            textureList.Remove(name);
+        }
+
+        public void RemoveAll()
+        {
+            foreach(KeyValuePair<string, IntPtr> current in textureList)
+            {
+                SDL_DestroyTexture(current.Value);
+            }
+
+            textureList.Clear();
+        }
+
+        static public IntPtr GetTextureFor(string key)
+        {
+            return textureList[key];
+        }
+
+        static public bool TextureExists(string key)
+        {
+            return textureList.ContainsKey(key);
         }
 
     }
