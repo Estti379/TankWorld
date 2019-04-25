@@ -6,7 +6,7 @@ namespace Pong
     {
         static void Main(string[] args)
         {
-           GameContext myPongGame = GameContext.instance;
+           GameContext myPongGame = GameContext.Instance;
         }
     }
 }
