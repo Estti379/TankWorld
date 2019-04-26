@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Pong.src.ressources;
+using System;
 
 namespace Pong.src
 {
-    static class Update
+    static public class Update
     {
+        static public void StartUpdate(Panel panel)
+        {
+            //Update all panels
 
+            panel.UpdateAll(panel);
+
+        }
     }
 }

@@ -1,7 +1,7 @@
-﻿
+﻿/*
 namespace Pong.src.ressources
 {
-    public class GameEntity
+    abstract public class GameEntity
     {
         
         //Constructors
@@ -13,3 +13,5 @@ namespace Pong.src.ressources
         //Methods
     }
 }
+
+*/

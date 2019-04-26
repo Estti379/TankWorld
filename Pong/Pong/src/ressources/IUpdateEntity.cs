@@ -1,4 +1,6 @@
-﻿namespace Pong.src.ressources
+﻿using Pong.src.ressources;
+
+namespace Pong.src.ressources
 {
     interface IUpdateEntity
     {
@@ -7,7 +9,7 @@
 
         
         //Methods
-        void EntityUpdate();
+        void EntityUpdate(Panel panel);
         
     }
 }

@@ -30,7 +30,7 @@ namespace Pong.src.ressources
             }
             else if (sprites.ContainsKey(key))
             {
-                Console.Write("Key already eist in dictionnary: " + key + "\n");
+                Console.Write("Key already exist in dictionnary: " + key + "\n");
             }
             else
             {

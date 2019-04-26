@@ -1,7 +1,6 @@
 ﻿using Pong.src.ressources;
-using Pong.src.ressources.Items;
+using Pong.src.ressources.Panels;
 using System;
-using System.IO;
 using static SDL2.SDL;
 using static SDL2.SDL.SDL_RendererFlags;
 
@@ -57,8 +56,8 @@ namespace Pong.src
             window = SDL_CreateWindow("Pong!",
                 SDL_WINDOWPOS_CENTERED,
                 SDL_WINDOWPOS_CENTERED,
-                1280,
-                720,
+                GameConstants.WINDOWS_X,
+                GameConstants.WINDOWS_Y,
                 SDL_WindowFlags.SDL_WINDOW_SHOWN
             );
 
@@ -82,43 +81,10 @@ namespace Pong.src
 
 
         private void Start()
-        {
-            // Initialize All
-            const double MS_PER_UPDATE = 16; //Milliseconds between each game Update
-
-            //Load Sprites and create textures of them
-            SpriteEntity ball = new SpriteEntity("ball", render, "images/ball.bmp", 0, 255, 0);
-
-            ball.Pos.x = 0;
-            ball.Pos.y = 0;
-            ball.Pos.w = 100;
-            ball.Pos.h = 100;
-
-            ball.SubRect.x = 0;
-            ball.SubRect.y = 0;
-            ball.SubRect.w = 100;
-            ball.SubRect.h = 100;
-
-            SpriteEntity ball2 = new SpriteEntity("ball");
-
-            ball2.Pos.x = 100;
-            ball2.Pos.y = 120;
-            ball2.Pos.w = 40;
-            ball2.Pos.h = 40;
-
-            ball2.SubRect.x = 0;
-            ball2.SubRect.y = 0;
-            ball2.SubRect.w = 100;
-            ball2.SubRect.h = 100;
-
-            // END Innitialize all
-
-            /////////////////////////////////////
-            ///Testing
-            Paddle player1 = new Paddle("player1", render);
-
-            /////////////////////////////////////
-            
+        {                      
+            // START Innitializing panel
+            Panel pongTablePanel = new PongPanel(render);
+            // END innitializing panel
 
             // START MainGameLoop
             double current = 0.0;
@@ -131,49 +97,29 @@ namespace Pong.src
                 elapsed = (current - previous) * 1000 / (double)SDL_GetPerformanceFrequency();
                 previous = current;
 
+                
                 // ProcessInput
-                ProcessInput.ReadInput(ref done);
+                ProcessInput.ReadInput(ref done, pongTablePanel);
                 // END ProcessInput
 
                 lag += elapsed;
-                while (lag >= MS_PER_UPDATE)
+                while (lag >= GameConstants.MS_PER_UPDATE)
                 {
                     // GAMEUPDATE
-                    if (ball.Pos.x < 200)
-                    {
-                        ball.Pos.x += 1;
-                        ball.Pos.y += 1;
-                    }
-                    if (ball2.Pos.x > 0 && ball2.Pos.y > 0)
-                    {
-                        ball2.Pos.x -= 1;
-                        ball2.Pos.y -= 1;
-                    }
+                    Update.StartUpdate(pongTablePanel);
                     //END GameUpdate
-                    lag -= MS_PER_UPDATE;
+                    lag -= GameConstants.MS_PER_UPDATE;
                 }
 
                 // RENDERING
-                //Fill the surface black
-                SDL_SetRenderDrawColor(render, 0, 0, 0, 0);
-                SDL_RenderClear(render);
-
-                //Apply the images
-                SDL_RenderCopy(render, ball.Texture, ref ball.SubRect, ref ball.Pos);
-                SDL_RenderCopy(render, ball2.Texture, ref ball2.SubRect, ref ball2.Pos);
-                player1.EntityRender(render);
-
-                //Render everything
-                SDL_RenderPresent(render);
-
-
+                Render.StartRender(pongTablePanel, render);
                 // END Rendering
             }// END MainGameLoop
 
 
             // QuitingProgram Gracefully
-            SDL_DestroyTexture(ball.Texture);
-            SDL_DestroyTexture(ball2.Texture);
+
+            //TODO: destroy all textures
             SDL_DestroyRenderer(render);
             SDL_DestroyWindow(window);
             SDL_Quit();
