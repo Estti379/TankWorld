@@ -5,7 +5,7 @@
         public const int WINDOWS_X = 1280;
         public const int WINDOWS_Y = 720;
 
-        public const int SCORE_OFFSET = 100;
+        public const int SCORE_OFFSET = 0;
 
         public const int PONG_TABLE_X = WINDOWS_X;
         public const int PONG_TABLE_Y = WINDOWS_Y - SCORE_OFFSET;

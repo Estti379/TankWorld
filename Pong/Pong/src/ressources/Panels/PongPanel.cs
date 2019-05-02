@@ -13,7 +13,7 @@ namespace Pong.src.ressources.Panels
         public PongPanel(IntPtr render)
         {
             player1 = new Paddle("player1", render, 0 + GameConstants.PADDLES_OFFSET - 2);
-            player2 = new Paddle("player2", render, GameConstants.PONG_TABLE_X - GameConstants.PADDLES_OFFSET + 2);
+            player2 = new Paddle("player2", render, GameConstants.PONG_TABLE_X - GameConstants.PADDLES_OFFSET);
 
             ball = new Ball("ball1", render);
         }

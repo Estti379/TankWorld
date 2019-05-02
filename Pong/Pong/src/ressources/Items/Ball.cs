@@ -12,6 +12,7 @@ namespace Pong.src.ressources.Items
         private double posY;
         private double speedX;
         private double speedY;
+        private double speedFactor = 2;
         
 
         //Constructors
@@ -20,7 +21,7 @@ namespace Pong.src.ressources.Items
             SpriteEntity ballSprite;
             if (!SpriteEntity.TextureExists("ball"))
             {
-                ballSprite = new SpriteEntity("ball", render, "images/ball.bmp", 0, 255, 0);
+                ballSprite = new SpriteEntity("ball", render, "assets/images/ball.bmp", 0, 255, 0);
             }
             else
             {
@@ -48,17 +49,19 @@ namespace Pong.src.ressources.Items
 
         private void ResetBall()
         {
-            posX = GameConstants.PONG_TABLE_X / 2;
+            posX = GameConstants.PONG_TABLE_X / 2 - AllSprites["ball"].Pos.x/2;
             AllSprites["ball"].Pos.x = (int)posX;
-            posY = GameConstants.PONG_TABLE_Y / 2;
+            posY = GameConstants.PONG_TABLE_Y / 2 - AllSprites["ball"].Pos.y/2;
             AllSprites["ball"].Pos.y = (int)posY;
 
-            //TODO: take care of negative values
-            while ( (speedX = random.NextDouble() * 2) < 0.5)
+            double radian = 0;
+            do
             {
-                /* empty */
-            }
-            speedY = 2 - speedX;
+                radian = random.NextDouble() * 2 * Math.PI;
+                speedX = Math.Cos(radian);
+            } while ( speedX <= 0.25 && speedX >= -0.25); // Refuse all values between 0.25 and -0.25. Angle is too sharp.
+            speedX *= speedFactor;
+            speedY = Math.Sin(radian) * speedFactor;
         }
 
         public void EntityUpdate(Panel panel)
@@ -74,17 +77,17 @@ namespace Pong.src.ressources.Items
             {
                 speedY = -speedY;
             }
-            else if ( (posY + AllSprites["ball"].Pos.h/2) >= GameConstants.PONG_TABLE_Y)
+            else if ( (posY + AllSprites["ball"].Pos.h) >= GameConstants.PONG_TABLE_Y)
             {
                 speedY = -speedY;
             }
-            if ( posX <= 0)
+            if ( posX<= 0)
             {
                 //TODO: Point for player 2
                 Console.Write("Point for player 2\n");
                 ResetBall();
             }
-            else if ( (posX + AllSprites["ball"].Pos.h) >= GameConstants.PONG_TABLE_X)
+            else if ( (posX + AllSprites["ball"].Pos.w) >= GameConstants.PONG_TABLE_X)
             {
                 //TODO: Point for player 1
                 Console.Write("Point for player 1\n");
@@ -99,7 +102,7 @@ namespace Pong.src.ressources.Items
                     speedX = -speedX;
                 }
             }
-            else if ((posX + AllSprites["ball"].Pos.h) >= GameConstants.PONG_TABLE_X - GameConstants.PADDLES_OFFSET)
+            else if ((posX + AllSprites["ball"].Pos.w) >= GameConstants.PONG_TABLE_X - GameConstants.PADDLES_OFFSET)
             {
                 int posYPaddle = table.Player2.AllSprites["paddle"].Pos.y;
                 if (posY >= posYPaddle && posY <= posYPaddle + table.Player2.AllSprites["paddle"].Pos.h)
