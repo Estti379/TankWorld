@@ -14,17 +14,18 @@ namespace Pong.src.ressources.Items
             SpriteEntity paddleSprite;
             if (!SpriteEntity.TextureExists("paddle"))
             {
-                paddleSprite = new SpriteEntity("paddle", render, "images/paddle.bmp", 0, 255, 0);
+                paddleSprite = new SpriteEntity("paddle", render, "assets/images/paddle.bmp", 0, 255, 0);
             }
             else
             {
                 paddleSprite = new SpriteEntity("paddle");
             }
-            paddleSprite.Pos.x = offset;
             paddleSprite.Pos.h = 100;
             paddleSprite.Pos.w = 2;
             paddleSprite.SubRect.h = 100;
             paddleSprite.SubRect.w = 20;
+            paddleSprite.Pos.x = offset;
+            paddleSprite.Pos.y = GameConstants.PONG_TABLE_Y / 2 - paddleSprite.Pos.h/2;
             AddSprite("paddle", paddleSprite);
         }
 
