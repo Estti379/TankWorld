@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{26E4FE53-ADE5-4486-8243-9DC4947BF829}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Pong</RootNamespace>
     <AssemblyName>Pong</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -38,6 +38,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="assets\fonts\Pixel Millennium.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -51,10 +54,14 @@
     <Compile Include="src\ressources\Items\Ball.cs" />
     <Compile Include="src\ressources\Items\PaddleState.cs" />
     <Compile Include="src\ressources\Items\Paddle.cs" />
+    <Compile Include="src\ressources\Items\Score.cs" />
     <Compile Include="src\ressources\IUpdateEntity.cs" />
     <Compile Include="src\ressources\Panel.cs" />
     <Compile Include="src\ressources\Panels\PongPanel.cs" />
+    <Compile Include="src\ressources\Panels\ScorePanel.cs" />
     <Compile Include="src\ressources\SpriteEntity.cs" />
+    <Compile Include="src\ressources\TextGenerator.cs" />
+    <Compile Include="src\ressources\TextureStruct.cs" />
     <Compile Include="src\Update.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,28 +73,31 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\fonts\Pixel Millennium license.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\images\ball.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\images\paddle.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="assets\libs\libfreetype-6.dll">
+    <ContentWithTargetPath Include="assets\libs\libfreetype-6.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargePath>libfreetype-6.dll</TargePath>
-    </Content>
-    <Content Include="assets\libs\SDL2-CS.dll">
+      <TargetPath>libfreetype-6.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="assets\libs\SDL2-CS.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargePath>SDL2-CS.dll</TargePath>
-    </Content>
-    <Content Include="assets\libs\SDL2_ttf.dll">
+      <TargetPath>SDL2-CS.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="assets\libs\SDL2_ttf.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargePath>SDL2_ttf.dll</TargePath>
-    </Content>
-    <Content Include="assets\libs\zlib1.dll">
+      <TargetPath>SDL2_ttf.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="assets\libs\zlib1.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargePath>zlib1.dll</TargePath>
-    </Content>
+      <TargetPath>zlib1.dll</TargetPath>
+    </ContentWithTargetPath>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -2,7 +2,9 @@
 using Pong.src.ressources.Panels;
 using System;
 using static SDL2.SDL;
+using static SDL2.SDL_ttf;
 using static SDL2.SDL.SDL_RendererFlags;
+using System.Collections.Generic;
 
 namespace Pong.src
 {
@@ -74,6 +76,15 @@ namespace Pong.src
                 Console.Write("SDL could not create render! SDL_Error: %s\n", SDL_GetError());
                 return false;
             }
+
+            if (TTF_Init() == -1)
+            {
+                Console.Write("SDL_ttf could not initialize! SDL_ttf Error: %s\n", SDL_GetError());
+                return false;
+            }
+
+            new TextGenerator();
+
             return true;
         }
 
@@ -81,9 +92,13 @@ namespace Pong.src
 
 
         private void Start()
-        {                      
+        {
             // START Innitializing panel
-            Panel pongTablePanel = new PongPanel(render);
+            List<Panel> scene = new List<Panel>
+            {
+                new PongPanel(render),
+                new ScorePanel(render)
+            };
             // END innitializing panel
 
             // START MainGameLoop
@@ -99,20 +114,20 @@ namespace Pong.src
 
                 
                 // ProcessInput
-                ProcessInput.ReadInput(ref done, pongTablePanel);
+                ProcessInput.ReadInput(ref done, scene);
                 // END ProcessInput
 
                 lag += elapsed;
                 while (lag >= GameConstants.MS_PER_UPDATE)
                 {
                     // GAMEUPDATE
-                    Update.StartUpdate(pongTablePanel);
+                    Update.StartUpdate(scene);
                     //END GameUpdate
                     lag -= GameConstants.MS_PER_UPDATE;
                 }
 
                 // RENDERING
-                Render.StartRender(pongTablePanel, render);
+                Render.StartRender(scene, render);
                 // END Rendering
             }// END MainGameLoop
 
@@ -122,6 +137,7 @@ namespace Pong.src
             //TODO: destroy all textures
             SDL_DestroyRenderer(render);
             SDL_DestroyWindow(window);
+            TTF_Quit();
             SDL_Quit();
         }
 

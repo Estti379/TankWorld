@@ -20,6 +20,6 @@ namespace Pong.src.ressources
         //Methods
         abstract public void RenderAll(IntPtr render);
 
-        abstract public void UpdateAll(Panel panel);
+        abstract public void UpdateAll();
     }
 }

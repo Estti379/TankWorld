@@ -16,7 +16,7 @@ namespace Pong.src.ressources.Items
         
 
         //Constructors
-        public Ball(string key, IntPtr render) : base()
+        public Ball(string key, IntPtr render) : base() //TODO: key not needed. Remove it
         {
             SpriteEntity ballSprite;
             if (!SpriteEntity.TextureExists("ball"))
