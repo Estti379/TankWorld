@@ -44,23 +44,23 @@ namespace Pong.src.ressources.Panels
             ball.EntityRender(render);
         }
 
-        override public void UpdateAll(Panel table)
+        override public void UpdateAll()
         {
             IUpdateEntity toUpdate;
             if (ball is IUpdateEntity)
             {
                 toUpdate = (IUpdateEntity)ball;
-                toUpdate.EntityUpdate(table);
+                toUpdate.EntityUpdate(this);
             }
             if (player1 is IUpdateEntity)
             {
                 toUpdate = (IUpdateEntity)player1;
-                toUpdate.EntityUpdate(table);
+                toUpdate.EntityUpdate(this);
             }
             if (player2 is IUpdateEntity)
             {
                 toUpdate = (IUpdateEntity)player2;
-                toUpdate.EntityUpdate(table);
+                toUpdate.EntityUpdate(this);
             }
         }
 

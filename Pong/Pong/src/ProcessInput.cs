@@ -1,5 +1,6 @@
 ﻿using Pong.src.ressources;
 using Pong.src.ressources.Panels;
+using System.Collections.Generic;
 using static SDL2.SDL;
 using static SDL2.SDL.SDL_EventType;
 using static SDL2.SDL.SDL_Keycode;
@@ -8,7 +9,7 @@ namespace Pong.src
 {
     static class ProcessInput
     {
-        static public void ReadInput(ref bool done, Panel panel)
+        static public void ReadInput(ref bool done, List<Panel> scene)
         {
             //Handle events on queue
             while ( SDL_PollEvent( out SDL_Event userEvent) != 0 )
@@ -20,10 +21,10 @@ namespace Pong.src
                         done = true;
                         break;
                     case SDL_KEYDOWN:
-                        CheckKeyDown(userEvent, ref done, panel);
+                        CheckKeyDown(userEvent, ref done, scene[0]);
                         break;
                     case SDL_KEYUP:
-                        CheckKeyUp(userEvent, ref done, panel);
+                        CheckKeyUp(userEvent, ref done, scene[0]);
                         break;
                 }
                                                 

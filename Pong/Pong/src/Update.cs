@@ -1,15 +1,19 @@
 ﻿using Pong.src.ressources;
-using System;
+using System.Collections.Generic;
 
 namespace Pong.src
 {
     static public class Update
     {
-        static public void StartUpdate(Panel panel)
+        static public void StartUpdate(List<Panel> scene)
         {
             //Update all panels
 
-            panel.UpdateAll(panel);
+            foreach(Panel item in scene)
+            {
+                item.UpdateAll();
+            }
+           
 
         }
     }
