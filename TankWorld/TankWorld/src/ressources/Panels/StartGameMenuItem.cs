@@ -9,11 +9,11 @@ namespace TankWorld.src.ressources.Panels
 {
     public class StartGameMenuItem : MenuItem
     {
-        EntityModel menuModel;
+        MenuTextModel menuModel;
         //Constructors
-        public StartGameMenuItem(string text)
+        public StartGameMenuItem(string key, string text)
         {
-            menuModel = new MenuTextModel("Start", text);
+            menuModel = new MenuTextModel(key, text);
         }
 
         //Accessors
@@ -34,6 +34,11 @@ namespace TankWorld.src.ressources.Panels
         public override void Update()
         {
           /* empty */
+        }
+
+        override public void SetPosition(int x, int y, int place)
+        {
+            menuModel.SetPosition(x, y, place);
         }
     }
 }

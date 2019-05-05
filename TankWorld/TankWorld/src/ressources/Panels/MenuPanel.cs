@@ -10,10 +10,9 @@ namespace TankWorld.src.ressources.Panels
         List<MenuItem> items;
         
         //Constructors
-        public MenuPanel()
+        public MenuPanel(List<MenuItem> items)
         {
-            items = new List<MenuItem>();
-            items.Add(new StartGameMenuItem("StartGame") );
+            this.items = items; 
         }
 
         //Accessors
@@ -34,6 +33,14 @@ namespace TankWorld.src.ressources.Panels
             foreach (MenuItem entry in items)
             {
                 entry.Update();
+            }
+        }
+
+        public void SetPosition(int x, int y)
+        {
+            for(int i = 0; i < items.Count ; i++)
+            {
+                items[i].SetPosition(x,y,i);
             }
         }
     }

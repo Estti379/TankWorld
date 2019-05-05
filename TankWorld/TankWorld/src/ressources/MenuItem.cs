@@ -20,5 +20,6 @@ namespace TankWorld.src.ressources
         public abstract void Render();
 
         abstract public void Action();
+        abstract public void SetPosition(int x, int y, int place);
     }
 }

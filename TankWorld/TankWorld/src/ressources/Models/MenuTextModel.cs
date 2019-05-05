@@ -32,8 +32,8 @@ namespace TankWorld.src.ressources.Models
 
             name = key;
 
-            menuTextSprite.Pos.x = GameConstants.WINDOWS_X / 2 - menuTextSprite.Pos.w / 2;
-            menuTextSprite.Pos.y = GameConstants.WINDOWS_Y / 2 - menuTextSprite.Pos.h / 2;
+            menuTextSprite.Pos.x = 0;
+            menuTextSprite.Pos.y = 0;
             AddSprite(key, menuTextSprite);
         }
 
@@ -45,6 +45,12 @@ namespace TankWorld.src.ressources.Models
         {
             AllSprites[name].Render();
                        
+        }
+
+        public void SetPosition(int x, int y, int place)
+        {
+            AllSprites[name].Pos.x = x;
+            AllSprites[name].Pos.y = y + AllSprites[name].Pos.h * (1+place);
         }
     }
 }

@@ -24,7 +24,14 @@ namespace TankWorld.src.ressources.Panels
         //Methods
         public override void Enter()
         {
-            panels.Add(new MenuPanel() );
+            List<MenuItem> menuItems = new List<MenuItem>();
+            menuItems.Add(new StartGameMenuItem("Start", "StartGame"));
+            menuItems.Add(new StartGameMenuItem("Quit", "Quit"));
+            MenuPanel menuPanel = new MenuPanel(menuItems);
+            menuPanel.SetPosition((GameConstants.WINDOWS_X * 1 / 3), 100);
+            panels.Add(menuPanel);
+            
+
         }
 
         public override void Exit()
