@@ -25,7 +25,7 @@ namespace TankWorld.src.ressources.Panels
         public override void Enter()
         {
             List<MenuItem> menuItems = new List<MenuItem>();
-            menuItems.Add(new StartGameMenuItem("Start", "StartGame"));
+            menuItems.Add(new StartGameMenuItem("Start", "Start Game"));
             menuItems.Add(new StartGameMenuItem("Quit", "Quit"));
             MenuPanel menuPanel = new MenuPanel(menuItems);
             menuPanel.SetPosition((GameConstants.WINDOWS_X * 1 / 3), 100);
@@ -36,7 +36,7 @@ namespace TankWorld.src.ressources.Panels
 
         public override void Exit()
         {
-            throw new System.NotImplementedException();
+            Sprite.RemoveAll();
         }
 
         public override Scene HandleInput(InputEnum input)
@@ -55,7 +55,7 @@ namespace TankWorld.src.ressources.Panels
                         mainMenu.GoUp();
                         break;
                     case PRESS_SPACE:
-                        mainMenu.Act();
+                        nextScene = mainMenu.Act();
                         break;
                 }
             }

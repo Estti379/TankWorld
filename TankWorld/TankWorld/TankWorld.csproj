@@ -55,6 +55,7 @@
     <Compile Include="src\InputEnum.cs" />
     <Compile Include="src\ressources\Models\MenuTextModel.cs" />
     <Compile Include="src\ressources\MenuItem.cs" />
+    <Compile Include="src\ressources\Panels\PlayScene.cs" />
     <Compile Include="src\ressources\Panels\MenuPanel.cs" />
     <Compile Include="src\ressources\Panels\StartGameMenuItem.cs" />
     <Compile Include="src\TankWorld.cs" />

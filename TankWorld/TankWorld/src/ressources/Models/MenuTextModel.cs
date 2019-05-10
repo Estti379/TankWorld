@@ -55,7 +55,7 @@ namespace TankWorld.src.ressources.Models
         //Methods
         public override void Render()
         {
-            AllSprites[status].Render();                       
+            AllSprites[status].Render();
         }
 
         public void SetPosition(int x, int y, int place)

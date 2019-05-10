@@ -18,9 +18,9 @@ namespace TankWorld.src.ressources.Panels
 
         //Methods
 
-        public override void Action()
+        public override Scene Action()
         {
-            throw new NotImplementedException();
+            return new PlayScene();
         }
 
         public override void Render()
@@ -38,9 +38,10 @@ namespace TankWorld.src.ressources.Panels
             menuModel.SetPosition(x, y, place);
         }
 
-        internal override void ChangeStatus()
+        override public void ChangeStatus()
         {
             menuModel.ChangeStatus();
         }
+
     }
 }

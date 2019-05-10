@@ -50,19 +50,19 @@ namespace TankWorld.src.ressources.Panels
         public void GoDown()
         {
             UpdateCurrentItem();
-            activeItemIndex = (activeItemIndex -1 + items.Count) % items.Count;
+            activeItemIndex = (activeItemIndex + 1) % items.Count;
             UpdateCurrentItem();
         }
 
         public void GoUp()
         {
             UpdateCurrentItem();
-            activeItemIndex = (activeItemIndex + 1) % items.Count;
+            activeItemIndex = (activeItemIndex - 1 + items.Count) % items.Count;
             UpdateCurrentItem();
         }
-        public void Act()
+        public Scene Act()
         {
-            Console.WriteLine("MenuAction on "+ activeItemIndex +".");
+            return items[activeItemIndex].Action();
         }
 
         private void UpdateCurrentItem()

@@ -19,8 +19,8 @@ namespace TankWorld.src.ressources
         public abstract void Update();
         public abstract void Render();
 
-        abstract public void Action();
+        abstract public Scene Action();
         abstract public void SetPosition(int x, int y, int place);
-        internal abstract void ChangeStatus();
+        abstract public void ChangeStatus();
     }
 }

@@ -154,7 +154,7 @@ namespace TankWorld.src.ressources
             textureList.Remove(name);
         }
 
-        public void RemoveAll()
+        static public void RemoveAll()
         {
             foreach(KeyValuePair<string, TextureStruct> current in textureList)
             {
