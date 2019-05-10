@@ -13,12 +13,13 @@ namespace TankWorld.src
         static public void ReadInput(ref bool done, GameContext game)
         {
             //Handle events on queue
-            InputEnum input = UNDEFINED_INPUT;
+            InputEnum input;
             while ( SDL_PollEvent( out SDL_Event userEvent) != 0 )
             {
-                //User requests quit
+                input = UNDEFINED_INPUT; 
                 switch (userEvent.type)
                 {
+                    //User requests quit
                     case SDL_QUIT:
                         done = true;
                         return;
@@ -55,6 +56,9 @@ namespace TankWorld.src
                 case SDLK_s:
                     input = PRESS_S;
                     break;
+                case SDLK_SPACE:
+                    input = PRESS_SPACE;
+                    break;
             }
             return input;
         }
@@ -78,6 +82,9 @@ namespace TankWorld.src
                     break;
                 case SDLK_s:
                     input = RELEASE_S;
+                    break;
+                case SDLK_SPACE:
+                    input = RELEASE_SPACE;
                     break;
             }
             return input;

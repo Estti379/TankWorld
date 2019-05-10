@@ -42,10 +42,22 @@ namespace TankWorld.src.ressources.Panels
         public override Scene HandleInput(InputEnum input)
         {
             Scene nextScene = null;
-            switch(input){
-                case PRESS_S:
+            MenuPanel mainMenu = panels[0] as MenuPanel;
+            if(mainMenu != null)
+            {
 
-                    break;
+            
+                switch (input){
+                    case PRESS_S:
+                        mainMenu.GoDown();
+                        break;
+                    case PRESS_W:
+                        mainMenu.GoUp();
+                        break;
+                    case PRESS_SPACE:
+                        mainMenu.Act();
+                        break;
+                }
             }
 
             return nextScene;

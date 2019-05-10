@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TankWorld.src.ressources.Models;
 
 namespace TankWorld.src.ressources.Panels
@@ -39,6 +36,11 @@ namespace TankWorld.src.ressources.Panels
         override public void SetPosition(int x, int y, int place)
         {
             menuModel.SetPosition(x, y, place);
+        }
+
+        internal override void ChangeStatus()
+        {
+            menuModel.ChangeStatus();
         }
     }
 }

@@ -21,5 +21,6 @@ namespace TankWorld.src.ressources
 
         abstract public void Action();
         abstract public void SetPosition(int x, int y, int place);
+        internal abstract void ChangeStatus();
     }
 }
