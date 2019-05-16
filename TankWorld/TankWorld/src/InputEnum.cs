@@ -19,6 +19,10 @@ namespace TankWorld.src
         RELEASE_W,
         PRESS_S,
         RELEASE_S,
+        PRESS_A,
+        RELEASE_A,
+        PRESS_D,
+        RELEASE_D,
         PRESS_SPACE,
         RELEASE_SPACE
 

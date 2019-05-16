@@ -57,7 +57,7 @@ namespace TankWorld.src
 
             //Initialize window
             window = IntPtr.Zero;
-            window = SDL_CreateWindow("Pong!",
+            window = SDL_CreateWindow("Tank World!",
                 SDL_WINDOWPOS_CENTERED,
                 SDL_WINDOWPOS_CENTERED,
                 GameConstants.WINDOWS_X,

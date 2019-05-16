@@ -51,6 +51,7 @@ namespace TankWorld.src.ressources
         {
             set { renderer = value; }
         }
+        //TODO: Is this still needed?
         public IntPtr Texture
         {
             get{ return textureList[name].texture; }
@@ -180,6 +181,26 @@ namespace TankWorld.src.ressources
             SDL_RenderCopy(renderer, textureList[name].texture,
                        ref subDrawRect,
                        ref position);
+        }
+        public void RotateAndRender(double x, double y, double angleRad, double originX, double originY)
+        {
+            SDL_Point centerOfRotation = new SDL_Point()
+            {
+                x = (int)originX,
+                y = (int)originY
+            };
+            
+            position.x = (int) (x - subDrawRect.w / 2);
+            position.y = (int) (y - subDrawRect.h / 2);
+
+            double angleDeg = angleRad * 180 / Math.PI;
+
+            SDL_RenderCopyEx(renderer, textureList[name].texture,
+                       ref subDrawRect,
+                       ref position,
+                       angleDeg,
+                       ref centerOfRotation,
+                       SDL_RendererFlip.SDL_FLIP_NONE);
         }
     }
 }

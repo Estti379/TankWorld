@@ -6,36 +6,34 @@ namespace TankWorld.src.ressources.Panels
 {
     class PlayScene: Scene
     {
-        private List<Panel> panels;
+        private GameViewPanel gameView;
+        private MenuPanel menu;
 
         bool showMenu;
 
         //Constructors
         public PlayScene()
         {
-            panels = new List<Panel>();
+
         }
 
 
         //Accessors
-        public List<Panel> Panels
-        {
-            get { return panels; }
-        }
 
         //Methods
         public override void Enter()
         {
+            //Create mainGamePanel
+            gameView = new GameViewPanel();
+
+            //Create Menu Items, add MenuPanel and initialize it
             List<MenuItem> menuItems = new List<MenuItem>();
             menuItems.Add(new StartGameMenuItem("Continue", "Continue Game"));
             menuItems.Add(new StartGameMenuItem("Back", "Back To Main Menu"));
             menuItems.Add(new StartGameMenuItem("Quit", "Quit Game"));
-            MenuPanel menuPanel = new MenuPanel(menuItems);
-            menuPanel.SetPosition((GameConstants.WINDOWS_X * 1 / 3), 100);
-            panels.Add(menuPanel);
+            menu = new MenuPanel(menuItems);
+            menu.SetPosition((GameConstants.WINDOWS_X * 1 / 3), 100);
             showMenu = false;
-
-
 
         }
 
@@ -47,62 +45,42 @@ namespace TankWorld.src.ressources.Panels
         public override Scene HandleInput(InputEnum input)
         {
             Scene nextScene = null;
-            MenuPanel menu = panels[0] as MenuPanel;
-            if (menu != null)
+
+            if(input == PRESS_ESCAPE)
             {
-
-
+                showMenu = !showMenu;
+            }
+            if (showMenu)
+            {
                 switch (input)
                 {
                     case PRESS_S:
-                        if (showMenu)
-                        {
-                            menu.GoDown();
-                        }
-                        else
-                        {
-                            
-                        }
+                        menu.GoDown();
                         break;
                     case PRESS_W:
-                        if (showMenu)
-                        {
-                            menu.GoUp();
-                        }
-                        else
-                        {
-
-                        }
+                        menu.GoUp();
                         break;
                     case PRESS_SPACE:
-                        if (showMenu)
-                        {
-                            nextScene = menu.Act();
-                        }
-                        else
-                        {
-
-                        }
-                        
-                        break;
-                    case PRESS_ESCAPE:
-                        showMenu = true;
+                        nextScene = menu.Act();
                         break;
                 }
             }
+            else
+            {
+                gameView.HandleInput(input);
+            }
+            
 
             return nextScene;
         }
 
         public override void Render()
         {
-            for (int i = 0; i < (panels.Count - 1); i++)
-            {
-                panels[i].Render();
-            }
+            gameView.Render();
+
             if (showMenu)
             {
-                panels[panels.Count - 1].Render();
+                menu.Render();
             }
         }
 
@@ -110,14 +88,11 @@ namespace TankWorld.src.ressources.Panels
         {
             if (showMenu)
             {
-                panels[panels.Count-1].Update();
+                menu.Update();
             }
             else
             {
-                for (int i = 0; i < (panels.Count - 1); i++)
-                {
-                    panels[i].Update();
-                }
+                gameView.Update();
             }
         }
     }

@@ -56,6 +56,12 @@ namespace TankWorld.src
                 case SDLK_s:
                     input = PRESS_S;
                     break;
+                case SDLK_a:
+                    input = PRESS_A;
+                    break;
+                case SDLK_d:
+                    input = PRESS_D;
+                    break;
                 case SDLK_SPACE:
                     input = PRESS_SPACE;
                     break;
@@ -82,6 +88,12 @@ namespace TankWorld.src
                     break;
                 case SDLK_s:
                     input = RELEASE_S;
+                    break;
+                case SDLK_a:
+                    input = RELEASE_A;
+                    break;
+                case SDLK_d:
+                    input = RELEASE_D;
                     break;
                 case SDLK_SPACE:
                     input = RELEASE_SPACE;
