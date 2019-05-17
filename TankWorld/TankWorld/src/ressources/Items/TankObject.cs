@@ -19,8 +19,9 @@ namespace TankWorld.src.ressources.Items
         private double speed;
         private double acceleration;
         private double turningAngle;
-        private double directionAngle;
-        
+        private double directionBody;
+        private double directionCannon;
+
         //Constructors
         public TankObject(string ID)
         {
@@ -31,8 +32,9 @@ namespace TankWorld.src.ressources.Items
             speed = 0;
             acceleration = 0;
             turningAngle = 0;
-            directionAngle = 0;
-            model.UpdateModel(xCoordinates, yCoordinates, directionAngle);
+            directionBody = 0;
+            directionBody = 0;
+            model.UpdateModel(xCoordinates, yCoordinates, directionBody, directionCannon);
 
         }
 
@@ -50,19 +52,19 @@ namespace TankWorld.src.ressources.Items
             UpdateDirection();
             UpdateSpeed();
             UpdateCoordinates();
-            model.UpdateModel(xCoordinates, yCoordinates, directionAngle);
+            model.UpdateModel(xCoordinates, yCoordinates, directionBody, directionCannon);
         }
 
         private void UpdateDirection()
         {
-            directionAngle = (directionAngle + turningAngle);
-            while(directionAngle < 0)
+            directionBody = (directionBody + turningAngle);
+            while(directionBody < 0)
             {
-                directionAngle += 2 * Math.PI;
+                directionBody += 2 * Math.PI;
             }
-            while (directionAngle > 2 * Math.PI)
+            while (directionBody > 2 * Math.PI)
             {
-                directionAngle -= 2 * Math.PI;
+                directionBody -= 2 * Math.PI;
             }
         }
 
@@ -105,8 +107,8 @@ namespace TankWorld.src.ressources.Items
 
         private void UpdateCoordinates()
         {
-            xCoordinates += speed * Math.Cos(directionAngle);
-            yCoordinates += speed * Math.Sin(directionAngle);
+            xCoordinates += speed * Math.Cos(directionBody);
+            yCoordinates += speed * Math.Sin(directionBody);
         }
 
         public void Accelerate(double acceleration)
