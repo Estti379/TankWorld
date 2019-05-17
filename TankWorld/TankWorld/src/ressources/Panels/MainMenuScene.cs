@@ -39,7 +39,7 @@ namespace TankWorld.src.ressources.Panels
             Sprite.RemoveAll();
         }
 
-        public override Scene HandleInput(InputEnum input)
+        public override Scene HandleInput(InputStruct input)
         {
             Scene nextScene = null;
             MenuPanel mainMenu = panels[0] as MenuPanel;
@@ -47,7 +47,7 @@ namespace TankWorld.src.ressources.Panels
             {
 
             
-                switch (input){
+                switch (input.inputEvent){
                     case PRESS_S:
                         mainMenu.GoDown();
                         break;

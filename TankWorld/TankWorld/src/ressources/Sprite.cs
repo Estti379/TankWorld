@@ -182,7 +182,7 @@ namespace TankWorld.src.ressources
                        ref subDrawRect,
                        ref position);
         }
-        public void RotateAndRender(double x, double y, double angleRad, double originX, double originY)
+        public void RotateAndRender(Coordinate mapPosition, double angleRad, double originX, double originY)
         {
             SDL_Point centerOfRotation = new SDL_Point()
             {
@@ -190,8 +190,8 @@ namespace TankWorld.src.ressources
                 y = (int)Math.Round(originY)
             };
             
-            position.x = (int) Math.Round(x - subDrawRect.w / 2);
-            position.y = (int) Math.Round(y - subDrawRect.h / 2);
+            position.x = (int) Math.Round(mapPosition.x - subDrawRect.w / 2);
+            position.y = (int) Math.Round(mapPosition.y - subDrawRect.h / 2);
 
             double angleDeg = angleRad * 180 / Math.PI;
 

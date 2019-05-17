@@ -50,9 +50,11 @@
     <Compile Include="SDL2-CS\SDL2_image.cs" />
     <Compile Include="SDL2-CS\SDL2_mixer.cs" />
     <Compile Include="SDL2-CS\SDL2_ttf.cs" />
+    <Compile Include="src\Coordinate.cs" />
     <Compile Include="src\GameConstants.cs" />
     <Compile Include="src\GameContext.cs" />
     <Compile Include="src\InputEnum.cs" />
+    <Compile Include="src\InputStruct.cs" />
     <Compile Include="src\ressources\Models\MenuTextModel.cs" />
     <Compile Include="src\ressources\MenuItem.cs" />
     <Compile Include="src\ressources\Models\TankModel.cs" />

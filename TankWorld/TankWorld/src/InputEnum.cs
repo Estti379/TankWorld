@@ -24,7 +24,12 @@ namespace TankWorld.src
         PRESS_D,
         RELEASE_D,
         PRESS_SPACE,
-        RELEASE_SPACE
+        RELEASE_SPACE,
+        PRESS_LEFT_BUTTON,
+        RELEASE_LEFT_BUTTON,
+        PRESS_RIGHT_BUTTON,
+        RELEASE_RIGHT_BUTTON,
+        MOUSE_MOTION
 
     }
 }

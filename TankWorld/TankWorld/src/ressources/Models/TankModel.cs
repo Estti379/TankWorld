@@ -7,8 +7,7 @@ namespace TankWorld.src.ressources.Models
     {
         private string ID;
 
-        private double xCoordinates;
-        private double yCoordinates;
+        private Coordinate bodyPosition;
         private double directionAngle;
         private double directionCannon;
 
@@ -29,25 +28,39 @@ namespace TankWorld.src.ressources.Models
 
         public override void Render()
         {
-            AllSprites["TankBody"].RotateAndRender(xCoordinates, yCoordinates, directionAngle, AllSprites["TankBody"].SubRect.w/2, AllSprites["TankBody"].SubRect.h/2);
+            AllSprites["TankBody"].RotateAndRender(bodyPosition, directionAngle, AllSprites["TankBody"].SubRect.w/2, AllSprites["TankBody"].SubRect.h/2);
 
-            double turretX = (AllSprites["TankBody"].SubRect.w / 4) * Math.Cos(directionAngle + Math.PI) + xCoordinates;
-            double turretY = (AllSprites["TankBody"].SubRect.w / 4) * Math.Sin(directionAngle + Math.PI) + yCoordinates;
+            AllSprites["TankCannon"].RotateAndRender(GetCannonPosition(), directionCannon, AllSprites["TankCannon"].SubRect.w / 2, AllSprites["TankCannon"].SubRect.h / 2);
 
-            double cannonX = AllSprites["TankCannon"].SubRect.w * Math.Cos(directionCannon) + turretX;
-            double cannonY = AllSprites["TankCannon"].SubRect.w * Math.Sin(directionCannon) + turretY;
-
-            AllSprites["TankCannon"].RotateAndRender(cannonX, cannonY, directionCannon, 0, AllSprites["TankCannon"].SubRect.h / 2);
-
-            AllSprites["TankTurret"].RotateAndRender(turretX, turretY, directionCannon, AllSprites["TankTurret"].SubRect.w / 2, AllSprites["TankTurret"].SubRect.h / 2);
+            AllSprites["TankTurret"].RotateAndRender(GetTurretPosition(), directionCannon, AllSprites["TankTurret"].SubRect.w / 2, AllSprites["TankTurret"].SubRect.h / 2);
 
         }
-        public void UpdateModel(double x, double y, double directionBody, double directionCannon)
+        public void UpdateModel(Coordinate bodyPosition, double directionBody, double directionCannon)
         {
-            xCoordinates = x;
-            yCoordinates = y;
+            this.bodyPosition = bodyPosition;
             directionAngle = directionBody;
             this.directionCannon = directionCannon;
         }
+
+        public Coordinate GetTurretPosition()
+        {
+            Coordinate turretCoord;
+            turretCoord.x = (AllSprites["TankBody"].SubRect.w / 4) * Math.Cos(directionAngle + Math.PI) + bodyPosition.x;
+            turretCoord.y = (AllSprites["TankBody"].SubRect.w / 4) * Math.Sin(directionAngle + Math.PI) + bodyPosition.y;
+
+            return turretCoord;
+        }
+
+        public Coordinate GetCannonPosition()
+        {
+            Coordinate turretCoord = GetTurretPosition();
+            Coordinate cannonCoord;
+
+            cannonCoord.x = (AllSprites["TankBody"].SubRect.w / 4) * Math.Cos(directionCannon) + turretCoord.x;
+            cannonCoord.y = (AllSprites["TankBody"].SubRect.w / 4) * Math.Sin(directionCannon) + turretCoord.y;
+
+            return cannonCoord;
+        }
+
     }
 }

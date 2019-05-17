@@ -92,7 +92,7 @@ namespace TankWorld.src
             return true;
         }
 
-        public void HandleInput(InputEnum input)
+        public void HandleInput(InputStruct input)
         {
             Scene nextScene = currentScene.HandleInput(input);
             if(nextScene != null)

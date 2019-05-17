@@ -42,17 +42,17 @@ namespace TankWorld.src.ressources.Panels
             Sprite.RemoveAll();
         }
 
-        public override Scene HandleInput(InputEnum input)
+        public override Scene HandleInput(InputStruct input)
         {
             Scene nextScene = null;
 
-            if(input == PRESS_ESCAPE)
+            if(input.inputEvent == PRESS_ESCAPE)
             {
                 showMenu = !showMenu;
             }
             if (showMenu)
             {
-                switch (input)
+                switch (input.inputEvent)
                 {
                     case PRESS_S:
                         menu.GoDown();

@@ -14,27 +14,29 @@ namespace TankWorld.src.ressources.Items
         private const double TOP_SPEED_REVERSE = -50 * MULT;
         private const double SPEED_DECAY = 0.1 * MULT;
 
-        private double xCoordinates;
-        private double yCoordinates;
+        private Coordinate position;
         private double speed;
         private double acceleration;
         private double turningAngle;
         private double directionBody;
         private double directionCannon;
+        private Coordinate cannonTarget;
 
         //Constructors
         public TankObject(string ID)
         {
             this.ID = ID;
             model = new TankModel(ID);
-            xCoordinates = 200;
-            yCoordinates = 200;
+            position.x = 200;
+            position.y = 200;
             speed = 0;
             acceleration = 0;
             turningAngle = 0;
             directionBody = 0;
-            directionBody = 0;
-            model.UpdateModel(xCoordinates, yCoordinates, directionBody, directionCannon);
+            directionCannon = 0;
+            cannonTarget.x = 0;
+            cannonTarget.y = 0;
+            model.UpdateModel(position, directionBody, directionCannon);
 
         }
 
@@ -52,7 +54,8 @@ namespace TankWorld.src.ressources.Items
             UpdateDirection();
             UpdateSpeed();
             UpdateCoordinates();
-            model.UpdateModel(xCoordinates, yCoordinates, directionBody, directionCannon);
+            UpdateCannonDirection();
+            model.UpdateModel(position, directionBody, directionCannon);
         }
 
         private void UpdateDirection()
@@ -107,8 +110,15 @@ namespace TankWorld.src.ressources.Items
 
         private void UpdateCoordinates()
         {
-            xCoordinates += speed * Math.Cos(directionBody);
-            yCoordinates += speed * Math.Sin(directionBody);
+            position.x += speed * Math.Cos(directionBody);
+            position.y += speed * Math.Sin(directionBody);
+        }
+
+        private void UpdateCannonDirection()
+        {
+            Coordinate turretCoord = model.GetTurretPosition();
+            directionCannon = Math.Atan2(cannonTarget.y - turretCoord.y, cannonTarget.x - turretCoord.x);
+
         }
 
         public void Accelerate(double acceleration)
@@ -118,6 +128,16 @@ namespace TankWorld.src.ressources.Items
         public void Turn(double turnAngle)
         {
             turningAngle = turnAngle * MULT;
+        }
+
+        public void TurretTarget(int x, int y)
+        {
+            cannonTarget.x = x;
+            cannonTarget.y = y;
+        }
+        public void Shoot()
+        {
+
         }
 
     }
