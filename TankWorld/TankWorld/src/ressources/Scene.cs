@@ -17,7 +17,7 @@ namespace TankWorld.src.ressources
         abstract public void Enter();
         abstract public void Exit();
 
-        abstract public Scene HandleInput(InputEnum input);
+        abstract public void HandleInput(InputStruct input);
 
         abstract public void Update();
         abstract public void Render();

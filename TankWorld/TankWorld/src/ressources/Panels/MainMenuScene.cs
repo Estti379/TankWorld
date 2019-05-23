@@ -1,35 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using TankWorld.src.ressources.Commands;
 using static TankWorld.src.InputEnum;
 
 namespace TankWorld.src.ressources.Panels
 {
     public class MainMenuScene: Scene
     {
-        private List<Panel> panels;
+        private MenuPanel menuPanel;
 
         //Constructors
         public MainMenuScene()
         {
-            panels = new List<Panel>();
+            
         }
 
 
         //Accessors
-        public List<Panel> Panels
-        {
-            get { return panels; }
-        }
 
         //Methods
         public override void Enter()
         {
             List<MenuItem> menuItems = new List<MenuItem>();
-            menuItems.Add(new StartGameMenuItem("Start", "Start Game"));
-            menuItems.Add(new StartGameMenuItem("Quit", "Quit"));
-            MenuPanel menuPanel = new MenuPanel(menuItems);
+            menuItems.Add(new MenuItem(new StartGameCommand(), "Start", "Start Game"));
+            menuItems.Add(new MenuItem(new QuitGameCommand(), "Quit", "Quit"));
+            menuPanel = new MenuPanel(menuItems);
             menuPanel.SetPosition((GameConstants.WINDOWS_X * 1 / 3), 100);
-            panels.Add(menuPanel);
             
 
         }
@@ -39,44 +35,31 @@ namespace TankWorld.src.ressources.Panels
             Sprite.RemoveAll();
         }
 
-        public override Scene HandleInput(InputEnum input)
+        public override void HandleInput(InputStruct input)
         {
-            Scene nextScene = null;
-            MenuPanel mainMenu = panels[0] as MenuPanel;
-            if(mainMenu != null)
-            {
-
-            
-                switch (input){
-                    case PRESS_S:
-                        mainMenu.GoDown();
-                        break;
-                    case PRESS_W:
-                        mainMenu.GoUp();
-                        break;
-                    case PRESS_SPACE:
-                        nextScene = mainMenu.Act();
-                        break;
-                }
+           switch (input.inputEvent){
+                case PRESS_S:
+                    menuPanel.GoDown();
+                    break;
+                case PRESS_W:
+                    menuPanel.GoUp();
+                    break;
+                case PRESS_SPACE:
+                    menuPanel.Act();
+                    break;
             }
+            
 
-            return nextScene;
         }
 
         public override void Render()
         {
-            foreach (Panel entry in panels)
-            {
-                entry.Render();
-            }
+            menuPanel.Render();
         }
 
         public override void Update()
         {
-            foreach(Panel entry in panels)
-            {
-                entry.Update();
-            }
+            menuPanel.Update();
         }
 
     }

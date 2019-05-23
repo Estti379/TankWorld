@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using TankWorld.src.ressources.Commands;
+using TankWorld.src.ressources.Events;
 using TankWorld.src.ressources.Models;
 
 namespace TankWorld.src.ressources.Panels
 {
-    public class StartGameMenuItem : MenuItem
+    public class MenuItem : IUpdate, IRender
     {
         MenuTextModel menuModel;
+        MenuCommand command;
+
         //Constructors
-        public StartGameMenuItem(string key, string text)
+        public MenuItem(MenuCommand command, string key, string text)
         {
             menuModel = new MenuTextModel(key, text);
+            this.command = command;
         }
 
         //Accessors
@@ -18,27 +21,27 @@ namespace TankWorld.src.ressources.Panels
 
         //Methods
 
-        public override Scene Action()
+        public void Action()
         {
-            return new PlayScene();
+            command.execute();
         }
 
-        public override void Render()
+        public void Render()
         {
             menuModel.Render();
         }
 
-        public override void Update()
+        public void Update()
         {
           /* empty */
         }
 
-        override public void SetPosition(int x, int y, int place)
+        public void SetPosition(int x, int y, int place)
         {
             menuModel.SetPosition(x, y, place);
         }
 
-        override public void ChangeStatus()
+        public void ChangeStatus()
         {
             menuModel.ChangeStatus();
         }
