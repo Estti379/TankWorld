@@ -60,9 +60,9 @@ namespace TankWorld.src.ressources.Panels
             activeItemIndex = (activeItemIndex - 1 + items.Count) % items.Count;
             UpdateCurrentItem();
         }
-        public Scene Act()
+        public void Act()
         {
-            return items[activeItemIndex].Action();
+            items[activeItemIndex].Action();
         }
 
         private void UpdateCurrentItem()

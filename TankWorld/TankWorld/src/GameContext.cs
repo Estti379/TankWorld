@@ -5,10 +5,11 @@ using static SDL2.SDL_ttf;
 using static SDL2.SDL.SDL_RendererFlags;
 using System.Collections.Generic;
 using TankWorld.src.ressources.Panels;
+using TankWorld.src.ressources.Events;
 
 namespace TankWorld.src
 {
-    public class GameContext
+    public class GameContext: IUpdate, IRender,IObserver
     {
         static private GameContext singleton = null;
 
@@ -17,11 +18,14 @@ namespace TankWorld.src
         private IntPtr renderer = IntPtr.Zero;
 
         private Scene currentScene;
+        private List<Event> events;
 
 
 
         private GameContext()
         {
+            MainEventBus.Register(this);
+            events = new List<Event>();
             // initialize then start the game
             if ( Initialize() )
             {
@@ -92,15 +96,62 @@ namespace TankWorld.src
             return true;
         }
 
-        public void HandleInput(InputStruct input)
+        public void ChangeScene(Scene nextScene)
         {
-            Scene nextScene = currentScene.HandleInput(input);
             if(nextScene != null)
             {
                 currentScene.Exit();
                 nextScene.Enter();
                 currentScene = nextScene;
             }
+        }
+
+        private void PollEvents()
+        {
+            List<Event> events = new List<Event>();
+            events.AddRange(this.events);
+            this.events.Clear();
+
+            SceneStateEvent stateEvent;
+            foreach (Event entry in events)
+            {
+                if ((stateEvent = entry as SceneStateEvent) != null)
+                {
+                    switch (stateEvent.eventType)
+                    {
+                        case SceneStateEvent.Type.CHANGE_SCENE:
+                            ChangeScene(stateEvent.NewScene);
+                            break;
+                        case SceneStateEvent.Type.EXIT_GAME:
+                            this.done = true;
+                            break;
+                    }
+                }
+            }
+        }
+
+        public void OnEvent(Event newEvent)
+        {
+            events.Add(newEvent);
+        }
+
+        public void Update()
+        {
+            PollEvents();
+            currentScene.Update();
+        }
+
+        public void Render()
+        {
+            //Fill the surface black
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+            SDL_RenderClear(renderer);
+
+            //Apply the images of all panels
+            currentScene.Render();
+
+            //Render everything
+            SDL_RenderPresent(renderer);
         }
 
 
@@ -126,35 +177,32 @@ namespace TankWorld.src
 
                 
                 // ProcessInput
-                ProcessInput.ReadInput(ref done, this);
-                //TODO: Make this method return input instead of having gamecontext as parameter
+                ProcessInput.ReadInput(ref done, currentScene);
+                //TODO: Make this method return input instead of having currentScene as parameter
                 // END ProcessInput
 
                 lag += elapsed;
                 while (lag >= GameConstants.MS_PER_UPDATE)
                 {
                     // GAMEUPDATE
-                    currentScene.Update();
-                    Update.StartUpdate(currentScene);
+                    Update();
                     //END GameUpdate
                     lag -= GameConstants.MS_PER_UPDATE;
                 }
 
                 // RENDERING
-                Render.StartRender(currentScene, renderer);
+                Render();
                 // END Rendering
             }// END MainGameLoop
 
 
             // QuitingProgram Gracefully
 
-            //TODO: destroy all textures
             SDL_DestroyRenderer(renderer);
             SDL_DestroyWindow(window);
             TTF_Quit();
             SDL_Quit();
         }
-
 
     }
 }

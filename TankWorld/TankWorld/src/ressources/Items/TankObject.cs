@@ -117,7 +117,12 @@ namespace TankWorld.src.ressources.Items
         private void UpdateCannonDirection()
         {
             Coordinate turretCoord = model.GetTurretPosition();
-            directionCannon = Math.Atan2(cannonTarget.y - turretCoord.y, cannonTarget.x - turretCoord.x);
+            //If mouse is at the same pixel as the turret center, don't calculate angle.
+            if ((cannonTarget.y - turretCoord.y != 0) && (cannonTarget.x - turretCoord.x != 0))
+            {
+                directionCannon = Math.Atan2(cannonTarget.y - turretCoord.y, cannonTarget.x - turretCoord.x);
+            }
+            
 
         }
 

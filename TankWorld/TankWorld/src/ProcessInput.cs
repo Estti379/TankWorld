@@ -10,7 +10,7 @@ namespace TankWorld.src
 {
     static class ProcessInput
     {
-        static public void ReadInput(ref bool done, GameContext game)
+        static public void ReadInput(ref bool done, Scene scene)
         {
             //Handle events on queue
             InputStruct input;
@@ -44,7 +44,7 @@ namespace TankWorld.src
                         input = CheckMouseDown(userEvent);
                         break;
                 }
-                game.HandleInput(input);                             
+                scene.HandleInput(input);                             
             }
         }
 

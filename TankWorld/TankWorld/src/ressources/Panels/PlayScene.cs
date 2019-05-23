@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using TankWorld.src.ressources.Commands;
+using TankWorld.src.ressources.Events;
 using static TankWorld.src.InputEnum;
 
 namespace TankWorld.src.ressources.Panels
 {
-    class PlayScene: Scene
+    class PlayScene: Scene, IObserver
     {
         private GameViewPanel gameView;
         private MenuPanel menu;
@@ -28,12 +30,15 @@ namespace TankWorld.src.ressources.Panels
 
             //Create Menu Items, add MenuPanel and initialize it
             List<MenuItem> menuItems = new List<MenuItem>();
-            menuItems.Add(new StartGameMenuItem("Continue", "Continue Game"));
-            menuItems.Add(new StartGameMenuItem("Back", "Back To Main Menu"));
-            menuItems.Add(new StartGameMenuItem("Quit", "Quit Game"));
+            menuItems.Add(new MenuItem(new FlipMenuCommand(), "Continue", "Continue Game"));
+            menuItems.Add(new MenuItem(new StartGameCommand(), "Restart", "Restart Level"));
+            menuItems.Add(new MenuItem(new BackToMenuCommand(), "Back", "Back To Main Menu"));
+            menuItems.Add(new MenuItem(new QuitGameCommand(), "Quit", "Quit Game"));
             menu = new MenuPanel(menuItems);
             menu.SetPosition((GameConstants.WINDOWS_X * 1 / 3), 100);
             showMenu = false;
+
+            MainEventBus.Register(this);
 
         }
 
@@ -42,9 +47,8 @@ namespace TankWorld.src.ressources.Panels
             Sprite.RemoveAll();
         }
 
-        public override Scene HandleInput(InputStruct input)
+        public override void HandleInput(InputStruct input)
         {
-            Scene nextScene = null;
 
             if(input.inputEvent == PRESS_ESCAPE)
             {
@@ -61,7 +65,7 @@ namespace TankWorld.src.ressources.Panels
                         menu.GoUp();
                         break;
                     case PRESS_SPACE:
-                        nextScene = menu.Act();
+                        menu.Act();
                         break;
                 }
             }
@@ -71,7 +75,21 @@ namespace TankWorld.src.ressources.Panels
             }
             
 
-            return nextScene;
+        }
+
+        public void OnEvent(Event newEvent)
+        {
+            SceneStateEvent stateEvent;
+            if ((stateEvent = newEvent as SceneStateEvent) != null)
+            {
+                switch (stateEvent.eventType)
+                {
+                    case SceneStateEvent.Type.FLIP_MENU:
+                        showMenu = !showMenu;
+                        break;
+
+                }
+            }
         }
 
         public override void Render()
