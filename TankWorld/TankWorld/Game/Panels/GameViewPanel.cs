@@ -26,10 +26,10 @@ namespace TankWorld.Game.Panels
 
         public override void Render()
         {
+            player.Render();
             foreach (BulletObject entry in bullets) {
                 entry.Render();
             }
-            player.Render();
         }
 
         public override void Update()
