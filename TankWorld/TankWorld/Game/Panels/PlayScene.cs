@@ -87,6 +87,9 @@ namespace TankWorld.Game.Panels
                     case SceneStateEvent.Type.FLIP_MENU:
                         showMenu = !showMenu;
                         break;
+                    case SceneStateEvent.Type.SPAWN_BULLET_ENTITY:
+                        gameView.AddBullet(stateEvent.NewBullet);
+                        break;
 
                 }
             }

@@ -57,10 +57,21 @@ namespace TankWorld.Game.Models
             Coordinate turretCoord = GetTurretPosition();
             Coordinate cannonCoord;
 
-            cannonCoord.x = (AllSprites["TankBody"].SubRect.w / 4) * Math.Cos(directionCannon) + turretCoord.x;
-            cannonCoord.y = (AllSprites["TankBody"].SubRect.w / 4) * Math.Sin(directionCannon) + turretCoord.y;
+            cannonCoord.x = (AllSprites["TankCannon"].SubRect.w / 2) * Math.Cos(directionCannon) + turretCoord.x;
+            cannonCoord.y = (AllSprites["TankCannon"].SubRect.w / 2) * Math.Sin(directionCannon) + turretCoord.y;
 
             return cannonCoord;
+        }
+
+        public Coordinate GetBarrelEndPosition()
+        {
+            Coordinate turretCoord = GetTurretPosition();
+            Coordinate barrelCoord;
+
+            barrelCoord.x = (AllSprites["TankTurret"].SubRect.w) * Math.Cos(directionCannon) + turretCoord.x;
+            barrelCoord.y = (AllSprites["TankTurret"].SubRect.w) * Math.Sin(directionCannon) + turretCoord.y;
+
+            return barrelCoord;
         }
 
     }

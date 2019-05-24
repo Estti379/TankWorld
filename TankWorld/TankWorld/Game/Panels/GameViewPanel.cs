@@ -7,28 +7,37 @@ namespace TankWorld.Game.Panels
 {
     public class GameViewPanel: Panel
     {
-        //TODO: Use dictionary instead too keep track of ID
-        List<TankObject> tanks;
-        TankObject player;
+        //TODO: Use dictionary instead of list, to keep track of ID (but is ID tracking necessary?)
+        private List<TankObject> tanks;
+        private List<BulletObject> bullets;
+        private TankObject player;
 
         //Constructors
         public GameViewPanel()
         {
             player = new TankObject("Player");
+            bullets = new List<BulletObject>();
+            tanks = new List<TankObject>();
         }
 
         //Accessors
-
 
         //Methods
 
         public override void Render()
         {
+            foreach (BulletObject entry in bullets) {
+                entry.Render();
+            }
             player.Render();
         }
 
         public override void Update()
         {
+            foreach (BulletObject entry in bullets)
+            {
+                entry.Update();
+            }
             player.Update();
         }
 
@@ -68,6 +77,11 @@ namespace TankWorld.Game.Panels
                     player.Shoot();
                     break;
             }
+        }
+
+        public void AddBullet(BulletObject newBullet)
+        {
+            bullets.Add(newBullet);
         }
 
     }

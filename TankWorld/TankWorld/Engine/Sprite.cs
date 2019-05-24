@@ -21,23 +21,39 @@ namespace TankWorld.Engine
         //Constructors
         public Sprite(string key, string imagePath, byte r, byte g, byte b)
         {
-            TextureStruct texture = ImageToTexture(imagePath, r, g, b);
-            textureList.Add(key, texture);
+            TextureStruct texture;
+            if ( textureList.ContainsKey(key) )
+            {
+                texture = textureList[key];
+            } else
+            {
+                texture = ImageToTexture(imagePath, r, g, b);
+                textureList.Add(key, texture);
+            }
             SetupSpriteEntity(key);
-            //TODO: handle duplicate keys
         }
         public Sprite(string key, IntPtr font, string text, SDL_Color color)
         {
-            TextureStruct texture = TextToTexture(font, text, color);
-            textureList.Add(key, texture);
+            TextureStruct texture;
+            if (textureList.ContainsKey(key))
+            {
+                texture = textureList[key];
+            }
+            else
+            {
+                texture = TextToTexture(font, text, color);
+                textureList.Add(key, texture);
+            }
             SetupSpriteEntity(key);
         }
 
         public Sprite(string key, TextureStruct texture)
         {
-            textureList.Add(key, texture);
+            if (textureList.ContainsKey(key))
+            {
+                texture = textureList[key];
+            }            
             SetupSpriteEntity(key);
-            //TODO: handle duplicate keys or textures
         }
 
         public Sprite(string key)
@@ -51,7 +67,7 @@ namespace TankWorld.Engine
         {
             set { renderer = value; }
         }
-        //TODO: Is this still needed?
+        
         public IntPtr Texture
         {
             get{ return textureList[name].texture; }
@@ -83,7 +99,7 @@ namespace TankWorld.Engine
         }
 
 
-        private TextureStruct TextToTexture(IntPtr font, string text, SDL_Color color)
+        public TextureStruct TextToTexture(IntPtr font, string text, SDL_Color color)
         {
             TextureStruct finalTexture = new TextureStruct(IntPtr.Zero, 0, 0);
             IntPtr textSurface = TTF_RenderText_Solid(font, text, color);

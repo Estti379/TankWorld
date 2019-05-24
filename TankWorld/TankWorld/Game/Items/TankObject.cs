@@ -1,5 +1,6 @@
 ﻿using System;
 using TankWorld.Engine;
+using TankWorld.Game.Events;
 using TankWorld.Game.Models;
 
 namespace TankWorld.Game.Items
@@ -28,15 +29,15 @@ namespace TankWorld.Game.Items
         {
             this.ID = ID;
             model = new TankModel(ID);
-            position.x = 200;
-            position.y = 200;
+            position.x = GameConstants.WINDOWS_X/2;
+            position.y = GameConstants.WINDOWS_Y/2;
             speed = 0;
             acceleration = 0;
             turningAngle = 0;
-            directionBody = 0;
-            directionCannon = 0;
-            cannonTarget.x = 0;
-            cannonTarget.y = 0;
+            directionBody = 3*Math.PI/2;
+            cannonTarget.x = position.x;
+            cannonTarget.y = position.y;
+            UpdateCannonDirection();
             model.UpdateModel(position, directionBody, directionCannon);
 
         }
@@ -143,7 +144,8 @@ namespace TankWorld.Game.Items
         }
         public void Shoot()
         {
-
+            BulletObject bullet = new BulletObject(this, model.GetBarrelEndPosition(), directionCannon);
+            MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.SPAWN_BULLET_ENTITY, bullet));
         }
 
     }
