@@ -31,7 +31,12 @@ namespace TankWorld.Game.Items
         private double directionCannon;
         private Coordinate cannonTarget;
 
-        
+        private double forwardRate;
+        private double reverseRate;
+        private double turnLeftRate;
+        private double turnRightRate;
+
+
 
         //Constructors
         public TankObject(string ID)
@@ -146,13 +151,34 @@ namespace TankWorld.Game.Items
         }
 
         
-        public void Accelerate(double accelerationRate)
+        private void Accelerate()
         {
-            this.acceleration = accelerationRate * MAX_ACCELERATION;
+            this.acceleration = (reverseRate+forwardRate) * MAX_ACCELERATION;
         }
-        public void Turn(double turnRate)
+        private void Turn()
         {
-            turningAngle = turnRate * MAX_DEGREE_PER_SECONDS_TURN * Math.PI/180;
+            turningAngle = (turnLeftRate+turnRightRate) * MAX_DEGREE_PER_SECONDS_TURN * Math.PI/180;
+        }
+
+        public void Forward(double rate)
+        {
+            forwardRate = rate;
+            Accelerate();
+        }
+        public void Reverse(double rate)
+        {
+            reverseRate = -rate;
+            Accelerate();
+        }
+        public void TurnLeft(double rate)
+        {
+            turnLeftRate = -rate;
+            Turn();
+        }
+        public void TurnRight(double rate)
+        {
+            turnRightRate = rate;
+            Turn();
         }
 
         public void TurretTarget(int x, int y)

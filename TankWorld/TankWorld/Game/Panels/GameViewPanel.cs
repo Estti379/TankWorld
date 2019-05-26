@@ -47,28 +47,28 @@ namespace TankWorld.Game.Panels
             switch (input.inputEvent)
             {
                 case PRESS_S:
-                    player.Accelerate(-1);
+                    player.Reverse(1);
                     break;
                 case RELEASE_S:
-                    player.Accelerate(0);
+                    player.Reverse(0);
                     break;
                 case PRESS_W:
-                    player.Accelerate(1);
+                    player.Forward(1);
                     break;
                 case RELEASE_W:
-                    player.Accelerate(0);
+                    player.Forward(0);
                     break;
                 case PRESS_A:
-                    player.Turn(-1);
+                    player.TurnLeft(1);
                     break;
                 case RELEASE_A:
-                    player.Turn(0);
+                    player.TurnLeft(0);
                     break;
                 case PRESS_D:
-                    player.Turn(1);
+                    player.TurnRight(1);
                     break;
                 case RELEASE_D:
-                    player.Turn(0);
+                    player.TurnRight(0);
                     break;
                 case MOUSE_MOTION:
                     player.TurretTarget(input.x,input.y);
