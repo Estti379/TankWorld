@@ -8,7 +8,7 @@ namespace TankWorld.Game.Items
     {
         private BulletModel model;
         private TankObject owner;
-        private const byte speed = 1;
+        private const byte SPEED = 30;
 
         private Coordinate position;
         private Coordinate speedVektor;
@@ -19,8 +19,8 @@ namespace TankWorld.Game.Items
             position = startPosition;
             this.owner = owner;
             model = new BulletModel(startPosition, startAngle);
-            speedVektor.x = Math.Cos(startAngle) * speed;
-            speedVektor.y = Math.Sin(startAngle) * speed;
+            speedVektor.x = Math.Cos(startAngle) * SPEED;
+            speedVektor.y = Math.Sin(startAngle) * SPEED;
         }
 
         //Accessors
@@ -39,8 +39,8 @@ namespace TankWorld.Game.Items
         }
         private void UpdatePosition()
         {
-            position.x += speedVektor.x;
-            position.y += speedVektor.y;
+            position.x += speedVektor.x * GameConstants.MS_PER_UPDATE * 1 / 1000 * GameConstants.METER_TO_PIXEL;
+            position.y += speedVektor.y * GameConstants.MS_PER_UPDATE * 1 / 1000 * GameConstants.METER_TO_PIXEL;
         }
     }
 }

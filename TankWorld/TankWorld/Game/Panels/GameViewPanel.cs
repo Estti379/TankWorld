@@ -59,13 +59,13 @@ namespace TankWorld.Game.Panels
                     player.Accelerate(0);
                     break;
                 case PRESS_A:
-                    player.Turn(-0.5);
+                    player.Turn(-1);
                     break;
                 case RELEASE_A:
                     player.Turn(0);
                     break;
                 case PRESS_D:
-                    player.Turn(0.5);
+                    player.Turn(1);
                     break;
                 case RELEASE_D:
                     player.Turn(0);

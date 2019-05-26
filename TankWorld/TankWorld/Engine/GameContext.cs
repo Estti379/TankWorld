@@ -65,7 +65,7 @@ namespace TankWorld.Engine
                 SDL_WINDOWPOS_CENTERED,
                 GameConstants.WINDOWS_X,
                 GameConstants.WINDOWS_Y,
-                SDL_WindowFlags.SDL_WINDOW_FULLSCREEN //SDL_WindowFlags.SDL_WINDOW_FULLSCREEN or SDL_WindowFlags.SDL_WINDOW_HIDDEN
+                SDL_WindowFlags.SDL_WINDOW_FULLSCREEN
             );
 
             if (window == IntPtr.Zero)

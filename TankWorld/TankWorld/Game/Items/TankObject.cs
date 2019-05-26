@@ -11,10 +11,17 @@ namespace TankWorld.Game.Items
         private TankModel model;
         private string ID;
 
-        private const double MULT = GameConstants.MS_PER_UPDATE/500;
-        private const double TOP_SPEED = 100 * MULT;
-        private const double TOP_SPEED_REVERSE = -50 * MULT;
-        private const double SPEED_DECAY = 0.1 * MULT;
+        private double x = 4;
+        
+        //Top speed expressed in m/s
+        private const double TOP_SPEED = 20;
+        private const double TOP_SPEED_REVERSE = -TOP_SPEED/2;
+        //degrees turned per second at MaxRate
+        private const double MAX_DEGREE_PER_SECONDS_TURN = 180;
+        //Max Acceleration at Maxrate expressed in m/s^2
+        private const double MAX_ACCELERATION = 50;
+
+        private const double SECONDS_TO_STOP = 2;
 
         private Coordinate position;
         private double speed;
@@ -23,6 +30,8 @@ namespace TankWorld.Game.Items
         private double directionBody;
         private double directionCannon;
         private Coordinate cannonTarget;
+
+        
 
         //Constructors
         public TankObject(string ID)
@@ -62,7 +71,7 @@ namespace TankWorld.Game.Items
 
         private void UpdateDirection()
         {
-            directionBody = (directionBody + turningAngle);
+            directionBody += turningAngle *GameConstants.MS_PER_UPDATE*1/1000;
             while(directionBody < 0)
             {
                 directionBody += 2 * Math.PI;
@@ -75,45 +84,53 @@ namespace TankWorld.Game.Items
 
         private void UpdateSpeed()
         {
-            //Decay Tanks speed if there is no acceleration
+            double oldSpeed = speed;
+            double a =  TOP_SPEED/Math.Pow(SECONDS_TO_STOP, x);
+            double t = 10 - (Math.Pow(Math.Abs(oldSpeed), 1.0/x) / Math.Pow(a, 1.0/x) );
+            double speedDecay = -x*a*Math.Pow( 10 - t, 1.0/(x-1) );
+            
+            //Apply speed_decay on top of acceleration
+            if (speed < 0)
+            {
+                speed -= speedDecay * GameConstants.MS_PER_UPDATE * 1 / 1000;
+            } else if (speed > 0)
+            {
+                speed += speedDecay * GameConstants.MS_PER_UPDATE * 1 / 1000;
+            }
+            //If there is no acceleration, allow tank to completely stop
             if (acceleration == 0)
             {
-                if(speed < (-SPEED_DECAY) )
-                {
-                    speed += SPEED_DECAY;
-                }
-                /*If currentSpeed is small enough that using it would make
-                *currentSpeed overshoot 0, set it to 0!
-                */
-                else if ( (speed > (-SPEED_DECAY) ) && (speed < SPEED_DECAY) )
+                //If speed goes from negative to positive (or the other way around), set it to 0
+                if ( (oldSpeed < 0 && speed >0) || (oldSpeed > 0 && speed < 0) )
                 {
                     speed = 0;
                 }
-                else if (speed > SPEED_DECAY)
-                {
-                    speed -= SPEED_DECAY;
-                }
-                //If currentSpeed is already 0, do nothing!
+                
             }
-            else // Acceleration is not 0: add it to currentSpeed. Avoid going over TOP_SPEED!
+            //Add Acceleration to currentSpeed. Avoid going over TOP_SPEED!
+
+
+            double trueAccel = acceleration - Math.Pow(oldSpeed/TOP_SPEED, x)* acceleration ;
+
+
+            speed += trueAccel * GameConstants.MS_PER_UPDATE * 1 / 1000;
+            if (speed > TOP_SPEED)
             {
-                speed += acceleration;
-                if (speed > TOP_SPEED)
-                {
-                    speed = TOP_SPEED;
-                }
-                else if(speed < TOP_SPEED_REVERSE)
-                {
-                    speed = TOP_SPEED_REVERSE;
-                }
+                speed = TOP_SPEED;
             }
+            else if(speed < TOP_SPEED_REVERSE)
+            {
+                speed = TOP_SPEED_REVERSE;
+            }
+            Console.WriteLine("Speed: "+ speed + "Decay: " + speedDecay);
+            
 
         }
 
         private void UpdateCoordinates()
         {
-            position.x += speed * Math.Cos(directionBody);
-            position.y += speed * Math.Sin(directionBody);
+            position.x += speed * Math.Cos(directionBody) * GameConstants.MS_PER_UPDATE * 1 / 1000 * GameConstants.METER_TO_PIXEL;
+            position.y += speed * Math.Sin(directionBody) * GameConstants.MS_PER_UPDATE * 1 / 1000 * GameConstants.METER_TO_PIXEL;
         }
 
         private void UpdateCannonDirection()
@@ -128,13 +145,14 @@ namespace TankWorld.Game.Items
 
         }
 
-        public void Accelerate(double acceleration)
+        
+        public void Accelerate(double accelerationRate)
         {
-            this.acceleration = acceleration * MULT;
+            this.acceleration = accelerationRate * MAX_ACCELERATION;
         }
-        public void Turn(double turnAngle)
+        public void Turn(double turnRate)
         {
-            turningAngle = turnAngle * MULT;
+            turningAngle = turnRate * MAX_DEGREE_PER_SECONDS_TURN * Math.PI/180;
         }
 
         public void TurretTarget(int x, int y)
