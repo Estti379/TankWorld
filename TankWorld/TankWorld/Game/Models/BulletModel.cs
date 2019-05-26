@@ -7,6 +7,7 @@ namespace TankWorld.Game.Models
 
         private Coordinate position;
         private double directionAngle;
+        private Camera camera;
 
         //Constructors
         public BulletModel(Coordinate startPosition, double startAngle)
@@ -14,6 +15,7 @@ namespace TankWorld.Game.Models
             AddSprite("Bullet", new Sprite("simpleBullet", "assets/images/simpleBullet.bmp", 0, 254, 0));
             this.position = startPosition;
             directionAngle = startAngle;
+            camera = Camera.Instance;
         }
 
         //Accessors
@@ -22,7 +24,12 @@ namespace TankWorld.Game.Models
         //Methods
         public override void Render()
         {
-            AllSprites["Bullet"].RotateAndRender(position, directionAngle, AllSprites["Bullet"].SubRect.w / 2, AllSprites["Bullet"].SubRect.h / 2);
+            Coordinate drawPosition;
+
+            drawPosition.x = position.x - camera.Position.x + GameConstants.WINDOWS_X / 2;
+            drawPosition.y = position.y - camera.Position.y + GameConstants.WINDOWS_Y / 2;
+
+            AllSprites["Bullet"].RotateAndRender(drawPosition, directionAngle, AllSprites["Bullet"].SubRect.w / 2, AllSprites["Bullet"].SubRect.h / 2);
         }
         public void UpdatePosition(Coordinate position)
         {

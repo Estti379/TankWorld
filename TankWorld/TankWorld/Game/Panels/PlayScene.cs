@@ -8,8 +8,11 @@ namespace TankWorld.Game.Panels
 {
     class PlayScene: Scene, IObserver
     {
+        private MapPanel map;
         private GameViewPanel gameView;
         private MenuPanel menu;
+
+        private Camera camera;
 
         bool showMenu;
 
@@ -25,6 +28,10 @@ namespace TankWorld.Game.Panels
         //Methods
         public override void Enter()
         {
+            //create camera
+            camera = Camera.Instance;
+            //create map Panel
+            map = new MapPanel();
             //Create mainGamePanel
             gameView = new GameViewPanel();
 
@@ -97,6 +104,7 @@ namespace TankWorld.Game.Panels
 
         public override void Render()
         {
+            map.Render();
             gameView.Render();
 
             if (showMenu)
@@ -114,6 +122,8 @@ namespace TankWorld.Game.Panels
             else
             {
                 gameView.Update();
+                camera.Update();
+                map.Update();
             }
         }
     }

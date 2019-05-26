@@ -27,7 +27,7 @@ namespace TankWorld.Engine
                 texture = textureList[key];
             } else
             {
-                texture = ImageToTexture(imagePath, r, g, b);
+                texture = BMPToTexture(imagePath, r, g, b);
                 textureList.Add(key, texture);
             }
             SetupSpriteEntity(key);
@@ -126,15 +126,17 @@ namespace TankWorld.Engine
             return finalTexture;
         }
 
-        private TextureStruct ImageToTexture(string imagePath, byte r, byte g, byte b)
+        private TextureStruct BMPToTexture(string imagePath, byte r, byte g, byte b)
         {
             TextureStruct finalTexture = new TextureStruct(IntPtr.Zero, 0, 0);
             IntPtr sprite = IntPtr.Zero;
-            sprite = SDL_LoadBMP(imagePath);
+
+            //loads all (supported) images, not only BMP
+            sprite = SDL_image.IMG_Load(imagePath);
+            //sprite = SDL_LoadBMP(imagePath);
             if (sprite == IntPtr.Zero)
             {
-                Console.Write("Unable to load image: ball.bmp! SDL Error:" + SDL_GetError() + " \n");
-                Console.Write(imagePath + " \n");
+                Console.Write("Unable to load image: "+ imagePath +" SDL Error:" + SDL_GetError() + " \n");
                 SDL_FreeSurface(sprite);
                 return finalTexture;
             }

@@ -11,6 +11,7 @@ namespace TankWorld.Game.Panels
         private List<TankObject> tanks;
         private List<BulletObject> bullets;
         private TankObject player;
+        private Camera camera;
 
         //Constructors
         public GameViewPanel()
@@ -18,6 +19,7 @@ namespace TankWorld.Game.Panels
             player = new TankObject("Player");
             bullets = new List<BulletObject>();
             tanks = new List<TankObject>();
+            this.camera = Camera.Instance;
         }
 
         //Accessors
@@ -39,6 +41,7 @@ namespace TankWorld.Game.Panels
                 entry.Update();
             }
             player.Update();
+            camera.UpdateTargetPosition(player);
         }
 
         public void HandleInput(InputStruct input)

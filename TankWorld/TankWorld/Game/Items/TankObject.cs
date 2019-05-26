@@ -11,6 +11,8 @@ namespace TankWorld.Game.Items
         private TankModel model;
         private string ID;
 
+        private Camera camera;
+
         private double x = 4;
         
         //Top speed expressed in m/s
@@ -41,10 +43,11 @@ namespace TankWorld.Game.Items
         //Constructors
         public TankObject(string ID)
         {
+            camera = Camera.Instance;
             this.ID = ID;
             model = new TankModel(ID);
-            position.x = GameConstants.WINDOWS_X/2;
-            position.y = GameConstants.WINDOWS_Y/2;
+            position.x = 10000;
+            position.y = 10000;
             speed = 0;
             acceleration = 0;
             turningAngle = 0;
@@ -52,11 +55,16 @@ namespace TankWorld.Game.Items
             cannonTarget.x = position.x;
             cannonTarget.y = position.y;
             UpdateCannonDirection();
-            model.UpdateModel(position, directionBody, directionCannon);
+            model.UpdateModel(this, directionBody, directionCannon);
 
         }
 
         //Accessors
+
+        public Coordinate Position
+        {
+            get { return position; }
+        }
 
 
         //Methods
@@ -71,7 +79,7 @@ namespace TankWorld.Game.Items
             UpdateSpeed();
             UpdateCoordinates();
             UpdateCannonDirection();
-            model.UpdateModel(position, directionBody, directionCannon);
+            model.UpdateModel(this, directionBody, directionCannon);
         }
 
         private void UpdateDirection()
@@ -127,7 +135,6 @@ namespace TankWorld.Game.Items
             {
                 speed = TOP_SPEED_REVERSE;
             }
-            Console.WriteLine("Speed: "+ speed + "Decay: " + speedDecay);
             
 
         }
@@ -140,7 +147,11 @@ namespace TankWorld.Game.Items
 
         private void UpdateCannonDirection()
         {
-            Coordinate turretCoord = model.GetTurretPosition();
+            Coordinate turretCoord = GetTurretPosition();
+
+            cannonTarget.x += camera.Position.x - camera.OldPosition.x;
+            cannonTarget.y += camera.Position.y - camera.OldPosition.y;
+
             //If mouse is at the same pixel as the turret center, don't calculate angle.
             if ((cannonTarget.y - turretCoord.y != 0) && (cannonTarget.x - turretCoord.x != 0))
             {
@@ -150,7 +161,38 @@ namespace TankWorld.Game.Items
 
         }
 
-        
+        public Coordinate GetTurretPosition()
+        {
+            Coordinate turretCoord;
+            turretCoord.x = (model.AllSprites["TankBody"].SubRect.w / 4) * Math.Cos(directionBody + Math.PI) + position.x;
+            turretCoord.y = (model.AllSprites["TankBody"].SubRect.w / 4) * Math.Sin(directionBody + Math.PI) + position.y;
+
+            return turretCoord;
+        }
+
+        public Coordinate GetCannonPosition()
+        {
+            Coordinate turretCoord = GetTurretPosition();
+            Coordinate cannonCoord;
+
+            cannonCoord.x = (model.AllSprites["TankCannon"].SubRect.w / 2) * Math.Cos(directionCannon) + turretCoord.x;
+            cannonCoord.y = (model.AllSprites["TankCannon"].SubRect.w / 2) * Math.Sin(directionCannon) + turretCoord.y;
+
+            return cannonCoord;
+        }
+
+        public Coordinate GetBarrelEndPosition()
+        {
+            Coordinate turretCoord = GetTurretPosition();
+            Coordinate barrelCoord;
+
+            barrelCoord.x = (model.AllSprites["TankTurret"].SubRect.w) * Math.Cos(directionCannon) + turretCoord.x;
+            barrelCoord.y = (model.AllSprites["TankTurret"].SubRect.w) * Math.Sin(directionCannon) + turretCoord.y;
+
+            return barrelCoord;
+        }
+
+
         private void Accelerate()
         {
             this.acceleration = (reverseRate+forwardRate) * MAX_ACCELERATION;
@@ -183,12 +225,14 @@ namespace TankWorld.Game.Items
 
         public void TurretTarget(int x, int y)
         {
-            cannonTarget.x = x;
-            cannonTarget.y = y;
+            cannonTarget.x = x + camera.Position.x - GameConstants.WINDOWS_X / 2;
+            cannonTarget.y = y + camera.Position.y - GameConstants.WINDOWS_Y / 2;
+
+
         }
         public void Shoot()
         {
-            BulletObject bullet = new BulletObject(this, model.GetBarrelEndPosition(), directionCannon);
+            BulletObject bullet = new BulletObject(this, GetBarrelEndPosition(), directionCannon);
             MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.SPAWN_BULLET_ENTITY, bullet));
         }
 

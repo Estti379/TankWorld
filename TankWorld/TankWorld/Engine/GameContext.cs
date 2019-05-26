@@ -2,6 +2,7 @@
 using static SDL2.SDL;
 using static SDL2.SDL_ttf;
 using static SDL2.SDL.SDL_RendererFlags;
+using static SDL2.SDL_image;
 using System.Collections.Generic;
 using TankWorld.Game.Events;
 using TankWorld.Game.Panels;
@@ -85,6 +86,12 @@ namespace TankWorld.Engine
             if (TTF_Init() == -1)
             {
                 Console.Write("SDL_ttf could not initialize! SDL_ttf Error: %s\n", SDL_GetError());
+                return false;
+            }
+
+            if (IMG_Init(IMG_InitFlags.IMG_INIT_JPG) == -1)
+            {
+                Console.Write("SDL_image could not initialize! SDL_Error: %s\n", SDL_GetError());
                 return false;
             }
 
@@ -200,6 +207,7 @@ namespace TankWorld.Engine
             SDL_DestroyRenderer(renderer);
             SDL_DestroyWindow(window);
             TTF_Quit();
+            IMG_Quit();
             SDL_Quit();
         }
 
