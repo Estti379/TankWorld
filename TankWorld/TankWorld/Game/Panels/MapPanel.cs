@@ -55,20 +55,21 @@ namespace TankWorld.Game.Panels
             leftToptexturePosition.x += - (camera.Position.x - camera.OldPosition.x);
             leftToptexturePosition.y += - (camera.Position.y - camera.OldPosition.y);
 
-            if( leftToptexturePosition.x + background.Pos.w < 0)
+            //"While" instead of "if" just in case camera moves more than the length of a background image!
+            while ( leftToptexturePosition.x + background.Pos.w < 0)
             {
                 leftToptexturePosition.x += background.Pos.w;
             }
-            else if (leftToptexturePosition.x > 0)
+            while (leftToptexturePosition.x > 0)
             {
                 leftToptexturePosition.x -= background.Pos.w;
             }
 
-            if (leftToptexturePosition.y + background.Pos.h < 0)
+            while (leftToptexturePosition.y + background.Pos.h < 0)
             {
                 leftToptexturePosition.y += background.Pos.h;
             }
-            else if (leftToptexturePosition.y > 0)
+            while (leftToptexturePosition.y > 0)
             {
                 leftToptexturePosition.y -= background.Pos.h;
             }

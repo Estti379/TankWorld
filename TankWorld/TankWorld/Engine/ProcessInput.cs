@@ -50,6 +50,7 @@ namespace TankWorld.Engine
         static private InputStruct CheckKeyDown(SDL_Event userEvent)
         {
             InputStruct input = new InputStruct { inputEvent = UNDEFINED_INPUT, x = 0, y = 0 };
+            SDL_GetMouseState(out input.x, out input.y);
             switch (userEvent.key.keysym.sym)
             {   
                 case SDLK_ESCAPE:
@@ -73,6 +74,9 @@ namespace TankWorld.Engine
                 case SDLK_d:
                     input.inputEvent = PRESS_D;
                     break;
+                case SDLK_p:
+                    input.inputEvent = PRESS_P;
+                    break;
                 case SDLK_SPACE:
                     input.inputEvent = PRESS_SPACE;
                     break;
@@ -83,6 +87,7 @@ namespace TankWorld.Engine
         static private InputStruct CheckKeyUp(SDL_Event userEvent)
         {
             InputStruct input = new InputStruct { inputEvent = UNDEFINED_INPUT, x = 0, y = 0 };
+            SDL_GetMouseState(out input.x, out input.y);
             switch (userEvent.key.keysym.sym)
             {
                 case SDLK_ESCAPE:
@@ -105,6 +110,9 @@ namespace TankWorld.Engine
                     break;
                 case SDLK_d:
                     input.inputEvent = RELEASE_D;
+                    break;
+                case SDLK_p:
+                    input.inputEvent = RELEASE_P;
                     break;
                 case SDLK_SPACE:
                     input.inputEvent = RELEASE_SPACE;

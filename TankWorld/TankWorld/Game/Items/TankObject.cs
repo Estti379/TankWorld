@@ -8,8 +8,14 @@ namespace TankWorld.Game.Items
     public class TankObject: IRender, IUpdate
     {
 
+        public enum TankColor
+        {
+            PLAYER,
+            GREEN
+        }
+
         private TankModel model;
-        private string ID;
+        private TankColor color;
 
         private Camera camera;
 
@@ -41,19 +47,17 @@ namespace TankWorld.Game.Items
 
 
         //Constructors
-        public TankObject(string ID)
+        public TankObject(Coordinate spawnPosition, TankColor type)
         {
             camera = Camera.Instance;
-            this.ID = ID;
-            model = new TankModel(ID);
-            position.x = 10000;
-            position.y = 10000;
+            this.color = type;
+            model = new TankModel(this.color);
+            position = spawnPosition;
             speed = 0;
             acceleration = 0;
             turningAngle = 0;
             directionBody = 3*Math.PI/2;
-            cannonTarget.x = position.x;
-            cannonTarget.y = position.y;
+            cannonTarget = position; //So that cannon is facing forward
             UpdateCannonDirection();
             model.UpdateModel(this, directionBody, directionCannon);
 

@@ -50,5 +50,23 @@ namespace TankWorld.Game
             oldPosition = position;
             position = targetPosition;
         }
+
+        public Coordinate ConvertScreenToMapCoordinate(Coordinate screenCoord)
+        {
+            Coordinate mapCoord;
+            mapCoord.x = screenCoord.x + position.x - GameConstants.WINDOWS_X / 2;
+            mapCoord.y = screenCoord.y + position.y - GameConstants.WINDOWS_Y / 2;
+
+            return mapCoord;
+        }
+
+        public Coordinate ConvertMapToScreenCoordinate(Coordinate mapCoord)
+        {
+            Coordinate screenCoord;
+            screenCoord.x = mapCoord.x + position.x - GameConstants.WINDOWS_X / 2;
+            screenCoord.y = mapCoord.y + position.y - GameConstants.WINDOWS_Y / 2;
+
+            return screenCoord;
+        }
     }
 }

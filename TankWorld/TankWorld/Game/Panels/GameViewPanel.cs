@@ -16,7 +16,10 @@ namespace TankWorld.Game.Panels
         //Constructors
         public GameViewPanel()
         {
-            player = new TankObject("Player");
+            Coordinate spawnPosition;
+            spawnPosition.x = 0;
+            spawnPosition.y = 0;
+            player = new TankObject(spawnPosition, TankObject.TankColor.PLAYER);
             bullets = new List<BulletObject>();
             tanks = new List<TankObject>();
             this.camera = Camera.Instance;
@@ -28,6 +31,10 @@ namespace TankWorld.Game.Panels
 
         public override void Render()
         {
+            foreach (TankObject entry in tanks)
+            {
+                entry.Render();
+            }
             player.Render();
             foreach (BulletObject entry in bullets) {
                 entry.Render();
@@ -36,6 +43,10 @@ namespace TankWorld.Game.Panels
 
         public override void Update()
         {
+            foreach (TankObject entry in tanks)
+            {
+                entry.Update();
+            }
             foreach (BulletObject entry in bullets)
             {
                 entry.Update();
@@ -79,12 +90,25 @@ namespace TankWorld.Game.Panels
                 case PRESS_LEFT_BUTTON:
                     player.Shoot();
                     break;
+                case PRESS_P:
+                    Coordinate spawnPosition;
+                    spawnPosition.x = input.x;
+                    spawnPosition.y = input.y;
+                    spawnPosition = camera.ConvertScreenToMapCoordinate(spawnPosition);
+                    TankObject newTank = new TankObject(spawnPosition, TankObject.TankColor.GREEN);
+                    this.AddTank(newTank);
+                    break;
             }
         }
 
         public void AddBullet(BulletObject newBullet)
         {
             bullets.Add(newBullet);
+        }
+
+        public void AddTank(TankObject newTank)
+        {
+            tanks.Add(newTank);
         }
 
     }
