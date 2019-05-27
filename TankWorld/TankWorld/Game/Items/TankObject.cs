@@ -58,6 +58,8 @@ namespace TankWorld.Game.Items
             turningAngle = 0;
             directionBody = 3*Math.PI/2;
             cannonTarget = position; //So that cannon is facing forward
+            cannonTarget.x = (model.AllSprites["TankBody"].SubRect.w) * Math.Cos(directionBody) + position.x;
+            cannonTarget.y = (model.AllSprites["TankBody"].SubRect.w) * Math.Sin(directionBody) + position.y;
             UpdateCannonDirection();
             model.UpdateModel(this, directionBody, directionCannon);
 
@@ -153,15 +155,35 @@ namespace TankWorld.Game.Items
         {
             Coordinate turretCoord = GetTurretPosition();
 
-            cannonTarget.x += camera.Position.x - camera.OldPosition.x;
-            cannonTarget.y += camera.Position.y - camera.OldPosition.y;
+            /* TODO: a player tank has a different behaviour than an not player tank.
+             * Create a new Class wich extends tankobject and override this method?
+             */
+            if(color == TankColor.PLAYER) //Player cannon should follow current mouse position on the screen
+            {
+                cannonTarget.x += camera.Position.x - camera.OldPosition.x;
+                cannonTarget.y += camera.Position.y - camera.OldPosition.y;
+            }
+            else //All Other tanks shouldn't change their target location, since they are targeting a mapLocation, not a screen location, like the player
+            {
+                /*empty*/
+            }
+            
 
             //If mouse is at the same pixel as the turret center, don't calculate angle.
-            if ((cannonTarget.y - turretCoord.y != 0) && (cannonTarget.x - turretCoord.x != 0))
+            if ( !( (cannonTarget.y - turretCoord.y == 0) && (cannonTarget.x - turretCoord.x == 0) ) )
             {
                 directionCannon = Math.Atan2(cannonTarget.y - turretCoord.y, cannonTarget.x - turretCoord.x);
             }
-            
+
+            while (directionCannon < 0)
+            {
+                directionCannon += 2 * Math.PI;
+            }
+            while (directionCannon > 2 * Math.PI)
+            {
+                directionCannon -= 2 * Math.PI;
+            }
+
 
         }
 
@@ -229,8 +251,9 @@ namespace TankWorld.Game.Items
 
         public void TurretTarget(int x, int y)
         {
-            cannonTarget.x = x + camera.Position.x - GameConstants.WINDOWS_X / 2;
-            cannonTarget.y = y + camera.Position.y - GameConstants.WINDOWS_Y / 2;
+            cannonTarget.x = x;
+            cannonTarget.y = y;
+            cannonTarget = camera.ConvertScreenToMapCoordinate(cannonTarget);
 
 
         }

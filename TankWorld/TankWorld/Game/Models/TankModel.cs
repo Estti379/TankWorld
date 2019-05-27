@@ -43,18 +43,15 @@ namespace TankWorld.Game.Models
         {
             Coordinate drawPosition;
 
-            drawPosition.x = bodyPosition.x - camera.Position.x + GameConstants.WINDOWS_X / 2;
-            drawPosition.y = bodyPosition.y - camera.Position.y + GameConstants.WINDOWS_Y / 2;
+            drawPosition = camera.ConvertMapToScreenCoordinate(bodyPosition);
 
             AllSprites["TankBody"].RotateAndRender(drawPosition, directionAngle, AllSprites["TankBody"].SubRect.w/2, AllSprites["TankBody"].SubRect.h/2);
 
-            drawPosition.x = cannonPosition.x - camera.Position.x + GameConstants.WINDOWS_X / 2;
-            drawPosition.y = cannonPosition.y - camera.Position.y + GameConstants.WINDOWS_Y / 2;
+            drawPosition = camera.ConvertMapToScreenCoordinate(cannonPosition);
 
             AllSprites["TankCannon"].RotateAndRender(drawPosition, directionCannon, AllSprites["TankCannon"].SubRect.w / 2, AllSprites["TankCannon"].SubRect.h / 2);
 
-            drawPosition.x = turretPosition.x - camera.Position.x + GameConstants.WINDOWS_X / 2;
-            drawPosition.y = turretPosition.y - camera.Position.y + GameConstants.WINDOWS_Y / 2;
+            drawPosition = camera.ConvertMapToScreenCoordinate(turretPosition);
 
             AllSprites["TankTurret"].RotateAndRender(drawPosition, directionCannon, AllSprites["TankTurret"].SubRect.w / 2, AllSprites["TankTurret"].SubRect.h / 2);
 

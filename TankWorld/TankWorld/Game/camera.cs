@@ -63,8 +63,8 @@ namespace TankWorld.Game
         public Coordinate ConvertMapToScreenCoordinate(Coordinate mapCoord)
         {
             Coordinate screenCoord;
-            screenCoord.x = mapCoord.x + position.x - GameConstants.WINDOWS_X / 2;
-            screenCoord.y = mapCoord.y + position.y - GameConstants.WINDOWS_Y / 2;
+            screenCoord.x = mapCoord.x - position.x + GameConstants.WINDOWS_X / 2;
+            screenCoord.y = mapCoord.y - position.y + GameConstants.WINDOWS_Y / 2;
 
             return screenCoord;
         }
