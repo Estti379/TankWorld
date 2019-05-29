@@ -7,11 +7,15 @@ namespace TankWorld.Game.Components
 {
     public class TankAiComponent: AiComponent
     {
-        private const int MAX_TARGET_RANGE = 100;
-        private const int MAX_AGGRO_RANGE = 200;
-        private const int MAX_SHOOTING_RANGE = 100;
+        private const int MAX_TARGET_RANGE = 400;
+        private const int MAX_AGGRO_RANGE = 500;
+        private const int MAX_SHOOTING_RANGE = 300;
+
+        //How fast this AI is compared to normal tank speed rate
+        private const double ACCELERATION_RATE = 0.5;
 
         private TankObject targetTank;
+        private double angleFromTarget; //in rad
         private Coordinate targetSpeedVektor;
 
         
@@ -49,6 +53,10 @@ namespace TankWorld.Game.Components
             {
                 //Look for new targetTank
                 targetTank = SearchForNewTargetTank(tank, nearbyTanks);
+                if(targetTank != null)
+                {
+                    angleFromTarget = Math.PI * Helper.random.NextDouble(); //returns number between 0 and 2 * PI
+                }
             }
             else if ( Helper.Distance(tank.Position, targetTank.Position) > MAX_TARGET_RANGE)
             {
@@ -65,7 +73,11 @@ namespace TankWorld.Game.Components
                 //Try to shoot target if it is in the shooting range
                 if(Helper.Distance(tank.Position, targetTank.Position) <= MAX_SHOOTING_RANGE)
                 {
-                    tank.Shoot();
+                    if (Helper.random.NextDouble() == 1.0) ;
+                    {
+                        tank.Shoot();
+                    }
+                    
                 }
                 
             }
@@ -76,11 +88,91 @@ namespace TankWorld.Game.Components
 
 
 
+            if (targetTank != null)
+            {
+                //UpdateTargetSpeedvektor();
+                angleFromTarget += Math.PI / 1000.0;
+                angleFromTarget = Helper.NormalizeRad(angleFromTarget);
+                Coordinate targetPosition;
+                targetPosition.x = targetTank.Position.x + MAX_SHOOTING_RANGE * 0.9 * Math.Cos(angleFromTarget);
+                targetPosition.y = targetTank.Position.y + MAX_SHOOTING_RANGE * 0.9 * Math.Sin(angleFromTarget);
 
-            //UpdateTargetSpeedvektor();
+                double angleToTargetPosition;
+                Coordinate delta;
+                delta.x = targetPosition.x - tank.Position.x;
+                delta.y = targetPosition.y - tank.Position.y;
+                if (delta.x == 0 && delta.y == 0) //Just in case targetposition = current tank position
+                {
+                    angleToTargetPosition = tank.DirectionBody;
+                }
+                else
+                {
+                    angleToTargetPosition = Math.Atan2(delta.y, delta.x);
+                }
+
+                targetSpeedVektor.x = tank.GetTopSpeed() * Math.Cos(angleToTargetPosition);
+                targetSpeedVektor.y = tank.GetTopSpeed() * Math.Sin(angleToTargetPosition);
+            } else
+            {
+                targetSpeedVektor.x = 0;
+                targetSpeedVektor.y = 0;
+            }
 
 
-            //DriveTank();
+            if (targetSpeedVektor.x == 0 && targetSpeedVektor.y == 0)
+            {
+                tank.TurnLeft(0);
+                tank.TurnRight(0);
+                tank.Reverse(0);
+                tank.Forward(0);
+            }
+            else
+            {
+                //DriveTank();
+                double turnDirection = tank.DirectionBody - Math.Atan2(targetSpeedVektor.y, targetSpeedVektor.x);
+                //Bring turn direction back to between -Pi and +Pi
+                if (turnDirection < -Math.PI)
+                {
+                    turnDirection += 2 * Math.PI;
+                }
+                else if ((turnDirection > Math.PI))
+                {
+                    turnDirection -= 2 * Math.PI;
+                }
+
+                if (turnDirection == 0)
+                {//tank is already on the right trajectory
+                 /*Keep moving Forward*/
+                    tank.TurnLeft(0);
+                    tank.TurnRight(0);
+                    tank.Reverse(0);
+                    tank.Forward(ACCELERATION_RATE);
+                }
+                else if (turnDirection == Math.PI || turnDirection == -Math.PI)
+                {//targetvektor is 180degres behind tank
+                    tank.TurnLeft(0);
+                    tank.TurnRight(0);
+                    tank.Reverse(ACCELERATION_RATE);
+                    tank.Forward(0);
+                }
+                else if (turnDirection > 0)
+                {//if positive, turn left
+                    tank.TurnLeft(1);
+                    tank.TurnRight(0);
+                    tank.Reverse(0);
+                    tank.Forward(ACCELERATION_RATE);
+                }
+                else if (turnDirection < 0)
+                {//if negative, turn right
+                    tank.TurnLeft(0);
+                    tank.TurnRight(1);
+                    tank.Reverse(0);
+                    tank.Forward(ACCELERATION_RATE);
+                }
+            }
+
+
+
 
         }
 

@@ -57,14 +57,7 @@ namespace TankWorld.Game.Items
         public override WeaponProjectileObject Clone()
         {
             double startAngle = Math.Atan2(speedVektor.y, speedVektor.x);
-            while (startAngle < 0)
-            {
-                startAngle += 2 * Math.PI;
-            }
-            while (startAngle > 2 * Math.PI)
-            {
-                startAngle -= 2 * Math.PI;
-            }
+            startAngle = Helper.NormalizeRad(startAngle);
             return new BulletObject(owner, position, startAngle);
         }
 

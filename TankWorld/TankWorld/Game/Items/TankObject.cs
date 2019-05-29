@@ -132,9 +132,18 @@ namespace TankWorld.Game.Items
         public Faction CurrentFaction { get => currentFaction;}
         public Coordinate CannonTarget { get => cannonTarget; set => cannonTarget = value; }
         public double DirectionCannon { get => directionCannon;}
+        public double DirectionBody { get => directionBody; }
+        public double ForwardRate { get => forwardRate;}
+        public double ReverseRate { get => reverseRate;}
+        public double TurnLeftRate { get => turnLeftRate;}
+        public double TurnRightRate { get => turnRightRate;}
 
 
         //Methods
+        public double GetTopSpeed()
+        {
+            return TOP_SPEED;
+        }
         public void Render()
         {
             model.Render();
@@ -166,14 +175,7 @@ namespace TankWorld.Game.Items
         private void UpdateDirection()
         {
             directionBody += turningAngle *GameConstants.MS_PER_UPDATE*1/1000;
-            while(directionBody < 0)
-            {
-                directionBody += 2 * Math.PI;
-            }
-            while (directionBody > 2 * Math.PI)
-            {
-                directionBody -= 2 * Math.PI;
-            }
+            directionBody = Helper.NormalizeRad(directionBody);
         }
 
         private void UpdateSpeed()
@@ -250,14 +252,7 @@ namespace TankWorld.Game.Items
                 directionCannon = Math.Atan2(cannonTarget.y - turretCoord.y, cannonTarget.x - turretCoord.x);
             }
 
-            while (directionCannon < 0)
-            {
-                directionCannon += 2 * Math.PI;
-            }
-            while (directionCannon > 2 * Math.PI)
-            {
-                directionCannon -= 2 * Math.PI;
-            }
+            directionCannon = Helper.NormalizeRad(directionCannon);
 
 
         }

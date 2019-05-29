@@ -42,18 +42,28 @@ namespace TankWorld.Game.Models
         public override void Render()
         {
             Coordinate drawPosition;
+            bool isInsideCamera = false;
 
             drawPosition = camera.ConvertMapToScreenCoordinate(bodyPosition);
 
-            AllSprites["TankBody"].RotateAndRender(drawPosition, directionAngle, AllSprites["TankBody"].SubRect.w/2, AllSprites["TankBody"].SubRect.h/2);
+            isInsideCamera = (drawPosition.x >= 0 - AllSprites["TankBody"].Pos.w)
+                            && (drawPosition.x <= GameConstants.WINDOWS_X + AllSprites["TankBody"].Pos.w)
+                            && (drawPosition.y >= 0 - AllSprites["TankBody"].Pos.h)
+                            && (drawPosition.y <= GameConstants.WINDOWS_Y + AllSprites["TankBody"].Pos.h);
 
-            drawPosition = camera.ConvertMapToScreenCoordinate(cannonPosition);
+            if (isInsideCamera)
+            {
 
-            AllSprites["TankCannon"].RotateAndRender(drawPosition, directionCannon, AllSprites["TankCannon"].SubRect.w / 2, AllSprites["TankCannon"].SubRect.h / 2);
+                AllSprites["TankBody"].RotateAndRender(drawPosition, directionAngle, AllSprites["TankBody"].SubRect.w / 2, AllSprites["TankBody"].SubRect.h / 2);
 
-            drawPosition = camera.ConvertMapToScreenCoordinate(turretPosition);
+                drawPosition = camera.ConvertMapToScreenCoordinate(cannonPosition);
 
-            AllSprites["TankTurret"].RotateAndRender(drawPosition, directionCannon, AllSprites["TankTurret"].SubRect.w / 2, AllSprites["TankTurret"].SubRect.h / 2);
+                AllSprites["TankCannon"].RotateAndRender(drawPosition, directionCannon, AllSprites["TankCannon"].SubRect.w / 2, AllSprites["TankCannon"].SubRect.h / 2);
+
+                drawPosition = camera.ConvertMapToScreenCoordinate(turretPosition);
+
+                AllSprites["TankTurret"].RotateAndRender(drawPosition, directionCannon, AllSprites["TankTurret"].SubRect.w / 2, AllSprites["TankTurret"].SubRect.h / 2);
+            }
 
         }
         public void UpdateModel(TankObject tank, double directionBody, double directionCannon)
