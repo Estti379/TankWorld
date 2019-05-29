@@ -135,11 +135,11 @@ namespace TankWorld.Game.Panels
                         case SceneStateEvent.Type.FLIP_MENU:
                             showMenu = !showMenu;
                             break;
-                        case SceneStateEvent.Type.SPAWN_BULLET_ENTITY:
-                            gameView.AddBullet(stateEvent.Bullet);
+                        case SceneStateEvent.Type.SPAWN_PROJECTILE_ENTITY:
+                            gameView.AddProjectile(stateEvent.Bullet);
                             break;
-                        case SceneStateEvent.Type.DESPAWN_BULLET_ENTITY:
-                            gameView.RemoveBullet(stateEvent.Bullet);
+                        case SceneStateEvent.Type.DESPAWN_PROJECTILE_ENTITY:
+                            gameView.Removeprojectile(stateEvent.Bullet);
                             break;
 
                     }

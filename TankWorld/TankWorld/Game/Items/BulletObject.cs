@@ -5,10 +5,11 @@ using TankWorld.Game.Models;
 
 namespace TankWorld.Game.Items
 {
-    public class BulletObject : IRender
+    public class BulletObject :WeaponProjectileObject
     {
         private BulletModel model;
         private TankObject owner;
+
         private const byte SPEED = 30;
         private const int MAX_RANGE = 10000;
 
@@ -18,23 +19,20 @@ namespace TankWorld.Game.Items
         //Constructors
         public BulletObject(TankObject owner, Coordinate startPosition, double startAngle)
         {
-            position = startPosition;
-            this.owner = owner;
+            UpdateState(owner, startPosition, startAngle);
             model = new BulletModel(startPosition, startAngle);
-            speedVektor.x = Math.Cos(startAngle) * SPEED;
-            speedVektor.y = Math.Sin(startAngle) * SPEED;
         }
 
         //Accessors
 
 
         //Methods
-        public void Render()
+        public override void Render()
         {
             model.Render();
         }
 
-        public void Update(ref WorldItems world)
+        public override void Update(ref WorldItems world)
         {
             UpdatePosition();
             model.UpdatePosition(position);
@@ -46,7 +44,7 @@ namespace TankWorld.Game.Items
         {
             if (Helper.Distance(this.position, player.Position) > MAX_RANGE )
             {
-                MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.DESPAWN_BULLET_ENTITY, this));
+                MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.DESPAWN_PROJECTILE_ENTITY, this));
             }
         }
 
@@ -56,6 +54,26 @@ namespace TankWorld.Game.Items
             position.y += speedVektor.y * GameConstants.MS_PER_UPDATE * 1 / 1000 * GameConstants.METER_TO_PIXEL;
         }
 
+        public override WeaponProjectileObject Clone()
+        {
+            double startAngle = Math.Atan2(speedVektor.y, speedVektor.x);
+            while (startAngle < 0)
+            {
+                startAngle += 2 * Math.PI;
+            }
+            while (startAngle > 2 * Math.PI)
+            {
+                startAngle -= 2 * Math.PI;
+            }
+            return new BulletObject(owner, position, startAngle);
+        }
 
+        internal void UpdateState(TankObject owner, Coordinate newPosition, double newtAngle)
+        {
+            position = newPosition;
+            this.owner = owner;
+            speedVektor.x = Math.Cos(newtAngle) * SPEED;
+            speedVektor.y = Math.Sin(newtAngle) * SPEED;
+        }
     }
 }

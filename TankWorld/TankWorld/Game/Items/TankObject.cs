@@ -52,7 +52,11 @@ namespace TankWorld.Game.Items
         private const int CANNON_COOLDOWN = 1000; //Time in milliseconds before cannon can shoot new salvo
         //A thirst percentage of cannon cooldown time is used to shoot salvo. Each bullet is spread out evenly
         //Keep in mind that one bullet is shot instantly (thus the -1)
-        private const double CANNON_BULLET_COOLDOWN = (10.0/100) * (double)CANNON_COOLDOWN / (CANNON_SALVO_PROJECTILE_NUMBER-1); 
+        private const double CANNON_BULLET_COOLDOWN = (10.0/100) * (double)CANNON_COOLDOWN / (CANNON_SALVO_PROJECTILE_NUMBER-1);
+        //Prototype used to send to projectileSpawners
+        //This prototype holds the state of a bullet that would be shot by the tank at any given moment
+        private BulletObject cannonBulletPrototype;
+        private WeaponProjectileSpawner cannonBulletSpawner;
 
         private Coordinate position;
         private double speed;
@@ -85,9 +89,12 @@ namespace TankWorld.Game.Items
             cannonTarget.y = (model.AllSprites["TankBody"].SubRect.w) * Math.Sin(directionBody) + position.y;
             UpdateCannonDirection();
             model.UpdateModel(this, directionBody, directionCannon);
+            cannonBulletPrototype = new BulletObject(this, this.GetBarrelEndPosition(), this.DirectionCannon);
+            cannonBulletSpawner = new WeaponProjectileSpawner(cannonBulletPrototype);
+            //initialize Timers only after setting spawners and their prototypes!
             InitializeTimers();
 
-            if(color == TankColor.PLAYER)
+            if (color == TankColor.PLAYER)
             {
                 aiComponent = new DefaultAiComponent();
                 currentFaction = Faction.PLAYER;
@@ -106,7 +113,7 @@ namespace TankWorld.Game.Items
             BulletSalvoTimer.Pause();
             BulletSalvoTimer.DefaultTime = CANNON_BULLET_COOLDOWN*(CANNON_SALVO_PROJECTILE_NUMBER-1);
             BulletSalvoTimer.ExecuteTime = 0;
-            BulletSalvoTimer.Command = new SalvoShotCommand(this, BulletSalvoTimer, CANNON_BULLET_COOLDOWN);
+            BulletSalvoTimer.Command = new SalvoShotCommand(this, BulletSalvoTimer, cannonBulletSpawner, CANNON_BULLET_COOLDOWN);
 
             CannonCooldownTimer = new Timer(Timer.Type.PAUSE_AT_ZERO);
             CannonCooldownTimer.Time = 0;
@@ -140,8 +147,14 @@ namespace TankWorld.Game.Items
             UpdateSpeed();
             UpdateCoordinates();
             UpdateCannonDirection();
+            UpdateWeaponPrototypes();
             model.UpdateModel(this, directionBody, directionCannon);
             UpdateTimers();
+        }
+
+        private void UpdateWeaponPrototypes()
+        {
+            cannonBulletPrototype.UpdateState(this, this.GetBarrelEndPosition(), this.DirectionCannon);
         }
 
         private void UpdateTimers()

@@ -53,6 +53,8 @@
     <Compile Include="Game\Components\TankAiComponent.cs" />
     <Compile Include="Game\Components\AiComponent.cs" />
     <Compile Include="Game\Items\BulletObject.cs" />
+    <Compile Include="Game\Items\WeaponProjectileObject.cs" />
+    <Compile Include="Game\Items\WeaponProjectileSpawner.cs" />
     <Compile Include="Game\Models\BulletModel.cs" />
     <Compile Include="Game\Panels\MapPanel.cs" />
     <Compile Include="Game\WorldItems.cs" />

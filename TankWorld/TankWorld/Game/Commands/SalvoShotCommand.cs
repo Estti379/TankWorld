@@ -9,13 +9,15 @@ namespace TankWorld.Game.Commands
         private TankObject tank;
         private Timer time;
         private double cooldownBetweenProjectiles;
+        private WeaponProjectileSpawner projectileSpawner;
 
         //Constructors
-        public SalvoShotCommand(TankObject owner, Timer timer, double cooldownBetweenProjectiles)
+        public SalvoShotCommand(TankObject owner, Timer timer, WeaponProjectileSpawner projectileSpawner , double cooldownBetweenProjectiles)
         {
             tank = owner;
             time = timer;
             this.cooldownBetweenProjectiles = cooldownBetweenProjectiles;
+            this.projectileSpawner = projectileSpawner;
         }
 
         //Accessors
@@ -34,8 +36,8 @@ namespace TankWorld.Game.Commands
 
         private void LaunchBullet()
         {
-            BulletObject bullet = new BulletObject(tank, tank.GetBarrelEndPosition(), tank.DirectionCannon);
-            MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.SPAWN_BULLET_ENTITY, bullet));
+            WeaponProjectileObject bullet = projectileSpawner.Spawn();
+            MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.SPAWN_PROJECTILE_ENTITY, bullet));
         }
     }
 }

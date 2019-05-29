@@ -9,6 +9,7 @@ namespace TankWorld.Game.Components
     {
         private const int MAX_TARGET_RANGE = 100;
         private const int MAX_AGGRO_RANGE = 200;
+        private const int MAX_SHOOTING_RANGE = 100;
 
         private TankObject targetTank;
         private Coordinate targetSpeedVektor;
@@ -61,8 +62,12 @@ namespace TankWorld.Game.Components
             {
                 tank.CannonTarget = targetTank.Position;
                 tank.UpdateCannonDirection();
-                //Try to shoot target
-                tank.Shoot();
+                //Try to shoot target if it is in the shooting range
+                if(Helper.Distance(tank.Position, targetTank.Position) <= MAX_SHOOTING_RANGE)
+                {
+                    tank.Shoot();
+                }
+                
             }
             else //if tank has no target, cannon should aim in the direction of the tank!
             {
@@ -73,7 +78,9 @@ namespace TankWorld.Game.Components
 
 
             //UpdateTargetSpeedvektor();
-                //DriveTank();
+
+
+            //DriveTank();
 
         }
 

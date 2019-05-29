@@ -19,7 +19,7 @@ namespace TankWorld.Game.Panels
             spawnPosition.x = 0;
             spawnPosition.y = 0;
             world.player = new TankObject(spawnPosition, TankObject.TankColor.PLAYER);
-            world.bullets = new List<BulletObject>();
+            world.projectiles = new List<WeaponProjectileObject>();
             world.tanks = new List<TankObject>();
             this.camera = Camera.Instance;
         }
@@ -35,7 +35,7 @@ namespace TankWorld.Game.Panels
                 entry.Render();
             }
             world.player.Render();
-            foreach (BulletObject entry in world.bullets) {
+            foreach (BulletObject entry in world.projectiles) {
                 entry.Render();
             }
         }
@@ -46,7 +46,7 @@ namespace TankWorld.Game.Panels
             {
                 entry.Update(ref world);
             }
-            foreach (BulletObject entry in world.bullets)
+            foreach (BulletObject entry in world.projectiles)
             {
                 entry.Update(ref world);
             }
@@ -100,9 +100,9 @@ namespace TankWorld.Game.Panels
             }
         }
 
-        public void AddBullet(BulletObject newBullet)
+        public void AddProjectile(WeaponProjectileObject newProjectile)
         {
-            world.bullets.Add(newBullet);
+            world.projectiles.Add(newProjectile);
         }
 
         public void AddTank(TankObject newTank)
@@ -110,9 +110,9 @@ namespace TankWorld.Game.Panels
             world.tanks.Add(newTank);
         }
 
-        internal void RemoveBullet(BulletObject bullet)
+        internal void Removeprojectile(WeaponProjectileObject projectile)
         {
-            world.bullets.Remove(bullet);
+            world.projectiles.Remove(projectile);
         }
     }
 }
