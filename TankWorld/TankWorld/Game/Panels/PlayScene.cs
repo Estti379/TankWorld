@@ -8,6 +8,8 @@ namespace TankWorld.Game.Panels
 {
     class PlayScene: Scene, IObserver
     {
+        private List<Event> events;
+
         private MapPanel map;
         private GameViewPanel gameView;
         private MenuPanel menu;
@@ -46,6 +48,7 @@ namespace TankWorld.Game.Panels
             showMenu = false;
 
             MainEventBus.Register(this);
+            events = new List<Event>();
 
         }
 
@@ -86,20 +89,7 @@ namespace TankWorld.Game.Panels
 
         public void OnEvent(Event newEvent)
         {
-            SceneStateEvent stateEvent;
-            if ((stateEvent = newEvent as SceneStateEvent) != null)
-            {
-                switch (stateEvent.eventType)
-                {
-                    case SceneStateEvent.Type.FLIP_MENU:
-                        showMenu = !showMenu;
-                        break;
-                    case SceneStateEvent.Type.SPAWN_BULLET_ENTITY:
-                        gameView.AddBullet(stateEvent.NewBullet);
-                        break;
-
-                }
-            }
+            events.Add(newEvent);
         }
 
         public override void Render()
@@ -115,6 +105,8 @@ namespace TankWorld.Game.Panels
 
         public override void Update()
         {
+            //carefull, when creating new objects while game is paused. they will come into existence out of thin air!
+            PollEvents();
             if (showMenu)
             {
                 menu.Update();
@@ -124,6 +116,34 @@ namespace TankWorld.Game.Panels
                 gameView.Update();
                 camera.Update();
                 map.Update();
+            }
+        }
+
+        private void PollEvents()
+        {
+            List<Event> events = new List<Event>();
+            events.AddRange(this.events);
+            this.events.Clear();
+
+            SceneStateEvent stateEvent;
+            foreach (Event entry in events)
+            {
+                if ((stateEvent = entry as SceneStateEvent) != null)
+                {
+                    switch (stateEvent.eventType)
+                    {
+                        case SceneStateEvent.Type.FLIP_MENU:
+                            showMenu = !showMenu;
+                            break;
+                        case SceneStateEvent.Type.SPAWN_BULLET_ENTITY:
+                            gameView.AddBullet(stateEvent.Bullet);
+                            break;
+                        case SceneStateEvent.Type.DESPAWN_BULLET_ENTITY:
+                            gameView.RemoveBullet(stateEvent.Bullet);
+                            break;
+
+                    }
+                }
             }
         }
     }

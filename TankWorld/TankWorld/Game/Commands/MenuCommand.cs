@@ -1,7 +1,9 @@
 ﻿
+using TankWorld.Engine;
+
 namespace TankWorld.Game.Commands
 {
-    public abstract class MenuCommand
+    public abstract class MenuCommand:Command
     {
         //Constructors
         public MenuCommand()
@@ -13,7 +15,7 @@ namespace TankWorld.Game.Commands
 
 
         //Methods
-        public abstract void execute();
+        public abstract override void Execute();
 
     }
 }

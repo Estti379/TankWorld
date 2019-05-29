@@ -1,5 +1,6 @@
 ﻿using System;
 using TankWorld.Engine;
+using TankWorld.Game.Commands;
 using TankWorld.Game.Components;
 using TankWorld.Game.Events;
 using TankWorld.Game.Models;
@@ -27,6 +28,9 @@ namespace TankWorld.Game.Items
         private Faction currentFaction;
 
         private Camera camera;
+        //timers in milliseconds
+        private Timer BulletSalvoTimer;
+        private Timer CannonCooldownTimer;
 
         private double x = 4;
         
@@ -39,6 +43,16 @@ namespace TankWorld.Game.Items
         private const double MAX_ACCELERATION = 50;
 
         private const double SECONDS_TO_STOP = 2;
+
+        //Weapon constants
+        /*TODO: looks like weapons could become it's own instance of a class "Weapon"
+         *which would allow for weapon modularity!
+         */
+        private const int CANNON_SALVO_PROJECTILE_NUMBER = 4;
+        private const int CANNON_COOLDOWN = 1000; //Time in milliseconds before cannon can shoot new salvo
+        //A thirst percentage of cannon cooldown time is used to shoot salvo. Each bullet is spread out evenly
+        //Keep in mind that one bullet is shot instantly (thus the -1)
+        private const double CANNON_BULLET_COOLDOWN = (10.0/100) * (double)CANNON_COOLDOWN / (CANNON_SALVO_PROJECTILE_NUMBER-1); 
 
         private Coordinate position;
         private double speed;
@@ -71,6 +85,7 @@ namespace TankWorld.Game.Items
             cannonTarget.y = (model.AllSprites["TankBody"].SubRect.w) * Math.Sin(directionBody) + position.y;
             UpdateCannonDirection();
             model.UpdateModel(this, directionBody, directionCannon);
+            InitializeTimers();
 
             if(color == TankColor.PLAYER)
             {
@@ -85,6 +100,21 @@ namespace TankWorld.Game.Items
 
         }
 
+        private void InitializeTimers()
+        {
+            BulletSalvoTimer = new Timer(Timer.Type.DESCENDING);
+            BulletSalvoTimer.Pause();
+            BulletSalvoTimer.DefaultTime = CANNON_BULLET_COOLDOWN*(CANNON_SALVO_PROJECTILE_NUMBER-1);
+            BulletSalvoTimer.ExecuteTime = 0;
+            BulletSalvoTimer.Command = new SalvoShotCommand(this, BulletSalvoTimer, CANNON_BULLET_COOLDOWN);
+
+            CannonCooldownTimer = new Timer(Timer.Type.PAUSE_AT_ZERO);
+            CannonCooldownTimer.Time = 0;
+            CannonCooldownTimer.Pause();
+            CannonCooldownTimer.DefaultTime = CANNON_COOLDOWN;
+            CannonCooldownTimer.ExecuteTime = CANNON_COOLDOWN * 2;//avoid execution
+        }
+
         //Accessors
 
         public Coordinate Position
@@ -94,6 +124,7 @@ namespace TankWorld.Game.Items
 
         public Faction CurrentFaction { get => currentFaction;}
         public Coordinate CannonTarget { get => cannonTarget; set => cannonTarget = value; }
+        public double DirectionCannon { get => directionCannon;}
 
 
         //Methods
@@ -110,6 +141,13 @@ namespace TankWorld.Game.Items
             UpdateCoordinates();
             UpdateCannonDirection();
             model.UpdateModel(this, directionBody, directionCannon);
+            UpdateTimers();
+        }
+
+        private void UpdateTimers()
+        {
+            BulletSalvoTimer.Update();
+            CannonCooldownTimer.Update();
         }
 
         private void UpdateDirection()
@@ -175,7 +213,7 @@ namespace TankWorld.Game.Items
             position.y += speed * Math.Sin(directionBody) * GameConstants.MS_PER_UPDATE * 1 / 1000 * GameConstants.METER_TO_PIXEL;
         }
 
-        private void UpdateCannonDirection()
+        public void UpdateCannonDirection()
         {
             Coordinate turretCoord = GetTurretPosition();
 
@@ -283,8 +321,14 @@ namespace TankWorld.Game.Items
         }
         public void Shoot()
         {
-            BulletObject bullet = new BulletObject(this, GetBarrelEndPosition(), directionCannon);
-            MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.SPAWN_BULLET_ENTITY, bullet));
+            if (CannonCooldownTimer.Time <= 0)
+            {
+                CannonCooldownTimer.Reset();
+                CannonCooldownTimer.UnPause();
+                BulletSalvoTimer.Reset();
+                BulletSalvoTimer.UnPause();
+                BulletSalvoTimer.ExecuteTime = BulletSalvoTimer.DefaultTime;
+            }
         }
 
     }

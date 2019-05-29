@@ -44,7 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\Command.cs" />
+    <Compile Include="Engine\Helper.cs" />
+    <Compile Include="Engine\Timer.cs" />
     <Compile Include="Game\Camera.cs" />
+    <Compile Include="Game\Commands\SalvoShotCommand.cs" />
     <Compile Include="Game\Components\DefaultAiComponent.cs" />
     <Compile Include="Game\Components\TankAiComponent.cs" />
     <Compile Include="Game\Components\AiComponent.cs" />

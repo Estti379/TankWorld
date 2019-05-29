@@ -49,7 +49,7 @@ namespace TankWorld.Game.Components
                 //Look for new targetTank
                 targetTank = SearchForNewTargetTank(tank, nearbyTanks);
             }
-            else if ( Distance(tank.Position, targetTank.Position) > MAX_TARGET_RANGE)
+            else if ( Helper.Distance(tank.Position, targetTank.Position) > MAX_TARGET_RANGE)
             {
                 //Look for new targetTank and change to it. It might decide to keep same target.
                 targetTank = SearchForNewTargetTank(tank, nearbyTanks);
@@ -60,6 +60,9 @@ namespace TankWorld.Game.Components
             if(targetTank != null)
             {
                 tank.CannonTarget = targetTank.Position;
+                tank.UpdateCannonDirection();
+                //Try to shoot target
+                tank.Shoot();
             }
             else //if tank has no target, cannon should aim in the direction of the tank!
             {
@@ -70,16 +73,10 @@ namespace TankWorld.Game.Components
 
 
             //UpdateTargetSpeedvektor();
-
-                //Shoot();
                 //DriveTank();
 
         }
 
-        private double Distance(Coordinate position1, Coordinate position2)
-        {
-            return Math.Sqrt(Math.Pow(position2.x-position1.x,2)+Math.Pow(position2.y - position1.y, 2));
-        }
 
         private TankObject SearchForNewTargetTank(TankObject tank, List<TankObject> nearbyTanks)
         {
@@ -92,7 +89,7 @@ namespace TankWorld.Game.Components
                 //Just try to target tanks of a different Faction!
                 if (entry.CurrentFaction != tank.CurrentFaction)
                 {
-                    tempDistance = Distance(entry.Position, tank.Position);
+                    tempDistance = Helper.Distance(entry.Position, tank.Position);
                     if ( (currentLowestDistance == -1) || (tempDistance < currentLowestDistance))
                     {
                         currentLowestDistance = tempDistance;

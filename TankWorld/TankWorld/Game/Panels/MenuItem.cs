@@ -23,7 +23,7 @@ namespace TankWorld.Game.Panels
 
         public void Action()
         {
-            command.execute();
+            command.Execute();
         }
 
         public void Render()

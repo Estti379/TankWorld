@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TankWorld.Engine;
 using TankWorld.Game.Items;
 using static TankWorld.Engine.InputEnum;
@@ -47,7 +48,7 @@ namespace TankWorld.Game.Panels
             }
             foreach (BulletObject entry in world.bullets)
             {
-                entry.Update();
+                entry.Update(ref world);
             }
             world.player.Update(ref world);
             camera.UpdateTargetPosition(world.player);
@@ -109,5 +110,9 @@ namespace TankWorld.Game.Panels
             world.tanks.Add(newTank);
         }
 
+        internal void RemoveBullet(BulletObject bullet)
+        {
+            world.bullets.Remove(bullet);
+        }
     }
 }

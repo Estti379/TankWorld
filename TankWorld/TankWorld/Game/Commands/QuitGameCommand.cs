@@ -16,7 +16,7 @@ namespace TankWorld.Game.Commands
 
 
         //Methods
-        public override void execute()
+        public override void Execute()
         {
             MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.CHANGE_SCENE, new ExitScene()));
         }
