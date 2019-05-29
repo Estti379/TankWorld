@@ -5,12 +5,10 @@ using static TankWorld.Engine.InputEnum;
 
 namespace TankWorld.Game.Panels
 {
-    public class GameViewPanel: Panel
+    public class GameViewPanel : Panel
     {
-        //TODO: Use dictionary instead of list, to keep track of ID (but is ID tracking necessary?)
-        private List<TankObject> tanks;
-        private List<BulletObject> bullets;
-        private TankObject player;
+
+        private WorldItems world;
         private Camera camera;
 
         //Constructors
@@ -19,9 +17,9 @@ namespace TankWorld.Game.Panels
             Coordinate spawnPosition;
             spawnPosition.x = 0;
             spawnPosition.y = 0;
-            player = new TankObject(spawnPosition, TankObject.TankColor.PLAYER);
-            bullets = new List<BulletObject>();
-            tanks = new List<TankObject>();
+            world.player = new TankObject(spawnPosition, TankObject.TankColor.PLAYER);
+            world.bullets = new List<BulletObject>();
+            world.tanks = new List<TankObject>();
             this.camera = Camera.Instance;
         }
 
@@ -31,28 +29,28 @@ namespace TankWorld.Game.Panels
 
         public override void Render()
         {
-            foreach (TankObject entry in tanks)
+            foreach (TankObject entry in world.tanks)
             {
                 entry.Render();
             }
-            player.Render();
-            foreach (BulletObject entry in bullets) {
+            world.player.Render();
+            foreach (BulletObject entry in world.bullets) {
                 entry.Render();
             }
         }
 
         public override void Update()
         {
-            foreach (TankObject entry in tanks)
+            foreach (TankObject entry in world.tanks)
+            {
+                entry.Update(ref world);
+            }
+            foreach (BulletObject entry in world.bullets)
             {
                 entry.Update();
             }
-            foreach (BulletObject entry in bullets)
-            {
-                entry.Update();
-            }
-            player.Update();
-            camera.UpdateTargetPosition(player);
+            world.player.Update(ref world);
+            camera.UpdateTargetPosition(world.player);
         }
 
         public void HandleInput(InputStruct input)
@@ -61,34 +59,34 @@ namespace TankWorld.Game.Panels
             switch (input.inputEvent)
             {
                 case PRESS_S:
-                    player.Reverse(1);
+                    world.player.Reverse(1);
                     break;
                 case RELEASE_S:
-                    player.Reverse(0);
+                    world.player.Reverse(0);
                     break;
                 case PRESS_W:
-                    player.Forward(1);
+                    world.player.Forward(1);
                     break;
                 case RELEASE_W:
-                    player.Forward(0);
+                    world.player.Forward(0);
                     break;
                 case PRESS_A:
-                    player.TurnLeft(1);
+                    world.player.TurnLeft(1);
                     break;
                 case RELEASE_A:
-                    player.TurnLeft(0);
+                    world.player.TurnLeft(0);
                     break;
                 case PRESS_D:
-                    player.TurnRight(1);
+                    world.player.TurnRight(1);
                     break;
                 case RELEASE_D:
-                    player.TurnRight(0);
+                    world.player.TurnRight(0);
                     break;
                 case MOUSE_MOTION:
-                    player.TurretTarget(input.x,input.y);
+                    world.player.TurretTarget(input.x,input.y);
                     break;
                 case PRESS_LEFT_BUTTON:
-                    player.Shoot();
+                    world.player.Shoot();
                     break;
                 case PRESS_P:
                     Coordinate spawnPosition;
@@ -103,12 +101,12 @@ namespace TankWorld.Game.Panels
 
         public void AddBullet(BulletObject newBullet)
         {
-            bullets.Add(newBullet);
+            world.bullets.Add(newBullet);
         }
 
         public void AddTank(TankObject newTank)
         {
-            tanks.Add(newTank);
+            world.tanks.Add(newTank);
         }
 
     }

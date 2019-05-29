@@ -1,11 +1,12 @@
 ﻿using System;
 using TankWorld.Engine;
+using TankWorld.Game.Components;
 using TankWorld.Game.Events;
 using TankWorld.Game.Models;
 
 namespace TankWorld.Game.Items
 {
-    public class TankObject: IRender, IUpdate
+    public class TankObject: IRender
     {
 
         public enum TankColor
@@ -13,9 +14,17 @@ namespace TankWorld.Game.Items
             PLAYER,
             GREEN
         }
+        public enum Faction
+        {
+            PLAYER,
+            AI
+        }
+
+        private AiComponent aiComponent;
 
         private TankModel model;
         private TankColor color;
+        private Faction currentFaction;
 
         private Camera camera;
 
@@ -63,6 +72,17 @@ namespace TankWorld.Game.Items
             UpdateCannonDirection();
             model.UpdateModel(this, directionBody, directionCannon);
 
+            if(color == TankColor.PLAYER)
+            {
+                aiComponent = new DefaultAiComponent();
+                currentFaction = Faction.PLAYER;
+            }
+            else
+            {
+                aiComponent = new TankAiComponent();
+                currentFaction = Faction.AI;
+            }
+
         }
 
         //Accessors
@@ -72,6 +92,9 @@ namespace TankWorld.Game.Items
             get { return position; }
         }
 
+        public Faction CurrentFaction { get => currentFaction;}
+        public Coordinate CannonTarget { get => cannonTarget; set => cannonTarget = value; }
+
 
         //Methods
         public void Render()
@@ -79,8 +102,9 @@ namespace TankWorld.Game.Items
             model.Render();
         }
 
-        public void Update()
+        public void Update(ref WorldItems world)
         {
+            aiComponent.Update(this, ref world);
             UpdateDirection();
             UpdateSpeed();
             UpdateCoordinates();
