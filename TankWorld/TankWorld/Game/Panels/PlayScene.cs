@@ -6,9 +6,11 @@ using static TankWorld.Engine.InputEnum;
 
 namespace TankWorld.Game.Panels
 {
-    class PlayScene: Scene, IObserver
+    public class PlayScene: Scene, IObserver
     {
         private List<Event> events;
+
+        private WorldItems world;
 
         private MapPanel map;
         private GameViewPanel gameView;
@@ -26,6 +28,8 @@ namespace TankWorld.Game.Panels
 
 
         //Accessors
+        public ref WorldItems World { get => ref world; }
+
 
         //Methods
         public override void Enter()
@@ -35,7 +39,7 @@ namespace TankWorld.Game.Panels
             //create map Panel
             map = new MapPanel();
             //Create mainGamePanel
-            gameView = new GameViewPanel();
+            gameView = new GameViewPanel(this);
 
             //Create Menu Items, add MenuPanel and initialize it
             List<MenuItem> menuItems = new List<MenuItem>();

@@ -9,14 +9,14 @@ namespace TankWorld.Game.Events
         {
             CHANGE_SCENE,
             FLIP_MENU,
-            SPAWN_PROJECTILE_ENTITY,
+            SPAWN_NEW_ENTITY,
             EXIT_GAME,
-            DESPAWN_PROJECTILE_ENTITY
+            DESPAWN_ENTITY
         }
         public readonly Type eventType;
 
-        private Scene newScene = null;
-        private WeaponProjectileObject bullet = null;
+        private Scene newScene;
+        private GameObject sender;
 
 
         //Constructors
@@ -31,10 +31,10 @@ namespace TankWorld.Game.Events
             this.newScene = newScene;
         }
 
-        public SceneStateEvent(Type eventType, WeaponProjectileObject bullet)
+        public SceneStateEvent(Type eventType, GameObject gameObject)
         {
             this.eventType = eventType;
-            this.bullet = bullet;
+            this.sender = gameObject;
         }
 
         //Accessors
@@ -44,10 +44,10 @@ namespace TankWorld.Game.Events
             get { return newScene; }
         }
 
-        public WeaponProjectileObject Bullet
+        public GameObject Sender
         {
-            set { bullet = value; }
-            get { return bullet; }
+            set { sender = value; }
+            get { return sender; }
         }
 
         //Methods

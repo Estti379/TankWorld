@@ -9,18 +9,19 @@ namespace TankWorld.Game.Panels
     public class GameViewPanel : Panel
     {
 
-        private WorldItems world;
+        private PlayScene parent;
         private Camera camera;
 
         //Constructors
-        public GameViewPanel()
+        public GameViewPanel(PlayScene parent)
         {
             Coordinate spawnPosition;
             spawnPosition.x = 0;
             spawnPosition.y = 0;
-            world.player = new TankObject(spawnPosition, TankObject.TankColor.PLAYER);
-            world.allObjects = new HashSet<GameObject>();
+            parent.World.player = new TankObject(spawnPosition, TankObject.TankColor.PLAYER);
+            parent.World.allObjects = new HashSet<GameObject>();
             this.camera = Camera.Instance;
+            this.parent = parent;
         }
 
         //Accessors
@@ -29,7 +30,7 @@ namespace TankWorld.Game.Panels
 
         public override void Render()
         {
-            foreach (GameObject entry in world.allObjects)
+            foreach (GameObject entry in parent.World.allObjects)
             {
                 TankObject tankEntry = entry as TankObject;
                 if (tankEntry != null)
@@ -37,8 +38,9 @@ namespace TankWorld.Game.Panels
                     tankEntry.Render();
                 }
             }
-            world.player.Render();
-            foreach (GameObject entry in world.allObjects) {
+            parent.World.player.Render();
+            foreach (GameObject entry in parent.World.allObjects)
+            {
                 WeaponProjectileObject projectileEntry = entry as WeaponProjectileObject;
                 if (projectileEntry != null)
                 {
@@ -50,12 +52,12 @@ namespace TankWorld.Game.Panels
         public override void Update()
         {
 
-            foreach (GameObject entry in world.allObjects)
+            foreach (GameObject entry in parent.World.allObjects)
             {
-                entry.Update(ref world);
+                entry.Update(ref parent.World);
             }
-            world.player.Update(ref world);
-            camera.UpdateTargetPosition(world.player);
+            parent.World.player.Update(ref parent.World);
+            camera.UpdateTargetPosition(parent.World.player);
         }
 
         public void HandleInput(InputStruct input)
@@ -64,34 +66,34 @@ namespace TankWorld.Game.Panels
             switch (input.inputEvent)
             {
                 case PRESS_S:
-                    world.player.Reverse(1);
+                    parent.World.player.Reverse(1);
                     break;
                 case RELEASE_S:
-                    world.player.Reverse(0);
+                    parent.World.player.Reverse(0);
                     break;
                 case PRESS_W:
-                    world.player.Forward(1);
+                    parent.World.player.Forward(1);
                     break;
                 case RELEASE_W:
-                    world.player.Forward(0);
+                    parent.World.player.Forward(0);
                     break;
                 case PRESS_A:
-                    world.player.TurnLeft(1);
+                    parent.World.player.TurnLeft(1);
                     break;
                 case RELEASE_A:
-                    world.player.TurnLeft(0);
+                    parent.World.player.TurnLeft(0);
                     break;
                 case PRESS_D:
-                    world.player.TurnRight(1);
+                    parent.World.player.TurnRight(1);
                     break;
                 case RELEASE_D:
-                    world.player.TurnRight(0);
+                    parent.World.player.TurnRight(0);
                     break;
                 case MOUSE_MOTION:
-                    world.player.TurretTarget(input.x,input.y);
+                    parent.World.player.TurretTarget(input.x,input.y);
                     break;
                 case PRESS_LEFT_BUTTON:
-                    world.player.Shoot();
+                    parent.World.player.Shoot();
                     break;
                 case PRESS_P:
                     Coordinate spawnPosition;
@@ -112,12 +114,12 @@ namespace TankWorld.Game.Panels
 
         public void AddNewObject(GameObject newObject)
         {
-            world.allObjects.Add(newObject);
+            parent.World.allObjects.Add(newObject);
         }
 
         internal void RemoveObject(GameObject projectile)
         {
-            world.allObjects.Remove(projectile);
+            parent.World.allObjects.Remove(projectile);
         }
     }
 }
