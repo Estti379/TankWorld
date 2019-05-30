@@ -7,7 +7,7 @@ using TankWorld.Game.Models;
 
 namespace TankWorld.Game.Items
 {
-    public class TankObject: IRender
+    public class TankObject: GameObject
     {
 
         public enum TankColor
@@ -74,7 +74,7 @@ namespace TankWorld.Game.Items
 
 
         //Constructors
-        public TankObject(Coordinate spawnPosition, TankColor type)
+        public TankObject(Coordinate spawnPosition, TankColor type):base()
         {
             camera = Camera.Instance;
             this.color = type;
@@ -144,12 +144,12 @@ namespace TankWorld.Game.Items
         {
             return TOP_SPEED;
         }
-        public void Render()
+        public override void Render()
         {
             model.Render();
         }
 
-        public void Update(ref WorldItems world)
+        public override void Update(ref WorldItems world)
         {
             aiComponent.Update(this, ref world);
             UpdateDirection();

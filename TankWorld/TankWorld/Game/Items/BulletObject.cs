@@ -1,5 +1,6 @@
 ﻿using System;
 using TankWorld.Engine;
+using TankWorld.Game.Commands;
 using TankWorld.Game.Events;
 using TankWorld.Game.Models;
 
@@ -11,16 +12,21 @@ namespace TankWorld.Game.Items
         private TankObject owner;
 
         private const byte SPEED = 30;
-        private const int MAX_RANGE = 10000;
+        private const double MAX_TRAVEL_TIME = 2000; //in milliseconds
 
         private Coordinate position;
         private Coordinate speedVektor;
 
+        private Timer longivity;
+
         //Constructors
-        public BulletObject(TankObject owner, Coordinate startPosition, double startAngle)
+        public BulletObject(TankObject owner, Coordinate startPosition, double startAngle) : base()
         {
             UpdateState(owner, startPosition, startAngle);
             model = new BulletModel(startPosition, startAngle);
+            longivity = new Timer(Timer.Type.DESCENDING);
+            longivity.Time = MAX_TRAVEL_TIME;
+            longivity.Command = new EraseGameObjectCommand(this);
         }
 
         //Accessors
@@ -36,16 +42,8 @@ namespace TankWorld.Game.Items
         {
             UpdatePosition();
             model.UpdatePosition(position);
-            CheckLongivity(world.player);
+            longivity.Update();
 
-        }
-
-        private void CheckLongivity(TankObject player)
-        {
-            if (Helper.Distance(this.position, player.Position) > MAX_RANGE )
-            {
-                MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.DESPAWN_PROJECTILE_ENTITY, this));
-            }
         }
 
         private void UpdatePosition()

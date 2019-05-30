@@ -19,8 +19,7 @@ namespace TankWorld.Game.Panels
             spawnPosition.x = 0;
             spawnPosition.y = 0;
             world.player = new TankObject(spawnPosition, TankObject.TankColor.PLAYER);
-            world.projectiles = new List<WeaponProjectileObject>();
-            world.tanks = new List<TankObject>();
+            world.allObjects = new HashSet<GameObject>();
             this.camera = Camera.Instance;
         }
 
@@ -30,23 +29,28 @@ namespace TankWorld.Game.Panels
 
         public override void Render()
         {
-            foreach (TankObject entry in world.tanks)
+            foreach (GameObject entry in world.allObjects)
             {
-                entry.Render();
+                TankObject tankEntry = entry as TankObject;
+                if (tankEntry != null)
+                {
+                    tankEntry.Render();
+                }
             }
             world.player.Render();
-            foreach (BulletObject entry in world.projectiles) {
-                entry.Render();
+            foreach (GameObject entry in world.allObjects) {
+                WeaponProjectileObject projectileEntry = entry as WeaponProjectileObject;
+                if (projectileEntry != null)
+                {
+                    projectileEntry.Render();
+                }
             }
         }
 
         public override void Update()
         {
-            foreach (TankObject entry in world.tanks)
-            {
-                entry.Update(ref world);
-            }
-            foreach (BulletObject entry in world.projectiles)
+
+            foreach (GameObject entry in world.allObjects)
             {
                 entry.Update(ref world);
             }
@@ -94,25 +98,26 @@ namespace TankWorld.Game.Panels
                     spawnPosition.x = input.x;
                     spawnPosition.y = input.y;
                     spawnPosition = camera.ConvertScreenToMapCoordinate(spawnPosition);
-                    TankObject newTank = new TankObject(spawnPosition, TankObject.TankColor.GREEN);
-                    this.AddTank(newTank);
+                    TankObject newTank;
+                    for (int i = 0; i < 50; i++)
+                    {
+                        newTank = new TankObject(spawnPosition, TankObject.TankColor.GREEN);
+                        this.AddNewObject(newTank);
+                    }
+                        
+
                     break;
             }
         }
 
-        public void AddProjectile(WeaponProjectileObject newProjectile)
+        public void AddNewObject(GameObject newObject)
         {
-            world.projectiles.Add(newProjectile);
+            world.allObjects.Add(newObject);
         }
 
-        public void AddTank(TankObject newTank)
+        internal void RemoveObject(GameObject projectile)
         {
-            world.tanks.Add(newTank);
-        }
-
-        internal void Removeprojectile(WeaponProjectileObject projectile)
-        {
-            world.projectiles.Remove(projectile);
+            world.allObjects.Remove(projectile);
         }
     }
 }

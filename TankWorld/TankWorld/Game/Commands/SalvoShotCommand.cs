@@ -37,7 +37,7 @@ namespace TankWorld.Game.Commands
         private void LaunchBullet()
         {
             WeaponProjectileObject bullet = projectileSpawner.Spawn();
-            MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.SPAWN_PROJECTILE_ENTITY, bullet));
+            MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.SPAWN_NEW_ENTITY, bullet));
         }
     }
 }

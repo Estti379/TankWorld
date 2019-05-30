@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -48,6 +48,7 @@
     <Compile Include="Engine\Helper.cs" />
     <Compile Include="Engine\Timer.cs" />
     <Compile Include="Game\Camera.cs" />
+    <Compile Include="Game\Commands\EraseGameObjectCommand.cs" />
     <Compile Include="Game\Commands\SalvoShotCommand.cs" />
     <Compile Include="Game\Components\DefaultAiComponent.cs" />
     <Compile Include="Game\Components\TankAiComponent.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Engine\TankWorld.cs" />
     <Compile Include="Engine\ProcessInput.cs" />
     <Compile Include="Engine\EntityModel.cs" />
+    <Compile Include="Engine\GameObject.cs" />
     <Compile Include="Engine\IRender.cs" />
     <Compile Include="Engine\IUpdate.cs" />
     <Compile Include="Engine\Panel.cs" />

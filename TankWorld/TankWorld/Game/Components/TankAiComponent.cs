@@ -7,9 +7,11 @@ namespace TankWorld.Game.Components
 {
     public class TankAiComponent: AiComponent
     {
-        private const int MAX_TARGET_RANGE = 400;
-        private const int MAX_AGGRO_RANGE = 500;
-        private const int MAX_SHOOTING_RANGE = 300;
+        private const int MAX_TARGET_RANGE = 600;
+        private const int MAX_AGGRO_RANGE = 1000;
+        private const int MAX_SHOOTING_RANGE = 600;
+
+        private const double SHOOTING_PROBABILITY = 0.75 / 100;
 
         //How fast this AI is compared to normal tank speed rate
         private const double ACCELERATION_RATE = 0.5;
@@ -32,16 +34,22 @@ namespace TankWorld.Game.Components
         //Methods
         override public void Update(TankObject tank, ref WorldItems world)
         {
-            List<TankObject> nearbyTanks = new List<TankObject>();
+            HashSet<TankObject> nearbyTanks = new HashSet<TankObject>();
 
             //Add each Tank to list only if they are in a square around "tank"
-            foreach (TankObject entry in world.tanks)
+            foreach (GameObject entry in world.allObjects)
             {
-                if ( (Math.Abs(entry.Position.x - tank.Position.x) <= MAX_AGGRO_RANGE) && (Math.Abs(entry.Position.y - tank.Position.y) <= MAX_AGGRO_RANGE) )
+                TankObject tankEntry = entry as TankObject;
+                if (tankEntry != null)
                 {
-                    nearbyTanks.Add(entry);
-                }
+                    if ( (Math.Abs(tankEntry.Position.x - tank.Position.x) <= MAX_AGGRO_RANGE) && (Math.Abs(tankEntry.Position.y - tank.Position.y) <= MAX_AGGRO_RANGE) )
+                    {
+                        nearbyTanks.Add(tankEntry);
+                    }
+                }                    
+
             }
+
             if ((Math.Abs(world.player.Position.x - tank.Position.x) <= MAX_AGGRO_RANGE) && (Math.Abs(world.player.Position.y - tank.Position.y) <= MAX_AGGRO_RANGE))
             {
                 nearbyTanks.Add(world.player);
@@ -73,7 +81,8 @@ namespace TankWorld.Game.Components
                 //Try to shoot target if it is in the shooting range
                 if(Helper.Distance(tank.Position, targetTank.Position) <= MAX_SHOOTING_RANGE)
                 {
-                    if (Helper.random.NextDouble() == 1.0) ;
+                    double random = Helper.random.NextDouble();
+                    if (random >= 1-SHOOTING_PROBABILITY)
                     {
                         tank.Shoot();
                     }
@@ -177,7 +186,7 @@ namespace TankWorld.Game.Components
         }
 
 
-        private TankObject SearchForNewTargetTank(TankObject tank, List<TankObject> nearbyTanks)
+        private TankObject SearchForNewTargetTank(TankObject tank, HashSet<TankObject> nearbyTanks)
         {
             double currentLowestDistance = -1;
             double tempDistance = -1;

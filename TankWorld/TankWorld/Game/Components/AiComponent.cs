@@ -7,6 +7,7 @@ namespace TankWorld.Game.Components
         //Constructor
         public AiComponent()
         {
+
         }
 
         //Accessors

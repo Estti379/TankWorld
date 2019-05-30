@@ -2,10 +2,10 @@
 
 namespace TankWorld.Game.Items
 {
-    abstract public class WeaponProjectileObject: IRender
+    abstract public class WeaponProjectileObject: GameObject
     {
         //Constructors
-        public WeaponProjectileObject()
+        public WeaponProjectileObject() : base()
         {
 
         }
@@ -16,8 +16,8 @@ namespace TankWorld.Game.Items
         //Methods
         abstract public WeaponProjectileObject Clone();
 
-        abstract public void Render();
+        abstract override public void Render();
 
-        abstract public void Update(ref WorldItems world);
+        abstract override public void Update(ref WorldItems world);
     }
 }
