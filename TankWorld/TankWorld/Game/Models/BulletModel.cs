@@ -2,7 +2,7 @@
 
 namespace TankWorld.Game.Models
 {
-    class BulletModel : EntityModel
+    public class BulletModel : EntityModel
     {
 
         private Coordinate position;

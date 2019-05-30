@@ -19,7 +19,7 @@ namespace TankWorld.Game.Panels
             spawnPosition.x = 0;
             spawnPosition.y = 0;
             parent.World.player = new TankObject(spawnPosition, TankObject.TankColor.PLAYER);
-            parent.World.allObjects = new HashSet<GameObject>();
+            parent.World.allObjects = new List<GameObject>();
             this.camera = Camera.Instance;
             this.parent = parent;
         }
@@ -103,6 +103,8 @@ namespace TankWorld.Game.Panels
                     TankObject newTank;
                     for (int i = 0; i < 50; i++)
                     {
+                        spawnPosition.x += 200 * Math.Cos(2 * Math.PI * Helper.random.NextDouble());
+                        spawnPosition.y += 200 * Math.Sin(2 * Math.PI * Helper.random.NextDouble());
                         newTank = new TankObject(spawnPosition, TankObject.TankColor.GREEN);
                         this.AddNewObject(newTank);
                     }

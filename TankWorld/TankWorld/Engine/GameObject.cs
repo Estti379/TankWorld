@@ -6,17 +6,20 @@ namespace TankWorld.Engine
 {
     abstract public class GameObject: IRender
     {
-        private Guid ID;
-        
+        private Guid id;
+
+        private Coordinate position;
+
         //Constructors
         public GameObject()
         {
-            ID = Guid.NewGuid();
+            id = Guid.NewGuid();
         }
 
 
         //Accessors
-
+        public ref Coordinate Position { get => ref position;}
+        public Guid Id { get => id;}
 
         //Methods
         public abstract void Update(ref WorldItems world);
@@ -25,11 +28,11 @@ namespace TankWorld.Engine
         //For better performance in Hashets!
         public bool Equals(GameObject other)
         {
-            return this.ID.Equals(other.ID);
+            return this.id.Equals(other.id);
         }
         public override int GetHashCode()
         {
-            return this.ID.GetHashCode();
+            return this.id.GetHashCode();
         }
 
     }

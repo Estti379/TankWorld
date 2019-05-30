@@ -25,13 +25,15 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -46,11 +48,16 @@
   <ItemGroup>
     <Compile Include="Engine\Command.cs" />
     <Compile Include="Engine\Helper.cs" />
+    <Compile Include="Engine\HitBoxStruct.cs" />
+    <Compile Include="Engine\ICollide.cs" />
     <Compile Include="Engine\Timer.cs" />
     <Compile Include="Game\Camera.cs" />
     <Compile Include="Game\Commands\EraseGameObjectCommand.cs" />
     <Compile Include="Game\Commands\SalvoShotCommand.cs" />
+    <Compile Include="Game\Components\BulletPhysicsComponent.cs" />
     <Compile Include="Game\Components\DefaultAiComponent.cs" />
+    <Compile Include="Game\Components\DefaultPhysicsComponent.cs" />
+    <Compile Include="Game\Components\PhysicsComponent.cs" />
     <Compile Include="Game\Components\TankAiComponent.cs" />
     <Compile Include="Game\Components\AiComponent.cs" />
     <Compile Include="Game\Items\BulletObject.cs" />
@@ -133,6 +140,10 @@
     <Content Include="assets\images\TankTurretPlayer.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <ContentWithTargetPath Include="assets\libs\SDL2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>SDL2.dll</TargetPath>
+    </ContentWithTargetPath>
     <ContentWithTargetPath Include="assets\libs\libjpeg-9.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>libjpeg-9.dll</TargetPath>

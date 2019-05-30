@@ -34,7 +34,7 @@ namespace TankWorld.Game.Components
         //Methods
         override public void Update(TankObject tank, ref WorldItems world)
         {
-            HashSet<TankObject> nearbyTanks = new HashSet<TankObject>();
+            List<TankObject> nearbyTanks = new List<TankObject>();
 
             //Add each Tank to list only if they are in a square around "tank"
             foreach (GameObject entry in world.allObjects)
@@ -186,7 +186,7 @@ namespace TankWorld.Game.Components
         }
 
 
-        private TankObject SearchForNewTargetTank(TankObject tank, HashSet<TankObject> nearbyTanks)
+        private TankObject SearchForNewTargetTank(TankObject tank, List<TankObject> nearbyTanks)
         {
             double currentLowestDistance = -1;
             double tempDistance = -1;

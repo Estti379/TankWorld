@@ -58,7 +58,7 @@ namespace TankWorld.Game.Items
         private BulletObject cannonBulletPrototype;
         private WeaponProjectileSpawner cannonBulletSpawner;
 
-        private Coordinate position;
+        //private Coordinate position;
         private double speed;
         private double acceleration;
         private double turningAngle;
@@ -79,14 +79,14 @@ namespace TankWorld.Game.Items
             camera = Camera.Instance;
             this.color = type;
             model = new TankModel(this.color);
-            position = spawnPosition;
+            Position = spawnPosition;
             speed = 0;
             acceleration = 0;
             turningAngle = 0;
             directionBody = 3*Math.PI/2;
-            cannonTarget = position; //So that cannon is facing forward
-            cannonTarget.x = (model.AllSprites["TankBody"].SubRect.w) * Math.Cos(directionBody) + position.x;
-            cannonTarget.y = (model.AllSprites["TankBody"].SubRect.w) * Math.Sin(directionBody) + position.y;
+            cannonTarget = Position; //So that cannon is facing forward
+            cannonTarget.x = (model.AllSprites["TankBody"].SubRect.w) * Math.Cos(directionBody) + Position.x;
+            cannonTarget.y = (model.AllSprites["TankBody"].SubRect.w) * Math.Sin(directionBody) + Position.y;
             UpdateCannonDirection();
             model.UpdateModel(this, directionBody, directionCannon);
             cannonBulletPrototype = new BulletObject(this, this.GetBarrelEndPosition(), this.DirectionCannon);
@@ -123,11 +123,6 @@ namespace TankWorld.Game.Items
         }
 
         //Accessors
-
-        public Coordinate Position
-        {
-            get { return position; }
-        }
 
         public Faction CurrentFaction { get => currentFaction;}
         public Coordinate CannonTarget { get => cannonTarget; set => cannonTarget = value; }
@@ -224,8 +219,8 @@ namespace TankWorld.Game.Items
 
         private void UpdateCoordinates()
         {
-            position.x += speed * Math.Cos(directionBody) * GameConstants.MS_PER_UPDATE * 1 / 1000 * GameConstants.METER_TO_PIXEL;
-            position.y += speed * Math.Sin(directionBody) * GameConstants.MS_PER_UPDATE * 1 / 1000 * GameConstants.METER_TO_PIXEL;
+            Position.x += speed * Math.Cos(directionBody) * GameConstants.MS_PER_UPDATE * 1 / 1000 * GameConstants.METER_TO_PIXEL;
+            Position.y += speed * Math.Sin(directionBody) * GameConstants.MS_PER_UPDATE * 1 / 1000 * GameConstants.METER_TO_PIXEL;
         }
 
         public void UpdateCannonDirection()
@@ -260,8 +255,8 @@ namespace TankWorld.Game.Items
         public Coordinate GetTurretPosition()
         {
             Coordinate turretCoord;
-            turretCoord.x = (model.AllSprites["TankBody"].SubRect.w / 4) * Math.Cos(directionBody + Math.PI) + position.x;
-            turretCoord.y = (model.AllSprites["TankBody"].SubRect.w / 4) * Math.Sin(directionBody + Math.PI) + position.y;
+            turretCoord.x = (model.AllSprites["TankBody"].SubRect.w / 4) * Math.Cos(directionBody + Math.PI) + Position.x;
+            turretCoord.y = (model.AllSprites["TankBody"].SubRect.w / 4) * Math.Sin(directionBody + Math.PI) + Position.y;
 
             return turretCoord;
         }

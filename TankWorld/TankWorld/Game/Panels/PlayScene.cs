@@ -75,10 +75,19 @@ namespace TankWorld.Game.Panels
                     case PRESS_S:
                         menu.GoDown();
                         break;
+                    case PRESS_DOWN:
+                        menu.GoDown();
+                        break;
                     case PRESS_W:
                         menu.GoUp();
                         break;
+                    case PRESS_UP:
+                        menu.GoUp();
+                        break;
                     case PRESS_SPACE:
+                        menu.Act();
+                        break;
+                    case PRESS_ENTER:
                         menu.Act();
                         break;
                 }

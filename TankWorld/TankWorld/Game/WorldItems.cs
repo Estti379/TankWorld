@@ -6,7 +6,7 @@ namespace TankWorld.Game
 {
     public struct WorldItems
     {
-        public HashSet<GameObject> allObjects;
+        public List<GameObject> allObjects;
         public TankObject player;
 
     }

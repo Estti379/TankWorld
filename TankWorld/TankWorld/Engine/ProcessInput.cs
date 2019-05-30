@@ -77,6 +77,9 @@ namespace TankWorld.Engine
                 case SDLK_p:
                     input.inputEvent = PRESS_P;
                     break;
+                case SDLK_RETURN:
+                    input.inputEvent = PRESS_ENTER;
+                    break;
                 case SDLK_SPACE:
                     input.inputEvent = PRESS_SPACE;
                     break;
@@ -113,6 +116,9 @@ namespace TankWorld.Engine
                     break;
                 case SDLK_p:
                     input.inputEvent = RELEASE_P;
+                    break;
+                case SDLK_RETURN:
+                    input.inputEvent = RELEASE_ENTER;
                     break;
                 case SDLK_SPACE:
                     input.inputEvent = RELEASE_SPACE;
