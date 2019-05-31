@@ -47,6 +47,12 @@ namespace TankWorld.Engine
             SetupSpriteEntity(key);
         }
 
+        public void ReplaceText(string newText, IntPtr font, SDL_Color color)
+        {
+            TextureStruct newTexture = TextToTexture(font, newText, color);
+            this.ReplaceTexture(newTexture);
+        }
+
         public Sprite(string key, TextureStruct texture)
         {
             if (textureList.ContainsKey(key))
@@ -71,6 +77,14 @@ namespace TankWorld.Engine
         public IntPtr Texture
         {
             get{ return textureList[name].texture; }
+        }
+        public int TextureHeight
+        {
+            get { return textureList[name].h; }
+        }
+        public int TextureWidth
+        {
+            get { return textureList[name].w; }
         }
 
         public ref SDL_Rect Pos
@@ -200,7 +214,7 @@ namespace TankWorld.Engine
                        ref subDrawRect,
                        ref position);
         }
-        public void RotateAndRender(Coordinate mapPosition, double angleRad, double originX, double originY)
+        public void RotateAndRender(Coordinate screenPosition, double angleRad, double originX, double originY)
         {
             SDL_Point centerOfRotation = new SDL_Point()
             {
@@ -208,8 +222,8 @@ namespace TankWorld.Engine
                 y = (int)Math.Round(originY)
             };
             
-            position.x = (int) Math.Round(mapPosition.x - subDrawRect.w / 2);
-            position.y = (int) Math.Round(mapPosition.y - subDrawRect.h / 2);
+            position.x = (int) Math.Round(screenPosition.x - subDrawRect.w / 2);
+            position.y = (int) Math.Round(screenPosition.y - subDrawRect.h / 2);
 
             double angleDeg = angleRad * 180 / Math.PI;
 

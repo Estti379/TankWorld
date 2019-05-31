@@ -11,12 +11,17 @@ namespace TankWorld.Game.Events
             FLIP_MENU,
             SPAWN_NEW_ENTITY,
             EXIT_GAME,
-            DESPAWN_ENTITY
+            DESPAWN_ENTITY,
+            TANK_HIT,
+            TIME_UP,
+            SPAWN_GROUP
         }
         public readonly Type eventType;
 
         private Scene newScene;
         private GameObject sender;
+        private GameObject target;
+        private GameObject sniper;
 
 
         //Constructors
@@ -36,6 +41,12 @@ namespace TankWorld.Game.Events
             this.eventType = eventType;
             this.sender = gameObject;
         }
+        public SceneStateEvent(Type eventType, TankObject target, TankObject sniper)
+        {
+            this.eventType = eventType;
+            this.target = target;
+            this.sniper = sniper;
+        }
 
         //Accessors
         public Scene NewScene
@@ -49,6 +60,9 @@ namespace TankWorld.Game.Events
             set { sender = value; }
             get { return sender; }
         }
+
+        public GameObject Target { get => target; set => target = value; }
+        public GameObject Sniper { get => sniper; set => sniper = value; }
 
         //Methods
     }

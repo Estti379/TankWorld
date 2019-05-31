@@ -7,18 +7,15 @@ using TankWorld.Game.Items;
 
 namespace TankWorld.Game.Components
 {
-    class BulletPhysicsComponent: PhysicsComponent
+    class TankPhysicsComponent: PhysicsComponent
     {
-
-        //private BulletObject parent;
         private HitBoxStruct hitBoxes;
         private int heightBox;
         private int widthBox;
 
         //Constructors
-        public BulletPhysicsComponent(BulletObject owner)
+        public TankPhysicsComponent(TankObject owner)
         {
-            //parent = owner;
             InitializeHitBoxes(owner);
         }
 
@@ -32,17 +29,17 @@ namespace TankWorld.Game.Components
             }
         }
 
-        
+
 
         //Methods
         override public void Update(GameObject parentObject, ref WorldItems world)
         {
             CheckForCloseness(parentObject, ref world);
-            BulletObject parentBullet = parentObject as BulletObject;
-            UpdateHitBox(parentBullet);
+            TankObject parentTank = parentObject as TankObject;
+            UpdateHitBox(parentTank);
         }
 
-        public void InitializeHitBoxes(BulletObject parent)
+        public void InitializeHitBoxes(TankObject parent)
         {
             hitBoxes.hitBoxesList = new Dictionary<string, HitBox>();
             HitBox bulletHitBox = new HitBox
@@ -50,16 +47,16 @@ namespace TankWorld.Game.Components
                 boxType = HitBox.Type.RECTANGLE,
             };
 
-            hitBoxes.hitBoxesList.Add("Bullet", bulletHitBox);
+            hitBoxes.hitBoxesList.Add("Tank", bulletHitBox);
             UpdateHitBox(parent);
         }
 
-        public void UpdateHitBox(BulletObject parent)
+        public void UpdateHitBox(TankObject parent)
         {
             hitBoxes.position = parent.Position;
-            heightBox = parent.Model.AllSprites["Bullet"].Pos.h;
-            widthBox = parent.Model.AllSprites["Bullet"].Pos.w;
-            if(heightBox >= widthBox)
+            heightBox = parent.Model.AllSprites["TankBody"].Pos.h;
+            widthBox = parent.Model.AllSprites["TankBody"].Pos.w;
+            if (heightBox >= widthBox)
             {
                 hitBoxes.collisionRange = heightBox;
             }
@@ -73,15 +70,10 @@ namespace TankWorld.Game.Components
             {
                 boxType = HitBox.Type.RECTANGLE,
             };
-            double angle = Math.Atan2(parent.SpeedVektor.y, parent.SpeedVektor.x);
+            double angle = parent.DirectionBody;
 
-
-
-            hitBoxes.hitBoxesList["Bullet"] = Helper.CreateRectangleHitBox(hitBoxes.position, angle, widthBox, heightBox);
-
+            hitBoxes.hitBoxesList["Tank"] = Helper.CreateRectangleHitBox(hitBoxes.position, angle, widthBox, heightBox);
 
         }
-
-
     }
 }

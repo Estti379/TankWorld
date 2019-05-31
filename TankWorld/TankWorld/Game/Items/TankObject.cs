@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TankWorld.Engine;
 using TankWorld.Game.Commands;
 using TankWorld.Game.Components;
@@ -7,7 +8,7 @@ using TankWorld.Game.Models;
 
 namespace TankWorld.Game.Items
 {
-    public class TankObject: GameObject
+    public class TankObject: GameObject , ICollide
     {
 
         public enum TankColor
@@ -22,6 +23,7 @@ namespace TankWorld.Game.Items
         }
 
         private AiComponent aiComponent;
+        private PhysicsComponent tankPhysics;
 
         private TankModel model;
         private TankColor color;
@@ -94,6 +96,8 @@ namespace TankWorld.Game.Items
             //initialize Timers only after setting spawners and their prototypes!
             InitializeTimers();
 
+            tankPhysics = new TankPhysicsComponent(this);
+
             if (color == TankColor.PLAYER)
             {
                 aiComponent = new DefaultAiComponent();
@@ -101,7 +105,10 @@ namespace TankWorld.Game.Items
             }
             else
             {
+                
                 aiComponent = new TankAiComponent();
+                //Use only for debugging, it neuters Tanks AI
+                //aiComponent = new DefaultAiComponent();
                 currentFaction = Faction.AI;
             }
 
@@ -132,6 +139,17 @@ namespace TankWorld.Game.Items
         public double ReverseRate { get => reverseRate;}
         public double TurnLeftRate { get => turnLeftRate;}
         public double TurnRightRate { get => turnRightRate;}
+        public TankModel Model { get => model;}
+        public Coordinate SpeedVektor
+        {
+            get
+            {
+                Coordinate speedVektor;
+                speedVektor.x = speed * Math.Cos(directionBody) * GameConstants.MS_PER_UPDATE * 1 / 1000 * GameConstants.METER_TO_PIXEL;
+                speedVektor.y = speed * Math.Sin(directionBody) * GameConstants.MS_PER_UPDATE * 1 / 1000 * GameConstants.METER_TO_PIXEL;
+                return speedVektor;
+            }
+        }
 
 
         //Methods
@@ -147,6 +165,7 @@ namespace TankWorld.Game.Items
         public override void Update(ref WorldItems world)
         {
             aiComponent.Update(this, ref world);
+            tankPhysics.Update(this, ref world);
             UpdateDirection();
             UpdateSpeed();
             UpdateCoordinates();
@@ -154,6 +173,15 @@ namespace TankWorld.Game.Items
             UpdateWeaponPrototypes();
             model.UpdateModel(this, directionBody, directionCannon);
             UpdateTimers();
+            CheckLongivity();
+        }
+
+        private void CheckLongivity()
+        {
+            if (Helper.Distance(this.Position, camera.Position) > 10000)
+            {
+                MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.DESPAWN_ENTITY, this));
+            }
         }
 
         private void UpdateWeaponPrototypes()
@@ -334,5 +362,31 @@ namespace TankWorld.Game.Items
             }
         }
 
+        public HitBoxStruct GetHitBoxes()
+        {
+            return this.tankPhysics.HitBoxes;
+        }
+
+        public void CheckForCollision(ICollide collidingObject)
+        {
+            Coordinate collisionPoint = new Coordinate();
+            foreach (KeyValuePair<string, HitBox> myBox in this.GetHitBoxes().hitBoxesList)
+            {
+                foreach (KeyValuePair<string, HitBox> otherBox in collidingObject.GetHitBoxes().hitBoxesList)
+                {
+                    if (Helper.HitBoxIntersection(myBox.Value, otherBox.Value, ref collisionPoint))
+                    {
+                        this.HandleCollision(collidingObject, collisionPoint);
+                        break; //Stop right after first point found!
+                        //TODO:Bug: One does leave one foreach with this break, but first foreach keeps going!
+                    }
+                }
+            }
+        }
+
+        public void HandleCollision(ICollide collidingObject, Coordinate collisionPoint)
+        {
+            /*Do nothing yet*/
+        }
     }
 }

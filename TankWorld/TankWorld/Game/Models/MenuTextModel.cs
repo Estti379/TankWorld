@@ -25,7 +25,7 @@ namespace TankWorld.Game.Models
             Sprite menuTextSprite;
             if (!Sprite.TextureExists(key + "Active"))
             {
-                menuTextSprite = new Sprite(key + "Active", TextGenerator.pixel_millenium, menuText, color);
+                menuTextSprite = new Sprite(key + "Active", TextGenerator.pixel_millenium_big, menuText, color);
 
                 menuTextSprite.Pos.x = 0;
                 menuTextSprite.Pos.y = 0;
@@ -42,7 +42,7 @@ namespace TankWorld.Game.Models
 
             if (!Sprite.TextureExists(key + "Inactive"))
             {
-                menuTextSprite = new Sprite(key + "Inactive", TextGenerator.pixel_millenium, menuText, color);
+                menuTextSprite = new Sprite(key + "Inactive", TextGenerator.pixel_millenium_big, menuText, color);
 
                 menuTextSprite.Pos.x = 0;
                 menuTextSprite.Pos.y = 0;

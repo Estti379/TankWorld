@@ -102,25 +102,20 @@ namespace TankWorld.Engine
 
         private static bool PointRectangleIntersection(Coordinate point, HitBox box)
         {
-            double areaBox = Math.Abs((box.pointB.x * box.pointA.y - box.pointA.x * box.pointB.y) + (box.pointC.x * box.pointB.y - box.pointB.x * box.pointC.y) + (box.pointA.x * box.pointC.y - box.pointC.x + box.pointA.y));
+            double areaBox = Math.Abs(Distance(box.pointA,box.pointB) * Distance(box.pointB,box.pointC) );
             double sumAreaTriangle = 0;
-            double triangleArea;
 
             //triangle A point B
-            triangleArea = Math.Abs( (point.x * box.pointA.y - box.pointA.x * point.y) + (box.pointB.x*point.y - point.x * box.pointB.y) + (box.pointA.x*box.pointB.y - box.pointB.x + box.pointA.y) ) / 2.0;
-            sumAreaTriangle += triangleArea;
+            sumAreaTriangle += TriangleArea(point, box.pointA, box.pointB);
 
             //triangle B point C
-            triangleArea = Math.Abs((point.x * box.pointB.y - box.pointB.x * point.y) + (box.pointC.x * point.y - point.x * box.pointC.y) + (box.pointB.x * box.pointC.y - box.pointC.x + box.pointB.y)) / 2.0;
-            sumAreaTriangle += triangleArea;
+            sumAreaTriangle += TriangleArea(point, box.pointA, box.pointC);
 
             //triangle C point D
-            triangleArea = Math.Abs((point.x * box.pointC.y - box.pointC.x * point.y) + (box.pointD.x * point.y - point.x * box.pointD.y) + (box.pointC.x * box.pointD.y - box.pointD.x + box.pointC.y)) / 2.0;
-            sumAreaTriangle += triangleArea;
+            sumAreaTriangle += TriangleArea(point, box.pointC, box.pointD);
 
             //triangle D point A
-            triangleArea = Math.Abs((point.x * box.pointD.y - box.pointD.x * point.y) + (box.pointA.x * point.y - point.x * box.pointA.y) + (box.pointD.x * box.pointA.y - box.pointA.x + box.pointD.y)) / 2.0;
-            sumAreaTriangle += triangleArea;
+            sumAreaTriangle += TriangleArea(point, box.pointD, box.pointD);
 
             if (areaBox < sumAreaTriangle)
             {
@@ -130,6 +125,11 @@ namespace TankWorld.Engine
             {
                 return true;
             }
+        }
+
+        private static double TriangleArea(Coordinate A, Coordinate B, Coordinate C)
+        {
+            return Math.Abs( (A.x*(B.y-C.y) + B.x*(C.y-A.y) + C.x*(A.y-B.y) ) ) / 2.0;
         }
 
         private static bool CircleCircleIntersection(HitBox circle1, HitBox circle2, ref Coordinate intersectionPoint)
@@ -164,7 +164,7 @@ namespace TankWorld.Engine
             Coordinate rotatedPoint;
 
             rotatedPoint.x = point.x * Math.Cos(angle) - point.y * Math.Sin(angle);
-            rotatedPoint.y = point.x * Math.Sin(angle) - point.y * Math.Cos(angle);
+            rotatedPoint.y = point.x * Math.Sin(angle) + point.y * Math.Cos(angle);
 
             return rotatedPoint;
         }
@@ -178,7 +178,7 @@ namespace TankWorld.Engine
 
             Coordinate temp;
             //pointA
-            temp.x = -width / 2;
+            temp.x = width / 2;
             temp.y = height / 2;
             temp = Helper.RotatePoint(temp, angle);
             temp.x += center.x;
@@ -187,14 +187,14 @@ namespace TankWorld.Engine
 
             //pointB
             temp.x = width / 2;
-            temp.y = height / 2;
+            temp.y = -height / 2;
             temp = Helper.RotatePoint(temp, angle);
             temp.x += center.x;
             temp.y += center.y;
             rectangleHitBox.pointB = temp;
 
             //pointC
-            temp.x = width / 2;
+            temp.x = -width / 2;
             temp.y = -height / 2;
             temp = Helper.RotatePoint(temp, angle);
             temp.x += center.x;
@@ -203,13 +203,22 @@ namespace TankWorld.Engine
 
             //pointD
             temp.x = -width / 2;
-            temp.y = -height / 2;
+            temp.y = height / 2;
             temp = Helper.RotatePoint(temp, angle);
             temp.x += center.x;
             temp.y += center.y;
-            rectangleHitBox.pointC = temp;
+            rectangleHitBox.pointD = temp;
 
             return rectangleHitBox;
+        }
+
+        static public int TimerToSeconds(Timer time)
+        {
+            return (int)Math.Round(time.Time/1000) % 60;
+        }
+        static public int TimerToMinutes(Timer time)
+        {
+            return ((int)Math.Round(time.Time/1000)/60 ) % 60;
         }
 
     }

@@ -8,6 +8,5 @@ namespace TankWorld.Game
     {
         public List<GameObject> allObjects;
         public TankObject player;
-
     }
 }

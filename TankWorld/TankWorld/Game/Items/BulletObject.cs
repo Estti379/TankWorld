@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TankWorld.Engine;
 using TankWorld.Game.Commands;
 using TankWorld.Game.Components;
+using TankWorld.Game.Effects;
 using TankWorld.Game.Events;
 using TankWorld.Game.Models;
 
@@ -18,7 +19,6 @@ namespace TankWorld.Game.Items
 
         private PhysicsComponent bulletPhysics;
 
-        //private Coordinate position;
         private Coordinate speedVektor;
 
         private Timer longivity;
@@ -102,7 +102,10 @@ namespace TankWorld.Game.Items
             {
                 if(this.owner.Id != collidingTank.Id)
                 {
-                    MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.DESPAWN_ENTITY, owner));
+                    MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.DESPAWN_ENTITY, this));
+                    GameObject newExplosion = new BulletExplosionEffectObject(collisionPoint);
+                    MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.SPAWN_NEW_ENTITY, newExplosion));
+                    MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.TANK_HIT, collidingTank, this.owner));
 
                 }
             }

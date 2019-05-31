@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TankWorld.Engine;
 using TankWorld.Game.Commands;
 using TankWorld.Game.Events;
+using TankWorld.Game.Items;
 using static TankWorld.Engine.InputEnum;
 
 namespace TankWorld.Game.Panels
@@ -14,9 +16,15 @@ namespace TankWorld.Game.Panels
 
         private MapPanel map;
         private GameViewPanel gameView;
+        private UiPanel uiView;
         private MenuPanel menu;
 
         private Camera camera;
+
+        private Timer spawnTimer;
+
+        private int enemyDamaged;
+        private int playerDamaged;
 
         bool showMenu;
 
@@ -51,8 +59,15 @@ namespace TankWorld.Game.Panels
             menu.SetPosition((GameConstants.WINDOWS_X * 1 / 3), 100);
             showMenu = false;
 
+            uiView = new UiPanel();
             MainEventBus.Register(this);
             events = new List<Event>();
+
+            spawnTimer = new Timer(Timer.Type.ASCENDING);
+            spawnTimer.Time = 5 * 1000;
+            spawnTimer.ExecuteTime = 5 * 1000;
+            spawnTimer.DefaultTime = 0;
+            spawnTimer.Command = new SpawnCommand(spawnTimer);
 
         }
 
@@ -109,10 +124,13 @@ namespace TankWorld.Game.Panels
         {
             map.Render();
             gameView.Render();
-
+            
             if (showMenu)
             {
                 menu.Render();
+            } else
+            {
+                uiView.Render();
             }
         }
 
@@ -128,7 +146,9 @@ namespace TankWorld.Game.Panels
             {
                 gameView.Update();
                 camera.Update();
+                uiView.Update();
                 map.Update();
+                spawnTimer.Update();
             }
         }
 
@@ -153,6 +173,35 @@ namespace TankWorld.Game.Panels
                             break;
                         case SceneStateEvent.Type.DESPAWN_ENTITY:
                             gameView.RemoveObject(stateEvent.Sender);
+                            break;
+                        case SceneStateEvent.Type.TANK_HIT:
+                            if(stateEvent.Target.Id == world.player.Id)
+                            {
+                                this.playerDamaged++;
+                            }
+                            else if(stateEvent.Sniper.Id == world.player.Id)
+                            {
+                                this.enemyDamaged++;
+                            }
+                            break;
+                        case SceneStateEvent.Type.SPAWN_GROUP:
+                            Coordinate spawnPosition;
+                            spawnPosition = world.player.Position;
+                            double angle = Helper.random.NextDouble();
+                            spawnPosition.x += 1200 * Math.Cos(2 * Math.PI * angle);
+                            spawnPosition.y += 1200 * Math.Sin(2 * Math.PI * angle);
+                            TankObject newTank;
+                            for (int i = 0; i < 3; i++)
+                            {
+                                angle = Helper.random.NextDouble();
+                                spawnPosition.x += 200 * Math.Cos(2 * Math.PI * angle );
+                                spawnPosition.y += 200 * Math.Sin(2 * Math.PI * angle );
+                                newTank = new TankObject(spawnPosition, TankObject.TankColor.GREEN);
+                                gameView.AddNewObject(newTank);
+                            }
+                            break;
+                        case SceneStateEvent.Type.TIME_UP:
+                            uiView.TimeIsUp(enemyDamaged, playerDamaged);
                             break;
 
                     }

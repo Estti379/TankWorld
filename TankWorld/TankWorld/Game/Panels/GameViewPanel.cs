@@ -41,10 +41,10 @@ namespace TankWorld.Game.Panels
             parent.World.player.Render();
             foreach (GameObject entry in parent.World.allObjects)
             {
-                WeaponProjectileObject projectileEntry = entry as WeaponProjectileObject;
-                if (projectileEntry != null)
+                TankObject tankEntry = entry as TankObject;
+                if (tankEntry == null) // Render everything but not tanks
                 {
-                    projectileEntry.Render();
+                    entry.Render();
                 }
             }
         }
@@ -96,19 +96,24 @@ namespace TankWorld.Game.Panels
                     parent.World.player.Shoot();
                     break;
                 case PRESS_P:
+                    /*
                     Coordinate spawnPosition;
                     spawnPosition.x = input.x;
                     spawnPosition.y = input.y;
                     spawnPosition = camera.ConvertScreenToMapCoordinate(spawnPosition);
                     TankObject newTank;
-                    for (int i = 0; i < 50; i++)
+                    double angle;
+                    for (int i = 0; i < 1; i++)
                     {
-                        spawnPosition.x += 200 * Math.Cos(2 * Math.PI * Helper.random.NextDouble());
-                        spawnPosition.y += 200 * Math.Sin(2 * Math.PI * Helper.random.NextDouble());
+                        angle = Helper.random.NextDouble();
+                        spawnPosition.x += 200 * Math.Cos(2 * Math.PI * angle);
+                        spawnPosition.y += 200 * Math.Sin(2 * Math.PI * angle);
                         newTank = new TankObject(spawnPosition, TankObject.TankColor.GREEN);
                         this.AddNewObject(newTank);
                     }
-                        
+
+                    */
+
 
                     break;
             }

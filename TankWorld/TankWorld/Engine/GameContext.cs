@@ -89,7 +89,7 @@ namespace TankWorld.Engine
                 return false;
             }
 
-            if (IMG_Init(IMG_InitFlags.IMG_INIT_JPG) == -1)
+            if (IMG_Init(IMG_InitFlags.IMG_INIT_JPG |IMG_InitFlags.IMG_INIT_PNG) == -1)
             {
                 Console.Write("SDL_image could not initialize! SDL_Error: %s\n", SDL_GetError());
                 return false;
