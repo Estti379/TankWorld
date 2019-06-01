@@ -9,9 +9,6 @@ namespace TankWorld.Game.Components
 {
     class BulletPhysicsComponent: PhysicsComponent
     {
-
-        //private BulletObject parent;
-        private HitBoxStruct hitBoxes;
         private int heightBox;
         private int widthBox;
 
@@ -24,16 +21,8 @@ namespace TankWorld.Game.Components
 
 
         //Accessors
-        public override HitBoxStruct HitBoxes
-        {
-            get
-            {
-                return hitBoxes;
-            }
-        }
 
         
-
         //Methods
         override public void Update(GameObject parentObject, ref WorldItems world)
         {
@@ -44,28 +33,27 @@ namespace TankWorld.Game.Components
 
         public void InitializeHitBoxes(BulletObject parent)
         {
-            hitBoxes.hitBoxesList = new Dictionary<string, HitBox>();
             HitBox bulletHitBox = new HitBox
             {
                 boxType = HitBox.Type.RECTANGLE,
             };
 
-            hitBoxes.hitBoxesList.Add("Bullet", bulletHitBox);
+            HitBoxes.hitBoxesList.Add("Bullet", bulletHitBox);
             UpdateHitBox(parent);
         }
 
         public void UpdateHitBox(BulletObject parent)
         {
-            hitBoxes.position = parent.Position;
+            HitBoxes.Position = parent.Position;
             heightBox = parent.Model.AllSprites["Bullet"].Pos.h;
             widthBox = parent.Model.AllSprites["Bullet"].Pos.w;
             if(heightBox >= widthBox)
             {
-                hitBoxes.collisionRange = heightBox;
+                HitBoxes.CollisionRange = heightBox;
             }
             else
             {
-                hitBoxes.collisionRange = widthBox;
+                HitBoxes.CollisionRange = widthBox;
             }
 
             HitBox bulletHitBox = new HitBox
@@ -76,14 +64,10 @@ namespace TankWorld.Game.Components
 
 
 
-            hitBoxes.hitBoxesList["Bullet"] = Helper.UpdateRectangleHitBox(hitBoxes.hitBoxesList["Bullet"], hitBoxes.position, angle, widthBox, heightBox);
+            HitBoxes.hitBoxesList["Bullet"] = Helper.UpdateRectangleHitBox(HitBoxes.hitBoxesList["Bullet"], HitBoxes.Position, angle, widthBox, heightBox);
 
 
         }
 
-        public override void RenderHitBoxes()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -5,25 +5,12 @@ namespace TankWorld.Game.Components
 {
     class DefaultPhysicsComponent: PhysicsComponent
     {
-        HitBoxStruct hitBoxes;
         public DefaultPhysicsComponent()
         {
-            hitBoxes.collisionRange = 0;
-            hitBoxes.hitBoxesList = new Dictionary<string, HitBox>();
+            HitBoxes.CollisionRange = 0;
         }
 
-        public override HitBoxStruct HitBoxes
-        {
-            get
-            {
-                return hitBoxes;
-            }
-        }
 
-        public override void RenderHitBoxes()
-        {
-            /*empty*/
-        }
 
         //Accessors
 
@@ -31,7 +18,8 @@ namespace TankWorld.Game.Components
         //Methods
         override public void Update(GameObject parentObject, ref WorldItems world)
         {
-           hitBoxes.position = parentObject.Position;
+           HitBoxes.Position = parentObject.Position;
         }
+
     }
 }

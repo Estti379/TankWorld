@@ -5,10 +5,16 @@ namespace TankWorld.Engine
     public struct HitBoxStruct
     {
 
-        public double collisionRange; //From point position!
-        public Coordinate position;
+        private double collisionRange; //From point position!
+        private Coordinate position;
 
         public Dictionary<string ,HitBox> hitBoxesList;
+
+
+        //Accessors
+        public double CollisionRange { get => collisionRange; set => collisionRange = value; }
+        public Coordinate Position { get => position; set => position = value; }
+
 
     }
 

@@ -44,6 +44,7 @@ namespace TankWorld.Game.Items
         public override void Render()
         {
             model.Render();
+            bulletPhysics.RenderHitBoxes();
         }
 
         public override void Update(ref WorldItems world)
