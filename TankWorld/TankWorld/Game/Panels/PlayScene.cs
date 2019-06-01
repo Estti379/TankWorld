@@ -124,7 +124,6 @@ namespace TankWorld.Game.Panels
         {
             map.Render();
             gameView.Render();
-            
             if (showMenu)
             {
                 menu.Render();

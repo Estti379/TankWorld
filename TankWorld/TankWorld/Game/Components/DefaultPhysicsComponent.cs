@@ -20,6 +20,11 @@ namespace TankWorld.Game.Components
             }
         }
 
+        public override void RenderHitBoxes()
+        {
+            /*empty*/
+        }
+
         //Accessors
 
 

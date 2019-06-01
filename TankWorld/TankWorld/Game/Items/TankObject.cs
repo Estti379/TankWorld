@@ -116,17 +116,21 @@ namespace TankWorld.Game.Items
 
         private void InitializeTimers()
         {
-            BulletSalvoTimer = new Timer(Timer.Type.DESCENDING);
-            BulletSalvoTimer.Pause();
-            BulletSalvoTimer.DefaultTime = CANNON_BULLET_COOLDOWN*(CANNON_SALVO_PROJECTILE_NUMBER-1);
-            BulletSalvoTimer.ExecuteTime = 0;
+            BulletSalvoTimer = new Timer(Timer.Type.DESCENDING)
+            {
+                DefaultTime = CANNON_BULLET_COOLDOWN * (CANNON_SALVO_PROJECTILE_NUMBER - 1),
+                ExecuteTime = 0                
+            };
             BulletSalvoTimer.Command = new SalvoShotCommand(this, BulletSalvoTimer, cannonBulletSpawner, CANNON_BULLET_COOLDOWN);
+            BulletSalvoTimer.Pause();
 
-            CannonCooldownTimer = new Timer(Timer.Type.PAUSE_AT_ZERO);
-            CannonCooldownTimer.Time = 0;
+            CannonCooldownTimer = new Timer(Timer.Type.PAUSE_AT_ZERO)
+            {
+                Time = 0,
+                DefaultTime = CANNON_COOLDOWN,
+                ExecuteTime = CANNON_COOLDOWN * 2//avoid execution
+        };
             CannonCooldownTimer.Pause();
-            CannonCooldownTimer.DefaultTime = CANNON_COOLDOWN;
-            CannonCooldownTimer.ExecuteTime = CANNON_COOLDOWN * 2;//avoid execution
         }
 
         //Accessors
@@ -159,7 +163,12 @@ namespace TankWorld.Game.Items
         }
         public override void Render()
         {
-            model.Render();
+            if (camera.IsInsideCamera(this.Position, model.AllSprites["TankBody"].Pos.w, model.AllSprites["TankBody"].Pos.h) )
+            {
+                model.Render();
+                this.RenderHitBoxes();
+            }
+            
         }
 
         public override void Update(ref WorldItems world)
@@ -387,6 +396,12 @@ namespace TankWorld.Game.Items
         public void HandleCollision(ICollide collidingObject, Coordinate collisionPoint)
         {
             /*Do nothing yet*/
+        }
+
+        public void RenderHitBoxes()
+        {
+
+            this.tankPhysics.RenderHitBoxes();
         }
     }
 }

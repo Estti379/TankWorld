@@ -22,7 +22,6 @@ namespace TankWorld.Engine
                     //User requests quit
                     case SDL_QUIT:
                         done = true;
-                        return;
                         break;
                     case SDL_KEYDOWN:
                         input = CheckKeyDown(userEvent);

@@ -68,7 +68,6 @@ namespace TankWorld.Game.Components
                 hitBoxes.collisionRange = widthBox;
             }
 
-            Coordinate temp;
             HitBox bulletHitBox = new HitBox
             {
                 boxType = HitBox.Type.RECTANGLE,
@@ -77,11 +76,14 @@ namespace TankWorld.Game.Components
 
 
 
-            hitBoxes.hitBoxesList["Bullet"] = Helper.CreateRectangleHitBox(hitBoxes.position, angle, widthBox, heightBox);
+            hitBoxes.hitBoxesList["Bullet"] = Helper.UpdateRectangleHitBox(hitBoxes.hitBoxesList["Bullet"], hitBoxes.position, angle, widthBox, heightBox);
 
 
         }
 
-
+        public override void RenderHitBoxes()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

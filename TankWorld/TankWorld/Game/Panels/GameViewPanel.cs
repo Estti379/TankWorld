@@ -96,14 +96,14 @@ namespace TankWorld.Game.Panels
                     parent.World.player.Shoot();
                     break;
                 case PRESS_P:
-                    /*
+                    
                     Coordinate spawnPosition;
                     spawnPosition.x = input.x;
                     spawnPosition.y = input.y;
                     spawnPosition = camera.ConvertScreenToMapCoordinate(spawnPosition);
                     TankObject newTank;
                     double angle;
-                    for (int i = 0; i < 1; i++)
+                    for (int i = 0; i < 30; i++)
                     {
                         angle = Helper.random.NextDouble();
                         spawnPosition.x += 200 * Math.Cos(2 * Math.PI * angle);
@@ -112,7 +112,7 @@ namespace TankWorld.Game.Panels
                         this.AddNewObject(newTank);
                     }
 
-                    */
+                    
 
 
                     break;

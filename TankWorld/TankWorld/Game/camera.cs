@@ -1,4 +1,5 @@
-﻿using TankWorld.Engine;
+﻿using System;
+using TankWorld.Engine;
 using TankWorld.Game.Items;
 
 namespace TankWorld.Game
@@ -67,6 +68,16 @@ namespace TankWorld.Game
             screenCoord.y = mapCoord.y - position.y + GameConstants.WINDOWS_Y / 2;
 
             return screenCoord;
+        }
+
+        public bool IsInsideCamera(Coordinate position, int width, int height)
+        {
+
+            Coordinate drawPosition = ConvertMapToScreenCoordinate(position);
+            return  (drawPosition.x >= 0 - width)
+                            && (drawPosition.x <= GameConstants.WINDOWS_X + width)
+                            && (drawPosition.y >= 0 - height)
+                            && (drawPosition.y <= GameConstants.WINDOWS_Y + height);
         }
     }
 }

@@ -82,6 +82,8 @@ namespace TankWorld.Engine
                 Console.Write("SDL could not create render! SDL_Error: %s\n", SDL_GetError());
                 return false;
             }
+            //
+            SDL_SetRenderDrawBlendMode(renderer, SDL_BlendMode.SDL_BLENDMODE_BLEND);
 
             if (TTF_Init() == -1)
             {

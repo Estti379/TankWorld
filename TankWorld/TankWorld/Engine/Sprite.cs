@@ -8,7 +8,7 @@ using static SDL2.SDL.SDL_bool;
 
 namespace TankWorld.Engine
 {
-    public class Sprite: IRender
+    public class Sprite : IRender
     {
         private static Dictionary<string, TextureStruct> textureList = new Dictionary<string, TextureStruct>();
         private static IntPtr renderer = IntPtr.Zero;
@@ -22,10 +22,11 @@ namespace TankWorld.Engine
         public Sprite(string key, string imagePath, byte r, byte g, byte b)
         {
             TextureStruct texture;
-            if ( textureList.ContainsKey(key) )
+            if (textureList.ContainsKey(key))
             {
                 texture = textureList[key];
-            } else
+            }
+            else
             {
                 texture = BMPToTexture(imagePath, r, g, b);
                 textureList.Add(key, texture);
@@ -58,7 +59,7 @@ namespace TankWorld.Engine
             if (textureList.ContainsKey(key))
             {
                 texture = textureList[key];
-            }            
+            }
             SetupSpriteEntity(key);
         }
 
@@ -73,10 +74,10 @@ namespace TankWorld.Engine
         {
             set { renderer = value; }
         }
-        
+
         public IntPtr Texture
         {
-            get{ return textureList[name].texture; }
+            get { return textureList[name].texture; }
         }
         public int TextureHeight
         {
@@ -99,7 +100,7 @@ namespace TankWorld.Engine
         //Methods
         private void SetupSpriteEntity(string key)
         {
-            
+
             name = key;
             position.x = 0;
             position.y = 0;
@@ -150,12 +151,12 @@ namespace TankWorld.Engine
             //sprite = SDL_LoadBMP(imagePath);
             if (sprite == IntPtr.Zero)
             {
-                Console.Write("Unable to load image: "+ imagePath +" SDL Error:" + SDL_GetError() + " \n");
+                Console.Write("Unable to load image: " + imagePath + " SDL Error:" + SDL_GetError() + " \n");
                 SDL_FreeSurface(sprite);
                 return finalTexture;
             }
             //Set Colorkey
-            var format = ( (SDL_Surface)Marshal.PtrToStructure(sprite, typeof(SDL_Surface)) ).format;
+            var format = ((SDL_Surface)Marshal.PtrToStructure(sprite, typeof(SDL_Surface))).format;
             SDL_SetColorKey(sprite, 1, SDL_MapRGB(format, r, g, b));
 
             IntPtr myTexture = SDL_CreateTextureFromSurface(renderer, sprite);
@@ -189,7 +190,7 @@ namespace TankWorld.Engine
 
         static public void RemoveAll()
         {
-            foreach(KeyValuePair<string, TextureStruct> current in textureList)
+            foreach (KeyValuePair<string, TextureStruct> current in textureList)
             {
                 SDL_DestroyTexture(current.Value.texture);
             }
@@ -221,9 +222,9 @@ namespace TankWorld.Engine
                 x = (int)Math.Round(originX),
                 y = (int)Math.Round(originY)
             };
-            
-            position.x = (int) Math.Round(screenPosition.x - subDrawRect.w / 2);
-            position.y = (int) Math.Round(screenPosition.y - subDrawRect.h / 2);
+
+            position.x = (int)Math.Round(screenPosition.x - subDrawRect.w / 2);
+            position.y = (int)Math.Round(screenPosition.y - subDrawRect.h / 2);
 
             double angleDeg = angleRad * 180 / Math.PI;
 
@@ -233,6 +234,136 @@ namespace TankWorld.Engine
                        angleDeg,
                        ref centerOfRotation,
                        SDL_RendererFlip.SDL_FLIP_NONE);
+        }
+
+        static public void DrawFilledRectangle(Coordinate A, Coordinate B, Coordinate C, Coordinate D, SDL_Color color)
+        {
+            SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+            Coordinate low = new Coordinate();
+            Coordinate left = new Coordinate();
+            Coordinate high = new Coordinate();
+            Coordinate right = new Coordinate();
+
+            //Case A is the lowest point in X-Axis 
+            if ((A.x <= D.x) && (A.x <= B.x))
+            {
+                low = A;
+                high = C;
+                left = B;
+                right = D;
+
+            }
+            //Case B is the lowest point in X-Axis 
+            else if ((B.x <= C.x) && (B.x <= A.x))
+            {
+                low = B;
+                high = D;
+                left = C;
+                right = A;
+
+            }
+            //Case C is the lowest point in X-Axis 
+            else if ((C.x <= D.x) && (C.x <= B.x))
+            {
+                low = C;
+                high = A;
+                left = D;
+                right = B;
+
+
+            }
+            //Case D is the lowest point in X-Axis 
+            else if ((D.x <= C.x) && (D.x <= A.x))
+            {
+                low = D;
+                high = B;
+                left = A;
+                right = C;
+
+            }
+
+
+            SDL_Rect line;
+            //Handle cases of rectangles that are NOT angled
+            if (low.x - left.x == 0)
+            {//it is highly possible that one needs to use right instead of left here because of X-axe inversion!
+                line.x = (int)Math.Round(low.x);
+                line.y = (int)Math.Round(low.y);
+                line.h = (int)Math.Round(left.y - low.y);
+                line.w = (int)Math.Round(right.x - low.x);
+
+                //draw Rectangle
+                SDL_RenderFillRect(renderer, ref line);
+                return;
+                //Leave because everything is draw!
+            }
+
+
+            //Get line equations for all 4 lines; y= m*x + p
+            double mLowLeft = (low.y - left.y) / (double)(low.x - left.x);
+            double pLowLeft = low.y - mLowLeft * low.x;
+
+            double mLowRight = (low.y - right.y) / (double)(low.x - right.x);
+            double pLowRight = low.y - mLowRight * low.x;
+
+            double mLeftHigh = (high.y - left.y) / (double)(high.x - left.x);
+            double pLeftHigh = high.y - mLeftHigh * high.x;
+
+            double mRightHigh = (high.y - right.y) / (double)(high.x - right.x);
+            double pRightHigh = high.y - mRightHigh * high.x;
+
+            double mSmall = mLowLeft;
+            double pSmall = pLowLeft;
+            double mBig = mLowRight;
+            double pBig = pLowRight;
+
+            //Draw rectangle low1, low2, high1, high2 starting from left to right
+
+            for (double x = low.x; x < high.x; x++)
+            {
+                if (x >= left.x)
+                {
+                    mSmall = mLeftHigh;
+                    pSmall = pLeftHigh;
+                }
+                if (x >= right.x)
+                {
+                    mBig = mRightHigh;
+                    pBig = pRightHigh;
+                }
+
+                line.x = (int)Math.Round(x);
+                line.y = (int)Math.Round(x * mBig + pBig);
+                line.h = (int)Math.Round(-x * mBig - pBig + x * mSmall + pSmall);
+                line.w = 1;
+
+                //draw Rectangle
+                SDL_RenderFillRect(renderer, ref line);
+
+            }
+
+        }
+
+
+        static public void DrawFilledCircle(Coordinate center, double radius, SDL_Color color)
+        {
+            SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+            SDL_Rect line;
+            double xUp;
+            double yUp;
+
+            for (double x = 0; x < 2*radius; x++)
+            {
+                xUp = x - radius;
+                yUp = Math.Sqrt(radius * radius - xUp * xUp);
+
+                line.x = (int)Math.Round(xUp+center.x);
+                line.y = (int)Math.Round(-yUp+center.y);
+                line.w = 1;
+                line.h = (int)Math.Round(2*yUp);
+                //draw Rectangle
+                SDL_RenderFillRect(renderer, ref line);
+            }
         }
     }
 }

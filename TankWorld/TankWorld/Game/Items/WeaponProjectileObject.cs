@@ -22,5 +22,6 @@ namespace TankWorld.Game.Items
         public abstract HitBoxStruct GetHitBoxes();
         public abstract void CheckForCollision(ICollide collidingObject);
         public abstract void HandleCollision(ICollide collidingObject, Coordinate collisionPoint);
+        public abstract void RenderHitBoxes();
     }
 }

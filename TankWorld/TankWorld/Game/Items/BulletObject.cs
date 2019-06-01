@@ -28,9 +28,11 @@ namespace TankWorld.Game.Items
         {
             UpdateState(owner, startPosition, startAngle);
             model = new BulletModel(startPosition, startAngle);
-            longivity = new Timer(Timer.Type.DESCENDING);
-            longivity.Time = MAX_TRAVEL_TIME;
-            longivity.Command = new EraseGameObjectCommand(this);
+            longivity = new Timer(Timer.Type.DESCENDING)
+            {
+                Time = MAX_TRAVEL_TIME,
+                Command = new EraseGameObjectCommand(this)
+            };
             bulletPhysics = new BulletPhysicsComponent(this);
         }
 
@@ -111,5 +113,9 @@ namespace TankWorld.Game.Items
             }
         }
 
+        public override void RenderHitBoxes()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

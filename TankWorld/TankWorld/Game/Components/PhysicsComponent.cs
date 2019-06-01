@@ -62,5 +62,7 @@ namespace TankWorld.Game.Components
 
 
         }
+
+        abstract public void RenderHitBoxes();
     }
 }

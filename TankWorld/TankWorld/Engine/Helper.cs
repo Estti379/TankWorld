@@ -168,13 +168,16 @@ namespace TankWorld.Engine
 
             return rotatedPoint;
         }
-
-        static public HitBox CreateRectangleHitBox(Coordinate center, double angle, int width, int height )
+        static public HitBox UpdateCircleHitBox(HitBox circleleHitBox, Coordinate center, int radius)
         {
-            HitBox rectangleHitBox = new HitBox
-            {
-                boxType = HitBox.Type.RECTANGLE,
-            };
+            circleleHitBox.origin = center;
+            circleleHitBox.radius = radius;
+
+            return circleleHitBox;
+        }
+
+        static public HitBox UpdateRectangleHitBox(HitBox rectangleHitBox, Coordinate center, double angle, int width, int height )
+        {
 
             Coordinate temp;
             //pointA
