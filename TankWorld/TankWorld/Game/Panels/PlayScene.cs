@@ -27,6 +27,7 @@ namespace TankWorld.Game.Panels
         private int playerDamaged;
 
         bool showMenu;
+        bool showHitboxes;
 
         //Constructors
         public PlayScene()
@@ -58,6 +59,7 @@ namespace TankWorld.Game.Panels
             menu = new MenuPanel(menuItems);
             menu.SetPosition((GameConstants.WINDOWS_X * 1 / 3), 100);
             showMenu = false;
+            showHitboxes = false;
 
             uiView = new UiPanel();
             MainEventBus.Register(this);
@@ -105,6 +107,9 @@ namespace TankWorld.Game.Panels
                     case PRESS_ENTER:
                         menu.Act();
                         break;
+                    case PRESS_O:
+                        showHitboxes = !showHitboxes;
+                        break;
                 }
             }
             else
@@ -120,17 +125,27 @@ namespace TankWorld.Game.Panels
             events.Add(newEvent);
         }
 
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
-            map.Render();
-            gameView.Render();
-            if (showMenu)
+            if (layer == RenderLayer.BACKGROOUND || layer == RenderLayer.GROUND || layer == RenderLayer.HITBOXES || layer == RenderLayer.MAINBOARD || layer == RenderLayer.OVERHEAD)
             {
-                menu.Render();
-            } else
-            {
-                uiView.Render();
+                //don't render if layer is hitBoxes and showHitboxes is false!
+                if ( !(layer == RenderLayer.HITBOXES && !showHitboxes) )
+                {
+                    map.Render(layer);
+                    gameView.Render(layer);
+                }
             }
+            else if (showMenu && layer == RenderLayer.MENU)
+            {
+                menu.Render(layer);
+            }
+            else if (!showMenu && layer == RenderLayer.USER_INTERFACE)
+            {
+                //TODO:Bug:Clock stops being shown when menu is up
+                uiView.Render(layer);
+            }
+
         }
 
         public override void Update()

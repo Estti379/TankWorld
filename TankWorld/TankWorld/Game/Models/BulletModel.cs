@@ -22,22 +22,11 @@ namespace TankWorld.Game.Models
 
 
         //Methods
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
-            Coordinate drawPosition;
-            bool isInsideCamera = false;
 
-            drawPosition = camera.ConvertMapToScreenCoordinate(position);
-
-            isInsideCamera = (drawPosition.x >= 0-AllSprites["Bullet"].Pos.w)
-                            && (drawPosition.x <= GameConstants.WINDOWS_X + AllSprites["Bullet"].Pos.w)
-                            && (drawPosition.y >= 0 - AllSprites["Bullet"].Pos.h)
-                            && (drawPosition.y <= GameConstants.WINDOWS_Y + AllSprites["Bullet"].Pos.h);
-
-            if (isInsideCamera)
-            {
-                AllSprites["Bullet"].RotateAndRender(drawPosition, directionAngle, AllSprites["Bullet"].SubRect.w / 2, AllSprites["Bullet"].SubRect.h / 2);
-            }
+            Coordinate drawPosition = camera.ConvertMapToScreenCoordinate(position);
+            AllSprites["Bullet"].RotateAndRender(drawPosition, directionAngle, AllSprites["Bullet"].SubRect.w / 2, AllSprites["Bullet"].SubRect.h / 2);
             
         }
         public void UpdatePosition(Coordinate position)

@@ -6,7 +6,5 @@
         void CheckForCollision(ICollide collidingObject);
 
         void HandleCollision(ICollide collidingObject, Coordinate collisionPoint);
-
-        void RenderHitBoxes();
     }
 }

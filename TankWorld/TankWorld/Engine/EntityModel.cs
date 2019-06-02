@@ -20,7 +20,7 @@ namespace TankWorld.Engine
         }
 
         //Methods
-        abstract public void Render();
+        abstract public void Render(RenderLayer layer);
 
         public void AddSprite(string key, Sprite newSprite)
         {

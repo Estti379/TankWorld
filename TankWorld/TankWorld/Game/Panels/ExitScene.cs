@@ -33,7 +33,7 @@ namespace TankWorld.Game.Panels
             /*empty*/
         }
 
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
             /*empty*/
         }

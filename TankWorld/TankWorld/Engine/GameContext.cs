@@ -9,7 +9,7 @@ using TankWorld.Game.Panels;
 
 namespace TankWorld.Engine
 {
-    public class GameContext: IUpdate, IRender,IObserver
+    public class GameContext: IUpdate,IObserver
     {
         static private GameContext singleton = null;
 
@@ -101,6 +101,14 @@ namespace TankWorld.Engine
             Sprite.Renderer = renderer;
             //TODO: change into Inits
 
+            /*
+            SDL_Rect rect;
+            rect.x = 0;
+            rect.y = 0;
+            rect.w = GameConstants.WINDOWS_X/2;
+            rect.h = GameConstants.WINDOWS_Y/2;
+            SDL_RenderSetClipRect(renderer, ref rect);
+            */
             return true;
         }
 
@@ -149,14 +157,17 @@ namespace TankWorld.Engine
             currentScene.Update();
         }
 
-        public void Render()
+        public void RenderAll()
         {
             //Fill the surface black
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
             SDL_RenderClear(renderer);
 
             //Apply the images of all panels
-            currentScene.Render();
+            foreach(RenderLayer layer in Enum.GetValues(typeof(RenderLayer) ))
+            {
+                currentScene.Render(layer);
+            }
 
             //Render everything
             SDL_RenderPresent(renderer);
@@ -199,7 +210,7 @@ namespace TankWorld.Engine
                 }
 
                 // RENDERING
-                Render();
+                RenderAll();
                 // END Rendering
             }// END MainGameLoop
 

@@ -74,7 +74,7 @@ namespace TankWorld.Game.Components
                 r = 255,
                 g = 255,
                 b = 0,
-                a = 127
+                a = 50
             };
 
             Coordinate pointA;

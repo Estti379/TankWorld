@@ -25,6 +25,8 @@ namespace TankWorld.Engine
         RELEASE_D,
         PRESS_P,
         RELEASE_P,
+        PRESS_O,
+        RELEASE_O,
         PRESS_SPACE,
         RELEASE_SPACE,
         PRESS_ENTER,

@@ -33,14 +33,14 @@ namespace TankWorld.Game.Panels
 
         //Methods
 
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
-            clock.Render();
+            clock.Render(layer);
             if (timeUp)
             {
-                title.Render();
-                score1.Render();
-                score2.Render();
+                title.RenderAtPosition(title.Pos.x, title.Pos.y);
+                score1.RenderAtPosition(score1.Pos.x, score1.Pos.y);
+                score2.RenderAtPosition(score2.Pos.x, score2.Pos.y);
             }
         }
 

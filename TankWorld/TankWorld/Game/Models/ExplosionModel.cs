@@ -16,18 +16,12 @@ namespace TankWorld.Game.Models
             this.Position = startPosition;
         }
 
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
-            Coordinate drawPosition = Camera.ConvertMapToScreenCoordinate(this.Position);
-            bool isInsideCamera = false;
 
-            isInsideCamera = (drawPosition.x >= 0 - AllSprites["Explosion"].Pos.w)
-                && (drawPosition.x <= GameConstants.WINDOWS_X + AllSprites["Explosion"].Pos.w)
-                && (drawPosition.y >= 0 - AllSprites["Explosion"].Pos.h)
-                && (drawPosition.y <= GameConstants.WINDOWS_Y + AllSprites["Explosion"].Pos.h);
-
-            if (isInsideCamera)
+            if (Camera.IsInsideCamera(this.Position, AllSprites["Explosion"].Pos.w, AllSprites["Explosion"].Pos.h))
             {
+                Coordinate drawPosition = Camera.ConvertMapToScreenCoordinate(this.Position);
                 AllSprites["Explosion"].RotateAndRender(drawPosition, 0, AllSprites["Explosion"].Pos.w / 2, AllSprites["Explosion"].Pos.h / 2);
             }
         }

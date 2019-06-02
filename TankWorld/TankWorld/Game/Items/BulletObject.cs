@@ -41,10 +41,19 @@ namespace TankWorld.Game.Items
         public Coordinate SpeedVektor { get => speedVektor;}
 
         //Methods
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
-            model.Render();
-            bulletPhysics.RenderHitBoxes();
+            if (Camera.Instance.IsInsideCamera(this.Position, model.AllSprites["Bullet"].Pos.w, model.AllSprites["Bullet"].Pos.h))
+            {
+                if (layer == RenderLayer.OVERHEAD)
+                {
+                    model.Render(layer);
+                }
+                else if (layer == RenderLayer.HITBOXES)
+                {
+                    bulletPhysics.RenderHitBoxes();
+                }
+            }
         }
 
         public override void Update(ref WorldItems world)
@@ -114,9 +123,5 @@ namespace TankWorld.Game.Items
             }
         }
 
-        public override void RenderHitBoxes()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

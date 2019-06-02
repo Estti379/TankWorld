@@ -161,12 +161,18 @@ namespace TankWorld.Game.Items
         {
             return TOP_SPEED;
         }
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
             if (camera.IsInsideCamera(this.Position, model.AllSprites["TankBody"].Pos.w, model.AllSprites["TankBody"].Pos.h) )
             {
-                model.Render();
-                this.RenderHitBoxes();
+                if (layer == RenderLayer.MAINBOARD)
+                {
+                    model.Render(layer);
+                }
+                else if (layer == RenderLayer.HITBOXES)
+                {
+                    tankPhysics.RenderHitBoxes();
+                }
             }
             
         }
@@ -396,12 +402,6 @@ namespace TankWorld.Game.Items
         public void HandleCollision(ICollide collidingObject, Coordinate collisionPoint)
         {
             /*Do nothing yet*/
-        }
-
-        public void RenderHitBoxes()
-        {
-
-            this.tankPhysics.RenderHitBoxes();
         }
     }
 }

@@ -28,25 +28,21 @@ namespace TankWorld.Game.Panels
 
         //Methods
 
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
-            foreach (GameObject entry in parent.World.allObjects)
+            if (layer == RenderLayer.GROUND || layer == RenderLayer.HITBOXES || layer == RenderLayer.MAINBOARD || layer == RenderLayer.OVERHEAD)
             {
-                TankObject tankEntry = entry as TankObject;
-                if (tankEntry != null)
+                foreach (GameObject entry in parent.World.allObjects)
                 {
-                    tankEntry.Render();
+                    entry.Render(layer);
                 }
-            }
-            parent.World.player.Render();
-            foreach (GameObject entry in parent.World.allObjects)
-            {
-                TankObject tankEntry = entry as TankObject;
-                if (tankEntry == null) // Render everything but not tanks
+                if (layer == RenderLayer.MAINBOARD  || layer == RenderLayer.HITBOXES)
                 {
-                    entry.Render();
+                    parent.World.player.Render(layer);
                 }
+                
             }
+   
         }
 
         public override void Update()
@@ -111,10 +107,6 @@ namespace TankWorld.Game.Panels
                         newTank = new TankObject(spawnPosition, TankObject.TankColor.GREEN);
                         this.AddNewObject(newTank);
                     }
-
-                    
-
-
                     break;
             }
         }

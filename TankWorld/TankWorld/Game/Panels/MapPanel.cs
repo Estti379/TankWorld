@@ -26,22 +26,23 @@ namespace TankWorld.Game.Panels
 
 
 
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
-            Coordinate coords = leftToptexturePosition;
-
-            do
+            if (layer == RenderLayer.BACKGROOUND)
             {
-                background.Pos.y = (int)Math.Round(coords.y);
+                Coordinate coords = leftToptexturePosition;
+
                 do
                 {
-                    background.Pos.x = (int)Math.Round(coords.x);
-                    background.Render();
-                    coords.x += background.Pos.w;
-                } while (coords.x < GameConstants.WINDOWS_X);
-                coords.y += background.Pos.h;
-                coords.x = leftToptexturePosition.x;
-            } while (coords.y < GameConstants.WINDOWS_Y);
+                    do
+                    {
+                        background.RenderAtPosition((int)Math.Round(coords.x), (int)Math.Round(coords.y));
+                        coords.x += background.Pos.w;
+                    } while (coords.x < GameConstants.WINDOWS_X);
+                    coords.y += background.Pos.h;
+                    coords.x = leftToptexturePosition.x;
+                } while (coords.y < GameConstants.WINDOWS_Y);
+            }
 
         }
 

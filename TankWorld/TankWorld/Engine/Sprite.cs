@@ -8,7 +8,7 @@ using static SDL2.SDL.SDL_bool;
 
 namespace TankWorld.Engine
 {
-    public class Sprite : IRender
+    public class Sprite
     {
         private static Dictionary<string, TextureStruct> textureList = new Dictionary<string, TextureStruct>();
         private static IntPtr renderer = IntPtr.Zero;
@@ -209,8 +209,11 @@ namespace TankWorld.Engine
             textureList[name] = newtexture;
         }
 
-        public void Render()
+        public void RenderAtPosition(int x, int y)
         {
+            Pos.x = x;
+            Pos.y = y;
+
             SDL_RenderCopy(renderer, textureList[name].texture,
                        ref subDrawRect,
                        ref position);

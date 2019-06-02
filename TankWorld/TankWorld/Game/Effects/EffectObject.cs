@@ -22,9 +22,14 @@ namespace TankWorld.Game.Effects
 
 
         //Methods
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
-            model.Render();
+            //TODO: Cannot put Camera.IsInsideCamera, since sprite key is not know!
+            if (layer == RenderLayer.OVERHEAD)
+            {
+                model.Render(layer);
+            }
+            
         }
 
         abstract public override void Update(ref WorldItems world);

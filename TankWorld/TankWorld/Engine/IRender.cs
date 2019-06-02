@@ -6,6 +6,6 @@
 
 
         //Methods
-        void Render();
+        void Render(RenderLayer layer);
     }
 }

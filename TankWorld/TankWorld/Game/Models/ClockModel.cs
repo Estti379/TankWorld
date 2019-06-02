@@ -9,7 +9,10 @@ namespace TankWorld.Game.Models
     {
 
         private int offSet;
-        SDL_Color color;
+        private SDL_Color color;
+        private int posX;
+        private int posY;
+
         //Constructors
         public ClockModel(int offSet)
         {
@@ -26,8 +29,8 @@ namespace TankWorld.Game.Models
             {
                 clockSprite = new Sprite("Clock", TextGenerator.pixel_millenium_medium, "NaN:NaN", color);
 
-                clockSprite.Pos.x = offSet;
-                clockSprite.Pos.y = offSet;
+                posX = offSet;
+                posY = offSet;
                 AddSprite("Clock", clockSprite);
             }
         }
@@ -36,9 +39,9 @@ namespace TankWorld.Game.Models
         //Accessors
 
         //Methods
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
-            AllSprites["Clock"].Render();
+            AllSprites["Clock"].RenderAtPosition(posX, posY);
         }
 
         public void UpdateClock(string newTime)

@@ -26,9 +26,9 @@ namespace TankWorld.Game.Panels
             command.Execute();
         }
 
-        public void Render()
+        public void Render(RenderLayer layer)
         {
-            menuModel.Render();
+            menuModel.Render(layer);
         }
 
         public void Update()

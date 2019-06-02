@@ -21,11 +21,11 @@ namespace TankWorld.Game.Panels
 
         //Methods
 
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
             foreach(MenuItem entry in items)
             {
-                entry.Render();
+                entry.Render(layer);
             }
         }
 

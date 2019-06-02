@@ -61,9 +61,14 @@ namespace TankWorld.Game.Panels
 
         }
 
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
-            menuPanel.Render();
+            if(layer == RenderLayer.MENU)
+            {
+                menuPanel.Render(layer);
+            }
+            
+
         }
 
         public override void Update()

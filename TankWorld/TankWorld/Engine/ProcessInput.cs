@@ -16,7 +16,7 @@ namespace TankWorld.Engine
             {
                 input.inputEvent = UNDEFINED_INPUT;
                 input.x = 0;
-                input.y=0; 
+                input.y = 0; 
                 switch (userEvent.type)
                 {
                     //User requests quit
@@ -76,6 +76,9 @@ namespace TankWorld.Engine
                 case SDLK_p:
                     input.inputEvent = PRESS_P;
                     break;
+                case SDLK_o:
+                    input.inputEvent = PRESS_O;
+                    break;
                 case SDLK_RETURN:
                     input.inputEvent = PRESS_ENTER;
                     break;
@@ -115,6 +118,9 @@ namespace TankWorld.Engine
                     break;
                 case SDLK_p:
                     input.inputEvent = RELEASE_P;
+                    break;
+                case SDLK_o:
+                    input.inputEvent = RELEASE_O;
                     break;
                 case SDLK_RETURN:
                     input.inputEvent = RELEASE_ENTER;

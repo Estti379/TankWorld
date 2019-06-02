@@ -23,7 +23,7 @@ namespace TankWorld.Engine
 
         //Methods
         public abstract void Update(ref WorldItems world);
-        public abstract void Render();
+        public abstract void Render(RenderLayer layer);
 
         //For better performance in Hashets!
         public bool Equals(GameObject other)

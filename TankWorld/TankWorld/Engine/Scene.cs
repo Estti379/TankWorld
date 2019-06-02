@@ -17,6 +17,6 @@
         abstract public void HandleInput(InputStruct input);
 
         abstract public void Update();
-        abstract public void Render();
+        abstract public void Render(RenderLayer layer);
     }
 }

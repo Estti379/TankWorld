@@ -9,11 +9,16 @@ namespace TankWorld.Game.Models
     {
         private string name;
         private string status;
+        private int posX;
+        private int posY;
+
         //Constructors
         public MenuTextModel(string key, string menuText):base()
         {
             name = key;
             status = "Inactive";
+            posX = 0;
+            posY = 0;
             SDL_Color color = new SDL_Color
             {
                 r = 255,
@@ -27,8 +32,8 @@ namespace TankWorld.Game.Models
             {
                 menuTextSprite = new Sprite(key + "Active", TextGenerator.pixel_millenium_big, menuText, color);
 
-                menuTextSprite.Pos.x = 0;
-                menuTextSprite.Pos.y = 0;
+                menuTextSprite.Pos.x = posX;
+                menuTextSprite.Pos.y = posY;
                 AddSprite("Active", menuTextSprite);
             }
 
@@ -44,8 +49,8 @@ namespace TankWorld.Game.Models
             {
                 menuTextSprite = new Sprite(key + "Inactive", TextGenerator.pixel_millenium_big, menuText, color);
 
-                menuTextSprite.Pos.x = 0;
-                menuTextSprite.Pos.y = 0;
+                menuTextSprite.Pos.x = posX;
+                menuTextSprite.Pos.y = posY;
                 AddSprite("Inactive", menuTextSprite);
             }
         }
@@ -54,18 +59,18 @@ namespace TankWorld.Game.Models
 
 
         //Methods
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
-            AllSprites[status].Render();
+            AllSprites[status].RenderAtPosition(posX, posY);
         }
 
         public void SetPosition(int x, int y, int place)
         {
-            AllSprites["Active"].Pos.x = x;
-            AllSprites["Active"].Pos.y = y + AllSprites["Active"].Pos.h * (1+place);
+            posX = x;
+            posY = y + AllSprites["Active"].Pos.h * (1 + place);
 
-            AllSprites["Inactive"].Pos.x = x;
-            AllSprites["Inactive"].Pos.y = y + AllSprites["Inactive"].Pos.h * (1 + place);
+            posX = x;
+            posY = y + AllSprites["Inactive"].Pos.h * (1 + place);
         }
 
         public void ChangeStatus()

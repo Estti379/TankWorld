@@ -39,7 +39,7 @@ namespace TankWorld.Game.Models
 
         //Methods
 
-        public override void Render()
+        public override void Render(RenderLayer layer)
         {
 
             Coordinate drawPosition = camera.ConvertMapToScreenCoordinate(bodyPosition);
