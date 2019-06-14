@@ -1,12 +1,16 @@
 ﻿using System;
+using SDL2;
 using TankWorld.Engine;
 using TankWorld.Game.Items;
+using static SDL2.SDL;
 
 namespace TankWorld.Game
 {
     public class Camera: IUpdate
     {
         static private Camera singleton = null;
+
+        private SDL_Rect subScreen;
 
         private Coordinate position;
         private Coordinate oldPosition;
@@ -41,6 +45,11 @@ namespace TankWorld.Game
             get { return oldPosition; }
         }
 
+        public int SubScreenX { get => subScreen.x;}
+        public int SubScreenY { get => subScreen.y; }
+        public int SubScreenW { get => subScreen.w; }
+        public int SubScreenH { get => subScreen.h; }
+
         //Methods
         public void UpdateTargetPosition(TankObject player)
         {
@@ -55,8 +64,8 @@ namespace TankWorld.Game
         public Coordinate ConvertScreenToMapCoordinate(Coordinate screenCoord)
         {
             Coordinate mapCoord;
-            mapCoord.x = screenCoord.x + position.x - GameConstants.WINDOWS_X / 2;
-            mapCoord.y = screenCoord.y + position.y - GameConstants.WINDOWS_Y / 2;
+            mapCoord.x = screenCoord.x + position.x - subScreen.w / 2;
+            mapCoord.y = screenCoord.y + position.y - subScreen.h / 2;
 
             return mapCoord;
         }
@@ -64,8 +73,8 @@ namespace TankWorld.Game
         public Coordinate ConvertMapToScreenCoordinate(Coordinate mapCoord)
         {
             Coordinate screenCoord;
-            screenCoord.x = mapCoord.x - position.x + GameConstants.WINDOWS_X / 2;
-            screenCoord.y = mapCoord.y - position.y + GameConstants.WINDOWS_Y / 2;
+            screenCoord.x = mapCoord.x - position.x + subScreen.w / 2;
+            screenCoord.y = mapCoord.y - position.y + subScreen.h / 2;
 
             return screenCoord;
         }
@@ -75,9 +84,17 @@ namespace TankWorld.Game
 
             Coordinate drawPosition = ConvertMapToScreenCoordinate(position);
             return  (drawPosition.x >= 0 - width)
-                            && (drawPosition.x <= GameConstants.WINDOWS_X + width)
+                            && (drawPosition.x <= subScreen.w + width)
                             && (drawPosition.y >= 0 - height)
-                            && (drawPosition.y <= GameConstants.WINDOWS_Y + height);
+                            && (drawPosition.y <= subScreen.h + height);
+        }
+
+        public void SetSubScreenDimensions(int x, int y, int width, int heigth)
+        {
+            subScreen.x = x;
+            subScreen.y = y;
+            subScreen.w = width;
+            subScreen.h = heigth;
         }
     }
 }

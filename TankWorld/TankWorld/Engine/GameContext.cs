@@ -10,8 +10,8 @@ using TankWorld.Game.Panels;
 namespace TankWorld.Engine
 {
     public class GameContext: IUpdate,IObserver
-    {
-        static private GameContext singleton = null;
+    { 
+        static private GameContext singleton;
 
         private bool done = false; // Boolean for the main game loop
         private IntPtr window = IntPtr.Zero;
@@ -20,17 +20,17 @@ namespace TankWorld.Engine
         private Scene currentScene;
         private List<Event> events;
 
+        private int windowX = 1920;
+        private int windowY = 1080;
+        private bool isFullScreen;
+
 
 
         private GameContext()
         {
             MainEventBus.Register(this);
             events = new List<Event>();
-            // initialize then start the game
-            if ( Initialize() )
-            {
-                Start();
-            }
+            Initialize();
             
         }
 
@@ -46,6 +46,9 @@ namespace TankWorld.Engine
                 return singleton;
             }
         }
+
+        public int WindowX { get => windowX;}
+        public int WindowY { get => windowY;}
 
         /** Used to initialize SDL.
          * 
@@ -64,11 +67,10 @@ namespace TankWorld.Engine
             window = SDL_CreateWindow("Tank World!",
                 SDL_WINDOWPOS_CENTERED,
                 SDL_WINDOWPOS_CENTERED,
-                GameConstants.WINDOWS_X,
-                GameConstants.WINDOWS_Y,
-                SDL_WindowFlags.SDL_WINDOW_FULLSCREEN
-            );
-
+                windowX,
+                windowY,
+                SDL_WindowFlags.SDL_WINDOW_FULLSCREEN);
+            isFullScreen = true;
             if (window == IntPtr.Zero)
             {
                 Console.Write("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -110,6 +112,32 @@ namespace TankWorld.Engine
             SDL_RenderSetClipRect(renderer, ref rect);
             */
             return true;
+        }
+
+        public void ChangeResolution(int x, int y)
+        {
+            SDL_SetWindowSize(window, x, y);
+            SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+            windowX = x;
+            windowY = y;
+        }
+
+        public void ToggleFullScreen()
+        {
+            if (isFullScreen)
+            {
+                SDL_SetWindowFullscreen(window, SDL_WindowFlags.SDL_WINDOW_SHOWN);
+                SDL_SetWindowSize(window, windowX, windowY);
+                SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+
+                isFullScreen = false;
+            }
+            else
+            {
+                SDL_SetWindowFullscreen(window, SDL_WindowFlags.SDL_WINDOW_FULLSCREEN);
+                SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+                isFullScreen = true;
+            }
         }
 
         public void ChangeScene(Scene nextScene)
@@ -176,7 +204,7 @@ namespace TankWorld.Engine
 
 
 
-        private void Start()
+        public void Start()
         {
             // START Innitializing startingScene
             currentScene = new MainMenuScene();

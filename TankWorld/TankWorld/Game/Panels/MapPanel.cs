@@ -38,10 +38,10 @@ namespace TankWorld.Game.Panels
                     {
                         background.RenderAtPosition((int)Math.Round(coords.x), (int)Math.Round(coords.y));
                         coords.x += background.Pos.w;
-                    } while (coords.x < GameConstants.WINDOWS_X);
+                    } while (coords.x < camera.SubScreenW);
                     coords.y += background.Pos.h;
                     coords.x = leftToptexturePosition.x;
-                } while (coords.y < GameConstants.WINDOWS_Y);
+                } while (coords.y < camera.SubScreenH);
             }
 
         }

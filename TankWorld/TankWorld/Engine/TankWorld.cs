@@ -7,6 +7,7 @@ namespace TankWorld
         static void Main(string[] args)
         {
            GameContext myTankGame = GameContext.Instance;
+            myTankGame.Start();
         }
     }
 }

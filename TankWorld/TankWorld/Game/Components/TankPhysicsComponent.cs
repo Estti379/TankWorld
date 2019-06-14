@@ -49,11 +49,11 @@ namespace TankWorld.Game.Components
             widthBox = parent.Model.AllSprites["TankBody"].Pos.w;
             if (heightBox >= widthBox)
             {
-                HitBoxes.CollisionRange = heightBox * 1.1;
+                HitBoxes.CollisionRange = heightBox;
             }
             else
             {
-                HitBoxes.CollisionRange = widthBox * 1.1;
+                HitBoxes.CollisionRange = widthBox;
             }
 
             double angle = parent.DirectionBody;

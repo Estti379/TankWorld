@@ -12,7 +12,7 @@ namespace TankWorld.Game.Panels
         //Constructors
         public MainMenuScene()
         {
-            
+
         }
 
 
@@ -25,7 +25,7 @@ namespace TankWorld.Game.Panels
             menuItems.Add(new MenuItem(new StartGameCommand(), "Start", "Start Game"));
             menuItems.Add(new MenuItem(new QuitGameCommand(), "Quit", "Quit"));
             menuPanel = new MenuPanel(menuItems);
-            menuPanel.SetPosition((GameConstants.WINDOWS_X * 1 / 3), 100);
+            menuPanel.SetPosition((WindowX * 1 / 3), 100);
             
 
         }
@@ -37,7 +37,8 @@ namespace TankWorld.Game.Panels
 
         public override void HandleInput(InputStruct input)
         {
-           switch (input.inputEvent){
+           switch (input.inputEvent)
+           {
                 case PRESS_S:
                     menuPanel.GoDown();
                     break;
@@ -56,7 +57,18 @@ namespace TankWorld.Game.Panels
                 case PRESS_ENTER:
                     menuPanel.Act();
                     break;
-            }
+                case PRESS_A:
+                    GameContext.Instance.ChangeResolution(1280,720);
+                    Camera.Instance.SetSubScreenDimensions(0, 0, 1280, 720);
+                    break;
+                case PRESS_D:
+                    GameContext.Instance.ChangeResolution(1920, 1080);
+                    Camera.Instance.SetSubScreenDimensions(0, 0, 1920, 1080);
+                    break;
+                case PRESS_P:
+                    GameContext.Instance.ToggleFullScreen();
+                    break;
+           }
             
 
         }

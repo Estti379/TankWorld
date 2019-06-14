@@ -45,6 +45,7 @@ namespace TankWorld.Game.Panels
         {
             //create camera
             camera = Camera.Instance;
+            camera.SetSubScreenDimensions(0, 0, WindowX, WindowY);
             //create map Panel
             map = new MapPanel();
             //Create mainGamePanel
@@ -57,11 +58,11 @@ namespace TankWorld.Game.Panels
             menuItems.Add(new MenuItem(new BackToMenuCommand(), "Back", "Back To Main Menu"));
             menuItems.Add(new MenuItem(new QuitGameCommand(), "Quit", "Quit Game"));
             menu = new MenuPanel(menuItems);
-            menu.SetPosition((GameConstants.WINDOWS_X * 1 / 3), 100);
+            menu.SetPosition((WindowX * 1 / 3), 100);
             showMenu = false;
             showHitboxes = false;
 
-            uiView = new UiPanel();
+            uiView = new UiPanel(WindowX, WindowY);
             MainEventBus.Register(this);
             events = new List<Event>();
 
@@ -110,10 +111,24 @@ namespace TankWorld.Game.Panels
                     case PRESS_O:
                         showHitboxes = !showHitboxes;
                         break;
-                }
+                } 
             }
             else
             {
+                //switch (input.inputEvent)
+                //{
+                //    case PRESS_A:
+                //        GameContext.Instance.ChangeResolution(1280, 720);
+                //        Camera.Instance.SetSubScreenDimensions(0, 0, 1280, 720);
+                //        break;
+                //    case PRESS_D:
+                //        GameContext.Instance.ChangeResolution(1920, 1080);
+                //        Camera.Instance.SetSubScreenDimensions(0, 0, 1920, 1080);
+                //        break;
+                //    case PRESS_P:
+                //        GameContext.Instance.ToggleFullScreen();
+                //        break;
+                //}
                 gameView.HandleInput(input);
             }
             

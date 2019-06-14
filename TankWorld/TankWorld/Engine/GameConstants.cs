@@ -4,8 +4,8 @@
     {
         //public const int WINDOWS_X = 1280;
         //public const int WINDOWS_Y = 720;
-        public const int WINDOWS_X = 1920;
-        public const int WINDOWS_Y = 1080;
+        //public const int WINDOWS_X = 1920;
+        //public const int WINDOWS_Y = 1080;
 
         //Multiplier to use when converting from meters to pixels
         // METER_TO_PIXEL = P/M:  M meters  = P pixels
