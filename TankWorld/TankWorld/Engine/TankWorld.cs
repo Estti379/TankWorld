@@ -7,7 +7,8 @@ namespace TankWorld
         static void Main(string[] args)
         {
             Maploader loader = new Maploader();
-            loader.LoadMapMetaData("test.json");
+            loader.LoadMapMetaData("testMap.json");
+            loader.LoadTileSetMetaData("testTileSet.json");
 
             GameContext myTankGame = GameContext.Instance;
             myTankGame.Start();

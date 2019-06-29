@@ -56,6 +56,7 @@
     <Compile Include="Engine\Maploader.cs" />
     <Compile Include="Engine\MapMetaData.cs" />
     <Compile Include="Engine\RenderLayer.cs" />
+    <Compile Include="Engine\TileSetMetaData.cs" />
     <Compile Include="Engine\Timer.cs" />
     <Compile Include="Game\Camera.cs" />
     <Compile Include="Game\Commands\EraseGameObjectCommand.cs" />
@@ -129,7 +130,10 @@
     <None Include="assets\fonts\Pixel Millennium.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="assets\maps\test.json">
+    <None Include="assets\maps\testMap.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\maps\tileSet\testTileSet.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
