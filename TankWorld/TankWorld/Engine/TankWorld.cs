@@ -6,7 +6,10 @@ namespace TankWorld
     {
         static void Main(string[] args)
         {
-           GameContext myTankGame = GameContext.Instance;
+            Maploader loader = new Maploader();
+            loader.LoadMapMetaData("test.json");
+
+            GameContext myTankGame = GameContext.Instance;
             myTankGame.Start();
         }
     }

@@ -36,6 +36,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -50,6 +53,8 @@
     <Compile Include="Engine\Helper.cs" />
     <Compile Include="Engine\HitBoxStruct.cs" />
     <Compile Include="Engine\ICollide.cs" />
+    <Compile Include="Engine\Maploader.cs" />
+    <Compile Include="Engine\MapMetaData.cs" />
     <Compile Include="Engine\RenderLayer.cs" />
     <Compile Include="Engine\Timer.cs" />
     <Compile Include="Game\Camera.cs" />
@@ -122,6 +127,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="assets\fonts\Pixel Millennium.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\maps\test.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
