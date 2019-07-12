@@ -60,6 +60,7 @@
     <Compile Include="Engine\Timer.cs" />
     <Compile Include="Game\Camera.cs" />
     <Compile Include="Game\Commands\EraseGameObjectCommand.cs" />
+    <Compile Include="Game\Commands\HideTankHPCommand.cs" />
     <Compile Include="Game\Commands\NextSpriteCommand.cs" />
     <Compile Include="Game\Commands\SalvoShotCommand.cs" />
     <Compile Include="Game\Commands\SpawnCommand.cs" />
@@ -80,8 +81,12 @@
     <Compile Include="Game\Models\ClockModel.cs" />
     <Compile Include="Game\Models\EffectModel.cs" />
     <Compile Include="Game\Models\ExplosionModel.cs" />
+    <Compile Include="Game\Models\TileModel.cs" />
     <Compile Include="Game\Panels\MapPanel.cs" />
+    <Compile Include="Game\Panels\PlayParameters.cs" />
     <Compile Include="Game\Panels\UiPanel.cs" />
+    <Compile Include="Game\Panels\TiledMapPanel.cs" />
+    <Compile Include="Game\Panels\UnlimitedMapPanel.cs" />
     <Compile Include="Game\WorldItems.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SDL2-CS\LPUtf8StrMarshaler.cs" />
@@ -130,10 +135,37 @@
     <None Include="assets\fonts\Pixel Millennium.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="assets\maps\testMap.json">
+    <None Include="assets\maps\test2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="assets\maps\tileSet\testTileSet.json">
+    <None Include="assets\maps\tileSet\TileSetCrop1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\maps\tileSet\TileSetCrop10.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\maps\tileSet\TileSetCrop2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\maps\tileSet\TileSetCrop3.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\maps\tileSet\TileSetCrop4.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\maps\tileSet\TileSetCrop5.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\maps\tileSet\TileSetCrop6.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\maps\tileSet\TileSetCrop7.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\maps\tileSet\TileSetCrop8.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\maps\tileSet\TileSetCrop9.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
@@ -143,6 +175,39 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\images\BulletExplosion.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\images\HPBar.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\images\Modern Tileset Compilation crop1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\images\Modern Tileset Compilation crop10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\images\Modern Tileset Compilation crop2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\images\Modern Tileset Compilation crop3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\images\Modern Tileset Compilation crop4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\images\Modern Tileset Compilation crop5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\images\Modern Tileset Compilation crop6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\images\Modern Tileset Compilation crop7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\images\Modern Tileset Compilation crop8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\images\Modern Tileset Compilation crop9.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\images\sand-dune-seamless-texture.jpg">

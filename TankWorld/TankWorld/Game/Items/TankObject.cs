@@ -33,16 +33,17 @@ namespace TankWorld.Game.Items
         //timers in milliseconds
         private Timer BulletSalvoTimer;
         private Timer CannonCooldownTimer;
+        private Timer hpTimer;
 
         private double x = 4;
         
         //Top speed expressed in m/s
-        private const double TOP_SPEED = 20;
+        private const double TOP_SPEED = 10;
         private const double TOP_SPEED_REVERSE = -TOP_SPEED/2;
         //degrees turned per second at MaxRate
         private const double MAX_DEGREE_PER_SECONDS_TURN = 180;
         //Max Acceleration at Maxrate expressed in m/s^2
-        private const double MAX_ACCELERATION = 50;
+        private const double MAX_ACCELERATION = 25;
 
         private const double SECONDS_TO_STOP = 2;
 
@@ -60,7 +61,7 @@ namespace TankWorld.Game.Items
         private BulletObject cannonBulletPrototype;
         private WeaponProjectileSpawner cannonBulletSpawner;
 
-        //private Coordinate position;
+        
         private double speed;
         private double acceleration;
         private double turningAngle;
@@ -73,6 +74,9 @@ namespace TankWorld.Game.Items
         private double turnLeftRate;
         private double turnRightRate;
 
+        private int maxHP;
+        private int currentHP;
+
 
 
         //Constructors
@@ -82,6 +86,8 @@ namespace TankWorld.Game.Items
             this.color = type;
             model = new TankModel(this.color);
             Position = spawnPosition;
+            maxHP = 100;
+            currentHP = maxHP;
             speed = 0;
             acceleration = 0;
             turningAngle = 0;
@@ -131,6 +137,15 @@ namespace TankWorld.Game.Items
                 ExecuteTime = CANNON_COOLDOWN * 2//avoid execution
         };
             CannonCooldownTimer.Pause();
+
+            hpTimer = new Timer(Timer.Type.PAUSE_AT_ZERO)
+            {
+                Time = 0,
+                DefaultTime = 2000,
+                ExecuteTime = 0
+            };
+            hpTimer.Command = new HideTankHPCommand(this, hpTimer);
+            CannonCooldownTimer.Pause();
         }
 
         //Accessors
@@ -154,6 +169,10 @@ namespace TankWorld.Game.Items
                 return speedVektor;
             }
         }
+
+        public bool ShowHP { get => model.ShowHP; set => model.ShowHP = value; }
+        public int MaxHP { get => maxHP;}
+        public int CurrentHP { get => currentHP;}
 
 
         //Methods
@@ -208,6 +227,7 @@ namespace TankWorld.Game.Items
         {
             BulletSalvoTimer.Update();
             CannonCooldownTimer.Update();
+            hpTimer.Update();
         }
 
         private void UpdateDirection()
@@ -402,6 +422,26 @@ namespace TankWorld.Game.Items
         public void HandleCollision(ICollide collidingObject, Coordinate collisionPoint)
         {
             /*Do nothing yet*/
+        }
+
+        internal void TakeDamage(int damage)
+        {
+            currentHP -= damage;
+            ShowHP = true;
+            hpTimer.Reset();
+            hpTimer.UnPause();
+            if(currentHP <= 0)
+            {
+                if(this.currentFaction == Faction.PLAYER)
+                {
+                    Console.WriteLine("Player died!");
+                    currentHP = maxHP;
+                }
+                else
+                {
+                    MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.DESPAWN_ENTITY, this));
+                }
+            }
         }
     }
 }

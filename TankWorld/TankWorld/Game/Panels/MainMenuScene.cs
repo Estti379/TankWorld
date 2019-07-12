@@ -21,10 +21,19 @@ namespace TankWorld.Game.Panels
         //Methods
         public override void Enter()
         {
+            PlayParameters playParameters = new PlayParameters();
+
             List<MenuItem> menuItems = new List<MenuItem>();
-            menuItems.Add(new MenuItem(new StartGameCommand(), "Start", "Start Game"));
+
+            playParameters.mapType = MapTypeEnum.UNLIMITED;
+            menuItems.Add(new MenuItem(new StartGameCommand(playParameters), "StartUnlimited", "Start Unlimited"));
+            playParameters.mapType = MapTypeEnum.TILED;
+            playParameters.mapFileName = "test2.json";
+            menuItems.Add(new MenuItem(new StartGameCommand(playParameters), "StartTiled", "Start Tiled"));
             menuItems.Add(new MenuItem(new QuitGameCommand(), "Quit", "Quit"));
+
             menuPanel = new MenuPanel(menuItems);
+
             menuPanel.SetPosition((WindowX * 1 / 3), 100);
             
 

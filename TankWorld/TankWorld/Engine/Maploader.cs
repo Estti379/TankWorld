@@ -23,11 +23,26 @@ namespace TankWorld.Engine
 {
     public class Maploader
     {
+        static private Maploader singleton = null;
+
         static readonly string mapDirectory = "assets/maps/";
         static readonly string tileSetDirectory = "assets/maps/tileSet/";
         //Constructors
-        public Maploader()
+        private Maploader()
         {
+
+        }
+
+        public static Maploader Instance
+        {
+            get
+            {
+                if (singleton == null)
+                {
+                    singleton = new Maploader();
+                }
+                return singleton;
+            }
         }
 
         //Accessors
@@ -41,8 +56,8 @@ namespace TankWorld.Engine
             MapMetaData metaData = JsonConvert.DeserializeObject<MapMetaData>(metaString);
 
             //Debugging
-            string metaString2 = JsonConvert.SerializeObject(metaData, Formatting.Indented);
-            File.WriteAllText(mapDirectory+"debug_copy_" + path, metaString2);
+            //string metaString2 = JsonConvert.SerializeObject(metaData, Formatting.Indented);
+            //File.WriteAllText(mapDirectory+"debug_copy_" + path, metaString2);
             //Debugging end
 
 
@@ -55,8 +70,8 @@ namespace TankWorld.Engine
             TileSetMetaData metaData = JsonConvert.DeserializeObject<TileSetMetaData>(metaString);
 
             //Debugging
-            string metaString2 = JsonConvert.SerializeObject(metaData, Formatting.Indented);
-            File.WriteAllText(tileSetDirectory + "debug_copy_" + path, metaString2);
+            //string metaString2 = JsonConvert.SerializeObject(metaData, Formatting.Indented);
+            //File.WriteAllText(tileSetDirectory + "debug_copy_" + path, metaString2);
             //Debugging end
 
 
