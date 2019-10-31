@@ -2,11 +2,12 @@
 
 namespace TankWorld
 {
-    class TankWorld
+    class main
     {
         static void Main(string[] args)
         {
-           GameContext myTankGame = GameContext.Instance;
+            GameContext myTankGame = GameContext.Instance;
+            myTankGame.Start();
         }
     }
 }

@@ -6,10 +6,11 @@ namespace TankWorld.Game.Commands
 {
     class StartGameCommand: MenuCommand
     {
+        PlayParameters playparameters;
         //Constructors
-        public StartGameCommand()
+        public StartGameCommand(PlayParameters parameters)
         {
-
+            playparameters = parameters;
         }
 
         //Accessors
@@ -18,7 +19,7 @@ namespace TankWorld.Game.Commands
         //Methods
         public override void Execute()
         {
-            MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.CHANGE_SCENE, new PlayScene()));
+            MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.CHANGE_SCENE, new PlayScene(playparameters)));
         }
 
     }

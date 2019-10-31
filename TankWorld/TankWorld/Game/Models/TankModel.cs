@@ -14,11 +14,14 @@ namespace TankWorld.Game.Models
         private Coordinate turretPosition;
         private Coordinate cannonPosition;
 
+        private bool showHP;
+
         private Camera camera;
 
         //Constructors
         public TankModel(TankObject.TankColor type)
         {
+            bool showHP = false;
             string tankBodyPath = null;
             string tankTurretPath = null;
             string tankCannonPath = null;
@@ -28,14 +31,17 @@ namespace TankWorld.Game.Models
             AddSprite("TankBody", new Sprite(type + "TankBody", tankBodyPath, 0, 254, 0));
             AddSprite("TankTurret", new Sprite(type + "TankTurret", tankTurretPath, 0, 254, 0));
             AddSprite("TankCannon", new Sprite(type + "TankCannon", tankCannonPath, 0, 254, 0));
+            AddSprite("HPBar", new Sprite("HPBar", "assets/images/HPBar.bmp", 0, 254, 0));
             camera = Camera.Instance;
 
         }
 
+        
+
 
 
         //Accessors
-
+            public bool ShowHP { get => showHP; set => showHP = value; }
 
         //Methods
 
@@ -54,6 +60,14 @@ namespace TankWorld.Game.Models
 
             AllSprites["TankTurret"].RotateAndRender(drawPosition, directionCannon, AllSprites["TankTurret"].SubRect.w / 2, AllSprites["TankTurret"].SubRect.h / 2);
 
+            if (showHP)
+            {
+                drawPosition.x = bodyPosition.x;
+                drawPosition.y = bodyPosition.y + AllSprites["TankBody"].Pos.w + 3;
+                drawPosition = camera.ConvertMapToScreenCoordinate(drawPosition);
+                AllSprites["HPBar"].RotateAndRender(drawPosition, 0, AllSprites["HPBar"].SubRect.w / 2, AllSprites["HPBar"].SubRect.h / 2);
+            }
+            
 
         }
         public void UpdateModel(TankObject tank, double directionBody, double directionCannon)
@@ -65,6 +79,8 @@ namespace TankWorld.Game.Models
             this.cannonPosition = tank.GetCannonPosition();
             directionAngle = directionBody;
             this.directionCannon = directionCannon;
+
+            AllSprites["HPBar"].Pos.w = AllSprites["HPBar"].SubRect.w * tank.CurrentHP/tank.MaxHP;
         }
 
         private void GetImagePaths(TankObject.TankColor type, ref string tankBodyPath, ref string tankTurretPath, ref string tankCannonPath)

@@ -5,14 +5,18 @@ using TankWorld.Game.Commands;
 using TankWorld.Game.Events;
 using TankWorld.Game.Items;
 using static TankWorld.Engine.InputEnum;
+using static TankWorld.Game.Panels.MapTypeEnum;
 
 namespace TankWorld.Game.Panels
 {
+
     public class PlayScene: Scene, IObserver
     {
         private List<Event> events;
 
         private WorldItems world;
+
+        private PlayParameters playParameters;
 
         private MapPanel map;
         private GameViewPanel gameView;
@@ -30,14 +34,15 @@ namespace TankWorld.Game.Panels
         bool showHitboxes;
 
         //Constructors
-        public PlayScene()
+        public PlayScene(PlayParameters parameters)
         {
-
+            playParameters = parameters;
         }
 
 
         //Accessors
         public ref WorldItems World { get => ref world; }
+        public Camera CurrentCamera { get => camera;}
 
 
         //Methods
@@ -45,23 +50,35 @@ namespace TankWorld.Game.Panels
         {
             //create camera
             camera = Camera.Instance;
+            camera.SetSubScreenDimensions(0, 0, WindowX, WindowY);
             //create map Panel
-            map = new MapPanel();
+            switch (playParameters.mapType)
+            {
+                case UNDEFINED:
+                    Console.WriteLine("Trying to create an UNDEFINED map !");
+                    break;
+                case TILED:
+                    map = new TiledMapPanel(this, playParameters);
+                    break;
+                case UNLIMITED:
+                    map = new UnlimitedMapPanel(this);
+                    break;
+            }
             //Create mainGamePanel
             gameView = new GameViewPanel(this);
 
             //Create Menu Items, add MenuPanel and initialize it
             List<MenuItem> menuItems = new List<MenuItem>();
             menuItems.Add(new MenuItem(new FlipMenuCommand(), "Continue", "Continue Game"));
-            menuItems.Add(new MenuItem(new StartGameCommand(), "Restart", "Restart Level"));
+            menuItems.Add(new MenuItem(new StartGameCommand(playParameters), "Restart", "Restart Level"));
             menuItems.Add(new MenuItem(new BackToMenuCommand(), "Back", "Back To Main Menu"));
             menuItems.Add(new MenuItem(new QuitGameCommand(), "Quit", "Quit Game"));
             menu = new MenuPanel(menuItems);
-            menu.SetPosition((GameConstants.WINDOWS_X * 1 / 3), 100);
+            menu.SetPosition((WindowX * 1 / 3), 100);
             showMenu = false;
             showHitboxes = false;
 
-            uiView = new UiPanel();
+            uiView = new UiPanel(WindowX, WindowY);
             MainEventBus.Register(this);
             events = new List<Event>();
 
@@ -110,10 +127,24 @@ namespace TankWorld.Game.Panels
                     case PRESS_O:
                         showHitboxes = !showHitboxes;
                         break;
-                }
+                } 
             }
             else
             {
+                //switch (input.inputEvent)
+                //{
+                //    case PRESS_A:
+                //        GameContext.Instance.ChangeResolution(1280, 720);
+                //        Camera.Instance.SetSubScreenDimensions(0, 0, 1280, 720);
+                //        break;
+                //    case PRESS_D:
+                //        GameContext.Instance.ChangeResolution(1920, 1080);
+                //        Camera.Instance.SetSubScreenDimensions(0, 0, 1920, 1080);
+                //        break;
+                //    case PRESS_P:
+                //        GameContext.Instance.ToggleFullScreen();
+                //        break;
+                //}
                 gameView.HandleInput(input);
             }
             

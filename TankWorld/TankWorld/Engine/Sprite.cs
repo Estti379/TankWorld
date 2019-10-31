@@ -239,6 +239,7 @@ namespace TankWorld.Engine
                        SDL_RendererFlip.SDL_FLIP_NONE);
         }
 
+        //TODO: change it to draw into a new texture instead of on screen! (SDL_SetRenderTarget)
         static public void DrawFilledRectangle(Coordinate A, Coordinate B, Coordinate C, Coordinate D, SDL_Color color)
         {
             SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
@@ -347,7 +348,7 @@ namespace TankWorld.Engine
 
         }
 
-
+        //TODO: change it to draw into a new texture instead of on screen! (SDL_SetRenderTarget)
         static public void DrawFilledCircle(Coordinate center, double radius, SDL_Color color)
         {
             SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);

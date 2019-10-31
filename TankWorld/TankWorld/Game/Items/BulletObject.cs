@@ -14,8 +14,10 @@ namespace TankWorld.Game.Items
         private BulletModel model;
         private TankObject owner;
 
-        private const byte SPEED = 30;
-        private const double MAX_TRAVEL_TIME = 2000; //in milliseconds
+        private const byte SPEED = 15;
+        private const double MAX_TRAVEL_TIME = 60000/SPEED; //in milliseconds
+
+        private int damagePower;
 
         private PhysicsComponent bulletPhysics;
 
@@ -26,6 +28,7 @@ namespace TankWorld.Game.Items
         //Constructors
         public BulletObject(TankObject owner, Coordinate startPosition, double startAngle) : base()
         {
+            damagePower = 25;
             UpdateState(owner, startPosition, startAngle);
             model = new BulletModel(startPosition, startAngle);
             longivity = new Timer(Timer.Type.DESCENDING)
@@ -118,7 +121,7 @@ namespace TankWorld.Game.Items
                     GameObject newExplosion = new BulletExplosionEffectObject(collisionPoint);
                     MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.SPAWN_NEW_ENTITY, newExplosion));
                     MainEventBus.PostEvent(new SceneStateEvent(SceneStateEvent.Type.TANK_HIT, collidingTank, this.owner));
-
+                    collidingTank.TakeDamage(damagePower);
                 }
             }
         }
