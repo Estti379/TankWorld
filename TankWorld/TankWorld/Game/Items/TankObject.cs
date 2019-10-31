@@ -47,6 +47,25 @@ namespace TankWorld.Game.Items
 
         private const double SECONDS_TO_STOP = 2;
 
+        private const double deepWaterSpeedMod = 0.1;
+        private const double deepWaterAccelMod = 0.3;
+
+        private const double waterSpeedMod = 0.3;
+        private const double waterAccelMod = 0.3;
+
+        private const double roadSpeedMod = 1.4;
+        private const double roadAccelMod = 1.2;
+
+        private const double dirtSpeedMod = 0.6;
+        private const double dirtAccelMod = 0.9;
+
+        private const double grassSpeedMod = 0.9;
+        private const double grassAccelMod = 0.6;
+
+        private const double sandSpeedMod = 0.5;
+        private const double sandAccelMod = 0.3;
+
+
         //Weapon constants
         /*TODO: looks like weapons could become it's own instance of a class "Weapon"
          *which would allow for weapon modularity!
@@ -267,17 +286,30 @@ namespace TankWorld.Game.Items
             double trueAccel = acceleration - Math.Pow(oldSpeed/TOP_SPEED, x)* acceleration ;
 
 
-            speed += trueAccel * GameConstants.MS_PER_UPDATE * 1 / 1000;
-            if (speed > TOP_SPEED)
+            speed += trueAccel * GameConstants.MS_PER_UPDATE * 1 / 1000 * GetAccelModifier();
+            if (speed > TOP_SPEED * GetSpeedModifier())
             {
-                speed = TOP_SPEED;
+                speed = TOP_SPEED * GetSpeedModifier();
             }
-            else if(speed < TOP_SPEED_REVERSE)
+            else if(speed < TOP_SPEED_REVERSE * GetSpeedModifier())
             {
-                speed = TOP_SPEED_REVERSE;
+                speed = TOP_SPEED_REVERSE * GetSpeedModifier();
             }
             
 
+        }
+
+        private double GetSpeedModifier()
+        {
+
+
+            return 1;
+        }
+
+        private double GetAccelModifier()
+        {
+
+            return 1;
         }
 
         private void UpdateCoordinates()

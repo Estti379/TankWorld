@@ -15,10 +15,10 @@ namespace TankWorld.Game.Components
             hitBoxes.hitBoxesList = new Dictionary<string, HitBox>();
         }
 
-        public ref HitBoxStruct HitBoxes { get => ref hitBoxes;}
+        
 
         //Accessors
-
+        public ref HitBoxStruct HitBoxes { get => ref hitBoxes;}
 
         //Methods
         abstract public void Update(GameObject parentObject, ref WorldItems world);

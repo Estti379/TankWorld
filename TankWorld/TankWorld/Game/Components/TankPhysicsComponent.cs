@@ -35,7 +35,7 @@ namespace TankWorld.Game.Components
         {
             HitBox bulletHitBox = new HitBox
             {
-                boxType = HitBox.Type.CIRCLE,
+                boxType = HitBox.Type.RECTANGLE,
             };
 
             HitBoxes.hitBoxesList.Add("Tank", bulletHitBox);
@@ -58,8 +58,8 @@ namespace TankWorld.Game.Components
 
             double angle = parent.DirectionBody;
 
-            //hitBoxes.hitBoxesList["Tank"] = Helper.UpdateRectangleHitBox(hitBoxes.hitBoxesList["Tank"], hitBoxes.position, angle, widthBox, heightBox);
-            HitBoxes.hitBoxesList["Tank"] = Helper.UpdateCircleHitBox(HitBoxes.hitBoxesList["Tank"], HitBoxes.Position, widthBox/2);
+            HitBoxes.hitBoxesList["Tank"] = Helper.UpdateRectangleHitBox(HitBoxes.hitBoxesList["Tank"], HitBoxes.Position, angle, widthBox, heightBox);
+            //HitBoxes.hitBoxesList["Tank"] = Helper.UpdateCircleHitBox(HitBoxes.hitBoxesList["Tank"], HitBoxes.Position, widthBox/2);
         }
 
         

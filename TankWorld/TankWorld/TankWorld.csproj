@@ -81,7 +81,6 @@
     <Compile Include="Game\Models\ClockModel.cs" />
     <Compile Include="Game\Models\EffectModel.cs" />
     <Compile Include="Game\Models\ExplosionModel.cs" />
-    <Compile Include="Game\Models\TileModel.cs" />
     <Compile Include="Game\Panels\MapPanel.cs" />
     <Compile Include="Game\Panels\PlayParameters.cs" />
     <Compile Include="Game\Panels\UiPanel.cs" />
@@ -117,7 +116,7 @@
     <Compile Include="Game\Panels\MenuItem.cs" />
     <Compile Include="Game\Items\TankObject.cs" />
     <Compile Include="Game\Panels\ExitScene.cs" />
-    <Compile Include="Engine\TankWorld.cs" />
+    <Compile Include="main.cs" />
     <Compile Include="Engine\ProcessInput.cs" />
     <Compile Include="Engine\EntityModel.cs" />
     <Compile Include="Engine\GameObject.cs" />

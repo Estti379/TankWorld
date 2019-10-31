@@ -2,7 +2,7 @@
 
 namespace TankWorld
 {
-    class TankWorld
+    class main
     {
         static void Main(string[] args)
         {
